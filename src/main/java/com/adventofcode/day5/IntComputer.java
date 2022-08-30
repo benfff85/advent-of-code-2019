@@ -22,7 +22,7 @@ public class IntComputer {
         Opcode opcode;
         int i = 0;
         while (i < instructions.size()) {
-
+            log.debug("{}", instructions);
             opcode = new Opcode(instructions.get(i));
 
             if (ADD.equals(opcode.getOperationType())) {
@@ -64,22 +64,29 @@ public class IntComputer {
     private void processAdd(List<Integer> input, int indexOfOpcode, Opcode opcode) {
         Integer a = getParameterValue(input, opcode.getParameterModes().get(0), indexOfOpcode + 1);
         Integer b = getParameterValue(input, opcode.getParameterModes().get(1), indexOfOpcode + 2);
-        writeValueToIndex(input, input.get(indexOfOpcode + 3), a + b);
+        Integer c = input.get(indexOfOpcode + 3);
+        log.debug("Adding {} + {} and storing at index {}", a, b, c);
+        writeValueToIndex(input, c, a + b);
     }
 
     private void processMultiply(List<Integer> input, int indexOfOpcode, Opcode opcode) {
         Integer a = getParameterValue(input, opcode.getParameterModes().get(0), indexOfOpcode + 1);
         Integer b = getParameterValue(input, opcode.getParameterModes().get(1), indexOfOpcode + 2);
-        writeValueToIndex(input, input.get(indexOfOpcode + 3), a * b);
+        Integer c = input.get(indexOfOpcode + 3);
+        log.debug("Multiplying {} * {} and storing at index {}", a, b, c);
+        writeValueToIndex(input, c, a * b);
     }
 
     private void processInput(List<Integer> input, int indexOfOpcode, Integer value) {
-        writeValueToIndex(input, input.get(indexOfOpcode + 1), value);
+        Integer a = input.get(indexOfOpcode + 1);
+        log.debug("Adding input value of {} to index {}", value, a);
+        writeValueToIndex(input, a, value);
     }
 
     private Integer processOutput(List<Integer> input, int indexOfOpcode) {
-        Integer a = input.get(indexOfOpcode + 1);
-        return input.get(a);
+        Integer a = input.get(input.get(indexOfOpcode + 1));
+        log.debug("Output: {}", a);
+        return a;
     }
 
     private int processJumpIfTrue(List<Integer> input, int indexOfOpcode, Opcode opcode) {
