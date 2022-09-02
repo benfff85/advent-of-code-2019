@@ -2,6 +2,8 @@ package com.adventofcode.day3;
 
 import lombok.Getter;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -21,7 +23,7 @@ public class Wire {
 
     private List<Coordinate> calculatePath(List<Instruction> instructionList) {
 
-        path = Stream.of(new Coordinate(0, 0)).collect(toList());
+        path = new ArrayList<>(List.of(new Coordinate(0, 0)));
         for(Instruction instruction : instructionList) {
             processInstruction(instruction, path);
         }
