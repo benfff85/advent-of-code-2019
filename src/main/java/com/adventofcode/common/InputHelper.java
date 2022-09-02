@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -13,7 +14,7 @@ import static java.util.Objects.requireNonNull;
 
 @Slf4j
 @Component
-public class InputReader {
+public class InputHelper {
 
     public List<String> read(String file) {
         log.info("");
@@ -24,6 +25,14 @@ public class InputReader {
             log.warn("Error while reading file", e);
         }
         return emptyList();
+    }
+
+    public List<Integer> parseStringToIntList(String text) {
+        return Arrays.stream(text.split(",")).map(Integer::parseInt).toList();
+    }
+
+    public List<Integer> parseStringListToIntList(List<String> textList) {
+        return textList.stream().map(Integer::parseInt).toList();
     }
 
 }

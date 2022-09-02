@@ -1,6 +1,8 @@
 package com.adventofcode.day3;
 
-import com.adventofcode.common.InputReader;
+import com.adventofcode.common.DailyAnswer;
+import com.adventofcode.common.InputHelper;
+import com.adventofcode.common.SolutionController;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -11,13 +13,15 @@ import static java.lang.Math.abs;
 
 @Slf4j
 @Component("controller-day-3")
-public class Controller {
+public class Controller extends SolutionController {
 
-    public Controller(InputReader inputReader) {
-        // Parse input
-        List<String> input = inputReader.read("puzzle-input/day-3.txt");
-        List<Instruction> wireInstructionList1 = Arrays.stream(input.get(0).split(",")).map(Instruction::new).toList();
-        List<Instruction> wireInstructionList2 = Arrays.stream(input.get(1).split(",")).map(Instruction::new).toList();
+    public Controller(InputHelper inputHelper) {
+        super(inputHelper, "puzzle-input/day-3.txt");
+    }
+
+    public DailyAnswer execute() {
+        List<Instruction> wireInstructionList1 = Arrays.stream(puzzleInput.get(0).split(",")).map(Instruction::new).toList();
+        List<Instruction> wireInstructionList2 = Arrays.stream(puzzleInput.get(1).split(",")).map(Instruction::new).toList();
 
         // Create wires and calculate paths
         Wire wire1 = new Wire(wireInstructionList1);
@@ -25,8 +29,10 @@ public class Controller {
 
         findIntersectionWithShortestManhattanDistance(wire1, wire2);
         findIntersectionWithShortestWireLength(wire1, wire2);
-
+        return answer;
     }
+
+
 
     private void findIntersectionWithShortestWireLength(Wire wire1, Wire wire2) {
         // Find intersection coordinate with the shortest manhattan distance
@@ -51,6 +57,7 @@ public class Controller {
                 }
             }
         }
+        answer.setPart2(minTotalWireLength);
         log.info("Minimum wire length: {}", minTotalWireLength);
     }
 
@@ -74,7 +81,7 @@ public class Controller {
                 }
             }
         }
-
+        answer.setPart1(minManhattanDistance);
         log.info("Minimum manhattan distance: {}", minManhattanDistance);
     }
 

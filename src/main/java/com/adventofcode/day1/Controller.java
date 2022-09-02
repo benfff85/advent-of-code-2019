@@ -1,6 +1,8 @@
 package com.adventofcode.day1;
 
-import com.adventofcode.common.InputReader;
+import com.adventofcode.common.DailyAnswer;
+import com.adventofcode.common.InputHelper;
+import com.adventofcode.common.SolutionController;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -9,14 +11,24 @@ import java.util.List;
 
 @Slf4j
 @Component("controller-day-1")
-public class Controller {
+public class Controller extends SolutionController {
 
-    public Controller(InputReader inputReader) {
-        List<Integer> input = inputReader.read("puzzle-input/day-1.txt").stream().map(Integer::parseInt).toList();
+    public Controller(InputHelper inputHelper) {
+        super(inputHelper, "puzzle-input/day-1.txt");
+    }
+
+    public DailyAnswer execute() {
+        List<Integer> input = inputHelper.parseStringListToIntList(puzzleInput);
+
         List<Integer> fuelForModules = calculateFuelRequiredForModules(input);
-        log.info("Total fuel required for modules: {}", fuelForModules.stream().mapToInt(Integer::intValue).sum());
+        answer.setPart1(fuelForModules.stream().mapToInt(Integer::intValue).sum());
+        log.info("Total fuel required for modules: {}", answer.getPart1());
+
         List<Integer> totalFuelForModules = calculateTotalFuelRequired(fuelForModules);
-        log.info("Total fuel required including fuel for fuel: {}", totalFuelForModules.stream().mapToInt(Integer::intValue).sum());
+        answer.setPart2(totalFuelForModules.stream().mapToInt(Integer::intValue).sum());
+        log.info("Total fuel required including fuel for fuel: {}", answer.getPart2());
+
+        return answer;
     }
 
     private List<Integer> calculateFuelRequiredForModules(List<Integer> moduleMassList) {

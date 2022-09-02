@@ -1,6 +1,8 @@
 package com.adventofcode.day7;
 
-import com.adventofcode.common.InputReader;
+import com.adventofcode.common.DailyAnswer;
+import com.adventofcode.common.InputHelper;
+import com.adventofcode.common.SolutionController;
 import com.adventofcode.day5.IntComputer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -9,10 +11,17 @@ import java.util.*;
 
 @Slf4j
 @Component("controller-day-7")
-public class Controller {
+public class Controller extends SolutionController {
 
-    public Controller(InputReader inputReader, IntComputer intComputer) {
-        List<Integer> input = Arrays.stream(inputReader.read("puzzle-input/day-7.txt").get(0).split(",")).map(Integer::parseInt).toList();
+    private final IntComputer intComputer;
+
+    public Controller(InputHelper inputHelper, IntComputer intComputer) {
+        super(inputHelper, "puzzle-input/day-7.txt");
+        this.intComputer = intComputer;
+    }
+
+    public DailyAnswer execute() {
+        List<Integer> input = inputHelper.parseStringToIntList(puzzleInput.get(0));
 
         Queue<Integer> intComputerInputs = new LinkedList<>();
         Integer maxSignal = 0;
@@ -44,9 +53,7 @@ public class Controller {
                             intComputerInputs.add(e);
                             intComputerInputs.add(dOut);
                             Integer eOut = intComputer.process(new ArrayList<>(input), intComputerInputs);
-                            log.info("{}:{}:{}:{}:{}", a,b,c,d,e);
                             if(eOut > maxSignal) {
-                                log.info("{}:{}:{}:{}:{}", aOut,bOut,cOut,dOut,eOut);
                                 maxSignal = eOut;
                             }
 
@@ -57,9 +64,10 @@ public class Controller {
             }
         }
 
-        log.info("Max signal {}", maxSignal);
+        answer.setPart1(maxSignal);
+        log.info("Max signal {}", answer.getPart1());
 
-
+        return answer;
     }
 
     private List<Integer> getPhaseSettingList(Integer... usedValues) {

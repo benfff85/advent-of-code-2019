@@ -15,6 +15,10 @@ import static com.adventofcode.day5.ParameterMode.POSITION;
 public class IntComputer {
 
 
+    public IntComputerContext process(IntComputerContext context) {
+        return null;
+    }
+
     public Integer process(List<Integer> instructions, Queue<Integer> input) {
 
         int latestOutput = -999;

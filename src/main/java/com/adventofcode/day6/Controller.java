@@ -1,6 +1,8 @@
 package com.adventofcode.day6;
 
-import com.adventofcode.common.InputReader;
+import com.adventofcode.common.DailyAnswer;
+import com.adventofcode.common.InputHelper;
+import com.adventofcode.common.SolutionController;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -12,13 +14,16 @@ import java.util.Map;
 
 @Slf4j
 @Component("controller-day-6")
-public class Controller {
+public class Controller extends SolutionController {
 
-    public Controller(InputReader inputReader) {
-        List<String> input = inputReader.read("puzzle-input/day-6.txt");
+    public Controller(InputHelper inputHelper) {
+        super(inputHelper, "puzzle-input/day-6.txt");
+    }
+
+    public DailyAnswer execute() {
         Map<String, SpaceObject> spaceObjects = new HashMap<>();
 
-        for (String orbitMapEntry : input) {
+        for (String orbitMapEntry : puzzleInput) {
             String[] inputRow = orbitMapEntry.split("\\)");
             SpaceObject orbitedObject = createOrFetchSpaceObject(spaceObjects, inputRow[0]);
             SpaceObject orbitingObject = createOrFetchSpaceObject(spaceObjects, inputRow[1]);
@@ -37,18 +42,21 @@ public class Controller {
             }
         }
 
-        log.info("Total Orbits: {}", indirectOrbitCount + directOrbitCount);
+        answer.setPart1(indirectOrbitCount + directOrbitCount);
+        log.info("Total Orbits: {}", answer.getPart1());
 
 
         List<SpaceObject> a = getSpaceObjectsToCenterOfMass(spaceObjects.get("YOU"));
         List<SpaceObject> b = getSpaceObjectsToCenterOfMass(spaceObjects.get("SAN"));
         for (SpaceObject spaceObject : a) {
             if (b.contains(spaceObject)) {
-                log.info("Orbital transfers required: {}", a.indexOf(spaceObject) + b.indexOf(spaceObject));
+                answer.setPart2(a.indexOf(spaceObject) + b.indexOf(spaceObject));
+                log.info("Orbital transfers required: {}", answer.getPart2());
                 break;
             }
         }
 
+        return answer;
     }
 
 

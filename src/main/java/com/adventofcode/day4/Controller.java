@@ -1,25 +1,27 @@
 package com.adventofcode.day4;
 
-import com.adventofcode.common.InputReader;
+import com.adventofcode.common.DailyAnswer;
+import com.adventofcode.common.InputHelper;
+import com.adventofcode.common.SolutionController;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 import static java.lang.Integer.parseInt;
 import static java.lang.Math.max;
 
 @Slf4j
 @Component("controller-day-4")
-public class Controller {
+public class Controller extends SolutionController {
 
     private boolean isInitialMappingApplied = false;
 
-    public Controller(InputReader inputReader) {
-        // Parse input
-        List<String> input = inputReader.read("puzzle-input/day-4.txt");
-        int lowerBound = parseInt(input.get(0).split("-")[0]);
-        int upperBound = parseInt(input.get(0).split("-")[1]);
+    public Controller(InputHelper inputHelper) {
+        super(inputHelper, "puzzle-input/day-4.txt");
+    }
+
+    public DailyAnswer execute() {
+        int lowerBound = parseInt(puzzleInput.get(0).split("-")[0]);
+        int upperBound = parseInt(puzzleInput.get(0).split("-")[1]);
 
         short initialA = (short) (lowerBound / 100000);
         short initialB = (short) ((lowerBound / 10000) % 10);
@@ -65,11 +67,12 @@ public class Controller {
                 }
             }
         }
-
+        answer.setPart1(passwordCount);
         log.info("Count of passwords: {}", passwordCount);
+        answer.setPart2(passwordCountWithRepeatingDigitsNotPartOfLargerGroup);
         log.info("Count of passwords where repeating digit is not part of larger group: {}", passwordCountWithRepeatingDigitsNotPartOfLargerGroup);
+        return answer;
     }
-
 
     private boolean containsRepeatingDigit(short a, short b, short c, short d, short e, short f) {
         return a == b || b == c || c == d || d == e || e == f;
@@ -82,7 +85,6 @@ public class Controller {
                 (c != d && d == e && e != f) ||
                 (d != e && e == f);
     }
-
 
     private short calculateLoopStartingValue(short initialLoopValue, short wrappingLoopValue) {
         if (!isInitialMappingApplied) {
