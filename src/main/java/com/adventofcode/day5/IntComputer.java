@@ -3,6 +3,7 @@ package com.adventofcode.day5;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Queue;
@@ -15,16 +16,21 @@ import static com.adventofcode.day5.ParameterMode.POSITION;
 public class IntComputer {
 
 
-    public IntComputerContext process(IntComputerContext context) {
-        return null;
+    public Integer process(List<Integer> instructions, Queue<Integer> input) {
+        return process(IntComputerContext.builder()
+                .instructions(instructions)
+                .instructionIndex(0)
+                .inputs(input)
+                .outputs(new LinkedList<>())
+                .build())
+                .getOutputs().pollLast();
     }
 
-    public Integer process(List<Integer> instructions, Queue<Integer> input) {
-
-        int latestOutput = -999;
+    public IntComputerContext process(IntComputerContext context) {
+        List<Integer> instructions = context.getInstructions();
 
         Opcode opcode;
-        int i = 0;
+        int i = context.getInstructionIndex();
         while (i < instructions.size()) {
             log.debug("{}", instructions);
             opcode = new Opcode(instructions.get(i));
@@ -36,10 +42,10 @@ public class IntComputer {
                 processMultiply(instructions, i, opcode);
                 i += 4;
             } else if (INPUT.equals(opcode.getOperationType())) {
-                processInput(instructions, i, input.poll());
+                processInput(instructions, i, context.getInputs().poll());
                 i += 2;
             } else if (OUTPUT.equals(opcode.getOperationType())) {
-                latestOutput = processOutput(instructions, i);
+                context.getOutputs().add(processOutput(instructions, i));
                 i += 2;
             } else if (JUMP_IF_TRUE.equals(opcode.getOperationType())) {
                 // If first param is non-zero set i to second param value
@@ -56,12 +62,12 @@ public class IntComputer {
                 processEquals(instructions, i, opcode);
                 i += 4;
             } else if (TERMINATE.equals(opcode.getOperationType())) {
-                return latestOutput;
+                return context;
             } else {
                 log.error("Unexpected operator {} at index {}", instructions.get(i), i);
             }
         }
-        return 0;
+        return null;
     }
 
 

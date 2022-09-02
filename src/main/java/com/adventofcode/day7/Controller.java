@@ -4,6 +4,8 @@ import com.adventofcode.common.DailyAnswer;
 import com.adventofcode.common.InputHelper;
 import com.adventofcode.common.SolutionController;
 import com.adventofcode.day5.IntComputer;
+import com.adventofcode.day5.IntComputerContext;
+import com.google.common.collect.Collections2;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -23,56 +25,32 @@ public class Controller extends SolutionController {
     public DailyAnswer execute() {
         List<Integer> input = inputHelper.parseStringToIntList(puzzleInput.get(0));
 
-        Queue<Integer> intComputerInputs = new LinkedList<>();
         Integer maxSignal = 0;
+        Collection<List<Integer>> phaseSettingPermutations = Collections2.permutations(List.of(0, 1, 2, 3, 4));
+        for(List<Integer> phaseSetting : phaseSettingPermutations) {
+            Integer aOut = intComputer.process(generateIntComputerContext(phaseSetting.get(0), 0, input)).getOutputs().pop();
+            Integer bOut = intComputer.process(generateIntComputerContext(phaseSetting.get(1), aOut, input)).getOutputs().pop();
+            Integer cOut = intComputer.process(generateIntComputerContext(phaseSetting.get(2), bOut, input)).getOutputs().pop();
+            Integer dOut = intComputer.process(generateIntComputerContext(phaseSetting.get(3), cOut, input)).getOutputs().pop();
+            Integer eOut = intComputer.process(generateIntComputerContext(phaseSetting.get(4), dOut, input)).getOutputs().pop();
 
-        for(Integer a : getPhaseSettingList()) {
-            intComputerInputs.add(a);
-            intComputerInputs.add(0);
-            Integer aOut = intComputer.process(new ArrayList<>(input), intComputerInputs);
-
-            for(Integer b : getPhaseSettingList(a)) {
-                intComputerInputs.add(b);
-                intComputerInputs.add(aOut);
-                Integer bOut = intComputer.process(new ArrayList<>(input), intComputerInputs);
-
-
-                for(Integer c : getPhaseSettingList(a, b)) {
-                    intComputerInputs.add(c);
-                    intComputerInputs.add(bOut);
-                    Integer cOut = intComputer.process(new ArrayList<>(input), intComputerInputs);
-
-
-                    for(Integer d : getPhaseSettingList(a, b, c)) {
-                        intComputerInputs.add(d);
-                        intComputerInputs.add(cOut);
-                        Integer dOut = intComputer.process(new ArrayList<>(input), intComputerInputs);
-
-
-                        for(Integer e : getPhaseSettingList(a, b, c, d)) {
-                            intComputerInputs.add(e);
-                            intComputerInputs.add(dOut);
-                            Integer eOut = intComputer.process(new ArrayList<>(input), intComputerInputs);
-                            if(eOut > maxSignal) {
-                                maxSignal = eOut;
-                            }
-
-
-                        }
-                    }
-                }
+            if (eOut > maxSignal) {
+                maxSignal = eOut;
             }
         }
-
         answer.setPart1(maxSignal);
         log.info("Max signal {}", answer.getPart1());
 
         return answer;
     }
 
-    private List<Integer> getPhaseSettingList(Integer... usedValues) {
-        ArrayList<Integer> values = new ArrayList<>(List.of(0, 1, 2, 3, 4));
-        values.removeAll(Arrays.asList(usedValues));
-        return values;
+    private IntComputerContext generateIntComputerContext(Integer param1, Integer param2, List<Integer> instructions) {
+        return IntComputerContext.builder()
+                .instructions(new ArrayList<>(instructions))
+                .instructionIndex(0)
+                .inputs(new LinkedList<>(List.of(param1, param2)))
+                .outputs(new LinkedList<>())
+                .build();
     }
+
 }

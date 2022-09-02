@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.PriorityQueue;
 
@@ -25,7 +26,7 @@ public class Controller extends SolutionController {
         List<Integer> input = inputHelper.parseStringToIntList(puzzleInput.get(0));
 
         List<Integer> instructionList = new ArrayList<>(input);
-        PriorityQueue<Integer> intComputerInputs = new PriorityQueue<>();
+        LinkedList<Integer> intComputerInputs = new LinkedList<>();
         intComputerInputs.add(1);
         answer.setPart1(intComputer.process(instructionList, intComputerInputs));
         log.info("Part 1: {}", answer.getPart1());
