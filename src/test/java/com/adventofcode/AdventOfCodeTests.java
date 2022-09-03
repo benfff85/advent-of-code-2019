@@ -2,9 +2,12 @@ package com.adventofcode;
 
 
 import com.adventofcode.common.DailyAnswer;
+import com.adventofcode.day8.Layer;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -26,6 +29,8 @@ class AdventOfCodeTests {
     private com.adventofcode.day6.Controller day6Controller;
     @Autowired
     private com.adventofcode.day7.Controller day7Controller;
+    @Autowired
+    private com.adventofcode.day8.Controller day8Controller;
 
     @Test
     void testDay1() {
@@ -74,6 +79,13 @@ class AdventOfCodeTests {
         DailyAnswer answer = day7Controller.execute();
         assertEquals(92663, answer.getPart1());
         assertEquals(14365052, answer.getPart2());
+    }
+
+    @Test
+    void testDay8() {
+        DailyAnswer answer = day8Controller.execute();
+        assertEquals(1677, answer.getPart1());
+        assertEquals(new Layer(6, 25, Arrays.stream("100101110010010111101110010010100101001010000100101001011100100101110010010100101001010010100001110010010100101001010000100000110011100011001000010000".split("")).map(Integer::parseInt).toList()), answer.getPart2());
     }
 
 }

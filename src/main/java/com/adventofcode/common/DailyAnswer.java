@@ -5,6 +5,6 @@ import lombok.Data;
 @Data
 public class DailyAnswer {
 
-    private Integer part1;
-    private Integer part2;
+    private Object part1;
+    private Object part2;
 }
