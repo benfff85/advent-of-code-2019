@@ -1,7 +1,6 @@
 package com.adventofcode.day5;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -10,9 +9,9 @@ import java.util.Queue;
 
 import static com.adventofcode.day5.OperationType.*;
 import static com.adventofcode.day5.ParameterMode.POSITION;
+import static java.lang.Boolean.FALSE;
 
 @Slf4j
-@Component
 public class IntComputer {
 
 
@@ -42,6 +41,11 @@ public class IntComputer {
                 processMultiply(instructions, i, opcode);
                 i += 4;
             } else if (INPUT.equals(opcode.getOperationType())) {
+                // If we need input but don't have any return and get some input later from the amplifier feedback loop
+                if (context.getInputs().isEmpty()) {
+                    context.setInstructionIndex(i);
+                    return context;
+                }
                 processInput(instructions, i, context.getInputs().poll());
                 i += 2;
             } else if (OUTPUT.equals(opcode.getOperationType())) {
@@ -62,6 +66,8 @@ public class IntComputer {
                 processEquals(instructions, i, opcode);
                 i += 4;
             } else if (TERMINATE.equals(opcode.getOperationType())) {
+                context.setIsRunning(FALSE);
+                context.setInstructionIndex(i);
                 return context;
             } else {
                 log.error("Unexpected operator {} at index {}", instructions.get(i), i);

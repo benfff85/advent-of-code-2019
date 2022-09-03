@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.PriorityQueue;
 
 @Slf4j
 @Component("controller-day-5")
@@ -17,9 +16,9 @@ public class Controller extends SolutionController {
 
     private final IntComputer intComputer;
 
-    public Controller(InputHelper inputHelper, IntComputer intComputer) {
+    public Controller(InputHelper inputHelper) {
         super(inputHelper, "puzzle-input/day-5.txt");
-        this.intComputer = intComputer;
+        this.intComputer = new IntComputer();
     }
 
     public DailyAnswer execute() {
