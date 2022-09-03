@@ -33,7 +33,6 @@ public class Controller extends SolutionController {
     }
 
 
-
     private void findIntersectionWithShortestWireLength(Wire wire1, Wire wire2) {
         // Find intersection coordinate with the shortest manhattan distance
         int minTotalWireLength = Integer.MAX_VALUE;

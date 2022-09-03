@@ -29,7 +29,7 @@ public class Controller extends SolutionController {
         List<Amplifier> amplifiers;
         Collection<List<Integer>> phaseSettingPermutations = Collections2.permutations(List.of(0, 1, 2, 3, 4));
         Integer output;
-        for(List<Integer> phaseSetting : phaseSettingPermutations) {
+        for (List<Integer> phaseSetting : phaseSettingPermutations) {
             amplifiers = initAmplifiers(input);
             output = amplifiers.get(0).run(new LinkedList<>(List.of(phaseSetting.get(0), 0))).getOutputs().pop();
             output = amplifiers.get(1).run(new LinkedList<>(List.of(phaseSetting.get(1), output))).getOutputs().pop();
@@ -49,7 +49,7 @@ public class Controller extends SolutionController {
         maxSignal = 0;
         phaseSettingPermutations = Collections2.permutations(List.of(5, 6, 7, 8, 9));
         IntComputerContext outputContext;
-        for(List<Integer> phaseSetting : phaseSettingPermutations) {
+        for (List<Integer> phaseSetting : phaseSettingPermutations) {
             amplifiers = initAmplifiers(input);
 
             // Initial loop iteration with phase inputs
@@ -78,7 +78,7 @@ public class Controller extends SolutionController {
     }
 
     private void addOutputsToQueue(Queue<Integer> inputs, Deque<Integer> outputs) {
-        while(!outputs.isEmpty()) {
+        while (!outputs.isEmpty()) {
             inputs.add(outputs.remove());
         }
     }
@@ -105,7 +105,6 @@ public class Controller extends SolutionController {
         amplifiers.add(new Amplifier("e", instructions));
         return amplifiers;
     }
-
 
 
 }

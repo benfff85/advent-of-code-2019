@@ -33,7 +33,7 @@ public class Controller extends SolutionController {
         instructionList = new ArrayList<>(input);
         intComputerInputs.clear();
         intComputerInputs.add(5);
-        answer.setPart2( intComputer.process(instructionList, intComputerInputs));
+        answer.setPart2(intComputer.process(instructionList, intComputerInputs));
         log.info("Part 2: {}", answer.getPart2());
 
         return answer;
