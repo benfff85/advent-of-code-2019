@@ -2,7 +2,7 @@ package com.adventofcode.day5;
 
 public enum OperationType {
 
-    ADD(1), MULTIPLY(2), INPUT(3), OUTPUT(4), JUMP_IF_TRUE(5), JUMP_IF_FALSE(6), LESS_THAN(7), EQUALS(8), TERMINATE(99);
+    ADD(1), MULTIPLY(2), INPUT(3), OUTPUT(4), JUMP_IF_TRUE(5), JUMP_IF_FALSE(6), LESS_THAN(7), EQUALS(8), RELATIVE_BASE_OFFSET(9), TERMINATE(99);
 
     private final Integer value;
 

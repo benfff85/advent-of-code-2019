@@ -16,5 +16,6 @@ public class IntComputerContext {
     private Deque<Integer> outputs;
     private Integer instructionIndex;
     private Boolean isRunning;
+    private Integer relativeBase;
 
 }

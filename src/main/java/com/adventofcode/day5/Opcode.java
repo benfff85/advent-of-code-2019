@@ -31,7 +31,7 @@ public class Opcode {
             parameterModes.add(ParameterMode.getFromValue(parseInt(valueOf(paddedInput.charAt(1)))));
             parameterModes.add(ParameterMode.getFromValue(parseInt(valueOf(paddedInput.charAt(0)))));
         }
-        if (INPUT.equals(operationType) || OUTPUT.equals(operationType)) {
+        if (INPUT.equals(operationType) || OUTPUT.equals(operationType) || RELATIVE_BASE_OFFSET.equals(operationType)) {
             String paddedInput = leftPad((input / 100) + "", 1, "0");
             parameterModes.add(ParameterMode.getFromValue(parseInt(valueOf(paddedInput.charAt(0)))));
         }

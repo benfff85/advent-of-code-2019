@@ -31,6 +31,8 @@ class AdventOfCodeTests {
     private com.adventofcode.day7.Controller day7Controller;
     @Autowired
     private com.adventofcode.day8.Controller day8Controller;
+    @Autowired
+    private com.adventofcode.day9.Controller day9Controller;
 
     @Test
     void testDay1() {
@@ -86,6 +88,13 @@ class AdventOfCodeTests {
         DailyAnswer answer = day8Controller.execute();
         assertEquals(1677, answer.getPart1());
         assertEquals(new Layer(6, 25, Arrays.stream("100101110010010111101110010010100101001010000100101001011100100101110010010100101001010010100001110010010100101001010000100000110011100011001000010000".split("")).map(Integer::parseInt).toList()), answer.getPart2());
+    }
+
+    @Test
+    void testDay9() {
+        DailyAnswer answer = day9Controller.execute();
+        assertEquals(0, answer.getPart1());
+        assertEquals(0, answer.getPart2());
     }
 
 }

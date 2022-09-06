@@ -11,7 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Slf4j
-@Component
+@Component("controller-day-8")
 public class Controller extends SolutionController {
 
     public Controller(InputHelper inputHelper) {

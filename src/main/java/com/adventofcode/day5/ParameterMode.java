@@ -2,7 +2,7 @@ package com.adventofcode.day5;
 
 public enum ParameterMode {
 
-    POSITION(0), IMMEDIATE(1);
+    POSITION(0), IMMEDIATE(1), RELATIVE(2);
 
     private final Integer value;
 
