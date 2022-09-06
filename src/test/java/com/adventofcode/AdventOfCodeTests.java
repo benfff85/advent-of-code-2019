@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.math.BigInteger;
 import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -65,8 +66,8 @@ class AdventOfCodeTests {
     @Test
     void testDay5() {
         DailyAnswer answer = day5Controller.execute();
-        assertEquals(15426686, answer.getPart1());
-        assertEquals(11430197, answer.getPart2());
+        assertEquals(BigInteger.valueOf(15426686), answer.getPart1());
+        assertEquals(BigInteger.valueOf(11430197), answer.getPart2());
     }
 
     @Test
@@ -79,8 +80,8 @@ class AdventOfCodeTests {
     @Test
     void testDay7() {
         DailyAnswer answer = day7Controller.execute();
-        assertEquals(92663, answer.getPart1());
-        assertEquals(14365052, answer.getPart2());
+        assertEquals(BigInteger.valueOf(92663), answer.getPart1());
+        assertEquals(BigInteger.valueOf(14365052), answer.getPart2());
     }
 
     @Test
@@ -93,8 +94,8 @@ class AdventOfCodeTests {
     @Test
     void testDay9() {
         DailyAnswer answer = day9Controller.execute();
-        assertEquals(0, answer.getPart1());
-        assertEquals(0, answer.getPart2());
+        assertEquals(new BigInteger("3512778005"), answer.getPart1());
+        assertEquals(new BigInteger("35920"), answer.getPart2());
     }
 
 }

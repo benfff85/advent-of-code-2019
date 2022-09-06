@@ -3,6 +3,7 @@ package com.adventofcode.common;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
@@ -29,6 +30,10 @@ public class InputHelper {
 
     public List<Integer> parseStringToIntList(String text) {
         return Arrays.stream(text.split(",")).map(Integer::parseInt).toList();
+    }
+
+    public List<BigInteger> parseStringToBigIntList(String text) {
+        return Arrays.stream(text.split(",")).map(BigInteger::new).toList();
     }
 
     public List<Integer> parseStringListToIntList(List<String> textList) {

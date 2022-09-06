@@ -4,6 +4,7 @@ import com.adventofcode.day5.IntComputer;
 import com.adventofcode.day5.IntComputerContext;
 import lombok.Getter;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -19,17 +20,17 @@ public class Amplifier {
     private final IntComputerContext intComputerContext;
 
 
-    public Amplifier(String name, List<Integer> instructions) {
+    public Amplifier(String name, List<BigInteger> instructions) {
         this.name = name;
         intComputerContext = generateIntComputerContext(instructions);
     }
 
-    public IntComputerContext run(Queue<Integer> intComputerInputs) {
+    public IntComputerContext run(Queue<BigInteger> intComputerInputs) {
         intComputerContext.getInputs().addAll(intComputerInputs);
         return intComputer.process(intComputerContext);
     }
 
-    private IntComputerContext generateIntComputerContext(List<Integer> instructions) {
+    private IntComputerContext generateIntComputerContext(List<BigInteger> instructions) {
         return IntComputerContext.builder()
                 .instructions(new ArrayList<>(instructions))
                 .instructionIndex(0)

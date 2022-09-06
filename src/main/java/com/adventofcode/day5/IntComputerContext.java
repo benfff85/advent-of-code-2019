@@ -3,6 +3,7 @@ package com.adventofcode.day5;
 import lombok.Builder;
 import lombok.Data;
 
+import java.math.BigInteger;
 import java.util.Deque;
 import java.util.List;
 import java.util.Queue;
@@ -11,9 +12,9 @@ import java.util.Queue;
 @Builder
 public class IntComputerContext {
 
-    private List<Integer> instructions;
-    private Queue<Integer> inputs;
-    private Deque<Integer> outputs;
+    private List<BigInteger> instructions;
+    private Queue<BigInteger> inputs;
+    private Deque<BigInteger> outputs;
     private Integer instructionIndex;
     private Boolean isRunning;
     private Integer relativeBase;

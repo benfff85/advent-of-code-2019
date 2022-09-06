@@ -1,7 +1,9 @@
 package com.adventofcode.day5;
 
+
 import lombok.Getter;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +18,8 @@ public class Opcode {
     private final OperationType operationType;
     private final List<ParameterMode> parameterModes;
 
-    public Opcode(Integer input) {
+    public Opcode(BigInteger inputBigInt) {
+        int input = inputBigInt.intValue();
         operationType = OperationType.getFromValue(input % 100);
 
         parameterModes = new ArrayList<>();

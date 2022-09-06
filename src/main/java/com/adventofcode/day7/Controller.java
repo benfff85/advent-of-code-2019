@@ -9,6 +9,7 @@ import com.google.common.collect.Iterables;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.math.BigInteger;
 import java.util.*;
 
 import static java.lang.Boolean.FALSE;
@@ -23,21 +24,21 @@ public class Controller extends SolutionController {
     }
 
     public DailyAnswer execute() {
-        List<Integer> input = inputHelper.parseStringToIntList(puzzleInput.get(0));
+        List<BigInteger> input = inputHelper.parseStringToBigIntList(puzzleInput.get(0));
 
-        Integer maxSignal = 0;
+        BigInteger maxSignal = BigInteger.ZERO;
         List<Amplifier> amplifiers;
-        Collection<List<Integer>> phaseSettingPermutations = Collections2.permutations(List.of(0, 1, 2, 3, 4));
-        Integer output;
-        for (List<Integer> phaseSetting : phaseSettingPermutations) {
+        Collection<List<BigInteger>> phaseSettingPermutations = Collections2.permutations(List.of(BigInteger.valueOf(0), BigInteger.valueOf(1), BigInteger.valueOf(2), BigInteger.valueOf(3), BigInteger.valueOf(4)));
+        BigInteger output;
+        for (List<BigInteger> phaseSetting : phaseSettingPermutations) {
             amplifiers = initAmplifiers(input);
-            output = amplifiers.get(0).run(new LinkedList<>(List.of(phaseSetting.get(0), 0))).getOutputs().pop();
+            output = amplifiers.get(0).run(new LinkedList<>(List.of(phaseSetting.get(0), BigInteger.valueOf(0)))).getOutputs().pop();
             output = amplifiers.get(1).run(new LinkedList<>(List.of(phaseSetting.get(1), output))).getOutputs().pop();
             output = amplifiers.get(2).run(new LinkedList<>(List.of(phaseSetting.get(2), output))).getOutputs().pop();
             output = amplifiers.get(3).run(new LinkedList<>(List.of(phaseSetting.get(3), output))).getOutputs().pop();
             output = amplifiers.get(4).run(new LinkedList<>(List.of(phaseSetting.get(4), output))).getOutputs().pop();
 
-            if (output > maxSignal) {
+            if (output.compareTo(maxSignal) > 0) {
                 maxSignal = output;
             }
         }
@@ -45,15 +46,15 @@ public class Controller extends SolutionController {
         log.info("Max signal {}", answer.getPart1());
 
 
-        Integer signal;
-        maxSignal = 0;
-        phaseSettingPermutations = Collections2.permutations(List.of(5, 6, 7, 8, 9));
+        BigInteger signal;
+        maxSignal = BigInteger.ZERO;
+        phaseSettingPermutations = Collections2.permutations(List.of(BigInteger.valueOf(5), BigInteger.valueOf(6), BigInteger.valueOf(7), BigInteger.valueOf(8), BigInteger.valueOf(9)));
         IntComputerContext outputContext;
-        for (List<Integer> phaseSetting : phaseSettingPermutations) {
+        for (List<BigInteger> phaseSetting : phaseSettingPermutations) {
             amplifiers = initAmplifiers(input);
 
             // Initial loop iteration with phase inputs
-            outputContext = amplifiers.get(0).run(new LinkedList<>(List.of(phaseSetting.get(0), 0)));
+            outputContext = amplifiers.get(0).run(new LinkedList<>(List.of(phaseSetting.get(0), BigInteger.valueOf(0))));
             outputContext = amplifiers.get(1).run(generateQueueOfPhaseAndPriorOutputs(phaseSetting.get(1), outputContext.getOutputs()));
             outputContext = amplifiers.get(2).run(generateQueueOfPhaseAndPriorOutputs(phaseSetting.get(2), outputContext.getOutputs()));
             outputContext = amplifiers.get(3).run(generateQueueOfPhaseAndPriorOutputs(phaseSetting.get(3), outputContext.getOutputs()));
@@ -64,7 +65,7 @@ public class Controller extends SolutionController {
                 outputContext = amplifier.run(generateQueueOfPriorOutputs(outputContext.getOutputs()));
                 if ("e".equals(amplifier.getName()) && FALSE.equals(outputContext.getIsRunning())) {
                     signal = outputContext.getOutputs().removeLast();
-                    if (signal > maxSignal) {
+                    if (signal.compareTo(maxSignal) > 0) {
                         maxSignal = signal;
                     }
                     break;
@@ -77,26 +78,26 @@ public class Controller extends SolutionController {
         return answer;
     }
 
-    private void addOutputsToQueue(Queue<Integer> inputs, Deque<Integer> outputs) {
+    private void addOutputsToQueue(Queue<BigInteger> inputs, Deque<BigInteger> outputs) {
         while (!outputs.isEmpty()) {
             inputs.add(outputs.remove());
         }
     }
 
-    private Queue<Integer> generateQueueOfPriorOutputs(Deque<Integer> outputs) {
-        Queue<Integer> queue = new LinkedList<>();
+    private Queue<BigInteger> generateQueueOfPriorOutputs(Deque<BigInteger> outputs) {
+        Queue<BigInteger> queue = new LinkedList<>();
         addOutputsToQueue(queue, outputs);
         return queue;
     }
 
-    private Queue<Integer> generateQueueOfPhaseAndPriorOutputs(Integer phase, Deque<Integer> outputs) {
-        Queue<Integer> queue = new LinkedList<>();
+    private Queue<BigInteger> generateQueueOfPhaseAndPriorOutputs(BigInteger phase, Deque<BigInteger> outputs) {
+        Queue<BigInteger> queue = new LinkedList<>();
         queue.add(phase);
         addOutputsToQueue(queue, outputs);
         return queue;
     }
 
-    private List<Amplifier> initAmplifiers(List<Integer> instructions) {
+    private List<Amplifier> initAmplifiers(List<BigInteger> instructions) {
         List<Amplifier> amplifiers = new LinkedList<>();
         amplifiers.add(new Amplifier("a", instructions));
         amplifiers.add(new Amplifier("b", instructions));
