@@ -2,8 +2,9 @@ package com.adventofcode.day10;
 
 import lombok.Getter;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+
+import static java.util.Objects.isNull;
 
 @Getter
 public class Asteroid {
@@ -12,21 +13,20 @@ public class Asteroid {
     private final Integer yCord;
     private final String name;
 
-    private final Map<Vector, AsteroidRelationship> visibleAsteroids;
+    private final Map<Double, Queue<AsteroidRelationship>> visibleAsteroids;
 
     public Asteroid(Integer x, Integer y) {
         xCord = x;
         yCord = y;
         name = x + ":" + y;
-        visibleAsteroids = new HashMap<>();
+        visibleAsteroids = new TreeMap<>();
     }
 
-    public void addVisibleAsteroid(Vector vector, AsteroidRelationship asteroidRelationship) {
-        visibleAsteroids.put(vector, asteroidRelationship);
-    }
-
-    public AsteroidRelationship getVisibleAsteroid(Vector vector) {
-        return visibleAsteroids.get(vector);
+    public void addVisibleAsteroid(Double degrees, AsteroidRelationship asteroidRelationship) {
+        if(isNull(visibleAsteroids.get(degrees))) {
+            visibleAsteroids.put(degrees, new PriorityQueue<>());
+        }
+        visibleAsteroids.get(degrees).add(asteroidRelationship);
     }
 
 }
