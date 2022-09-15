@@ -32,6 +32,7 @@ public class IntComputer {
     public IntComputerContext process(IntComputerContext inputContext) {
         this.context = inputContext;
         List<BigInteger> instructions = context.getInstructions();
+        padInstructions(instructions, 2000);
 
         Opcode opcode;
         int i = context.getInstructionIndex();
@@ -170,12 +171,17 @@ public class IntComputer {
             indexToWriteTo = index + context.getRelativeBase();
         }
 
-        int countOfMemoryAddressesNeeded = (indexToWriteTo + 1) - context.getInstructions().size();
-        for (int i = 0; i < countOfMemoryAddressesNeeded; i++) {
-            context.getInstructions().add(BigInteger.ZERO);
-        }
-
         context.getInstructions().set(indexToWriteTo, value);
     }
+
+
+    // TODO not great, would be nice to just dynamically add addresses as needed instead of guessing at size
+    private void padInstructions(List<BigInteger> instructions, int countOfMemoryAddressesNeeded) {
+        int countToCreate = countOfMemoryAddressesNeeded - instructions.size();
+        for (int i = 0; i < countToCreate; i++) {
+            context.getInstructions().add(BigInteger.ZERO);
+        }
+    }
+
 
 }
