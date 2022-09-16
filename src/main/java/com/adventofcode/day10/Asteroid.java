@@ -2,7 +2,10 @@ package com.adventofcode.day10;
 
 import lombok.Getter;
 
-import java.util.*;
+import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.Queue;
+import java.util.TreeMap;
 
 import static java.util.Objects.isNull;
 
@@ -23,7 +26,7 @@ public class Asteroid {
     }
 
     public void addVisibleAsteroid(Double degrees, AsteroidRelationship asteroidRelationship) {
-        if(isNull(visibleAsteroids.get(degrees))) {
+        if (isNull(visibleAsteroids.get(degrees))) {
             visibleAsteroids.put(degrees, new PriorityQueue<>());
         }
         visibleAsteroids.get(degrees).add(asteroidRelationship);

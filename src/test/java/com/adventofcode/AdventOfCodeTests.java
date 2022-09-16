@@ -113,7 +113,17 @@ class AdventOfCodeTests {
     void testDay11() {
         DailyAnswer answer = day11Controller.execute();
         assertEquals(2056L, answer.getPart1());
-        assertEquals("?", answer.getPart2());
+        assertEquals("""
+
+
+  XX  X    XXX  XXXX XXX    XX XXXX XXX   \s
+ X  X X    X  X X    X  X    X    X X  X  \s
+ X    X    XXX  XXX  X  X    X   X  X  X  \s
+ X XX X    X  X X    XXX     X  X   XXX   \s
+ X  X X    X  X X    X    X  X X    X     \s
+  XXX XXXX XXX  XXXX X     XX  XXXX X     \s
+"""
+                , answer.getPart2());
     }
 
 }

@@ -4,7 +4,6 @@ import com.adventofcode.day3.Direction;
 import com.adventofcode.day5.IntComputer;
 import com.adventofcode.day5.IntComputerContext;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 
 import java.awt.*;
 import java.math.BigInteger;
@@ -19,19 +18,18 @@ import static com.adventofcode.day11.TurnDirection.CCW90;
 import static com.adventofcode.day11.TurnDirection.CW90;
 import static com.adventofcode.day3.Direction.*;
 import static java.lang.Boolean.TRUE;
+import static java.util.Objects.requireNonNull;
 
 @Slf4j
-@Component
 public class Robot {
 
     private final Map<Point, Panel> panels = new HashMap<>();
     private final IntComputer intComputer = new IntComputer();
-    private IntComputerContext context;
-    private Point position = new Point(0,0);
+    private Point position = new Point(0, 0);
     private Direction direction = U;
 
-    public void loadInstructions(List<BigInteger> instructions) {
-        context = IntComputerContext.builder()
+    public Map<Point, Panel> process(List<BigInteger> instructions, Color startingColor) {
+        IntComputerContext context = IntComputerContext.builder()
                 .instructions(new LinkedList<>(instructions))
                 .instructionIndex(0)
                 .inputs(new LinkedList<>())
@@ -39,25 +37,24 @@ public class Robot {
                 .relativeBase(0)
                 .isRunning(true)
                 .build();
-    }
 
-    public long process() {
+        panels.put(position, new Panel(position, startingColor));
 
         Panel panel;
-        while(TRUE.equals(context.getIsRunning())) {
+        while (TRUE.equals(context.getIsRunning())) {
             panel = getPanel(position);
             context.getInputs().add(BigInteger.valueOf(getColorInt(panel.getColor())));
             context = intComputer.process(context);
-            panel.paint(getColor(context.getOutputs().poll().intValue()));
-            move(getTurnDirection(context.getOutputs().poll().intValue()));
+            panel.paint(getColor(requireNonNull(context.getOutputs().poll()).intValue()));
+            move(getTurnDirection(requireNonNull(context.getOutputs().poll()).intValue()));
         }
 
-        return panels.values().stream().filter(Panel::isHasBeenPainted).count();
+        return panels;
     }
 
     // TODO Move to Enum
     private TurnDirection getTurnDirection(int i) {
-        if(0 == i) {
+        if (0 == i) {
             return CCW90;
         }
         return CW90;
@@ -65,7 +62,7 @@ public class Robot {
 
     // TODO Move to Enum
     private Color getColor(int i) {
-        if(0 == i) {
+        if (0 == i) {
             return BLACK;
         }
         return WHITE;
@@ -73,7 +70,7 @@ public class Robot {
 
     // TODO Move to Enum
     private int getColorInt(Color color) {
-        if(BLACK.equals(color)) {
+        if (BLACK.equals(color)) {
             return 0;
         }
         return 1;
@@ -83,11 +80,11 @@ public class Robot {
         return panels.computeIfAbsent(point, Panel::new);
     }
 
-    private void move(TurnDirection turnDirection){
+    private void move(TurnDirection turnDirection) {
         determineNewDirection(turnDirection);
-        if(U.equals(direction)) {
+        if (U.equals(direction)) {
             position = new Point(position.x, position.y + 1);
-        } else if(R.equals(direction)) {
+        } else if (R.equals(direction)) {
             position = new Point(position.x + 1, position.y);
         } else if (D.equals(direction)) {
             position = new Point(position.x, position.y - 1);
@@ -98,10 +95,10 @@ public class Robot {
 
     // TODO would be nice to move this to soem type of cyclic collection that just rotates
     private void determineNewDirection(TurnDirection turnDirection) {
-        if(CW90.equals(turnDirection)) {
-            if(U.equals(direction)) {
+        if (CW90.equals(turnDirection)) {
+            if (U.equals(direction)) {
                 direction = R;
-            } else if(R.equals(direction)) {
+            } else if (R.equals(direction)) {
                 direction = D;
             } else if (D.equals(direction)) {
                 direction = L;
@@ -109,9 +106,9 @@ public class Robot {
                 direction = U;
             }
         } else if (CCW90.equals(turnDirection)) {
-            if(U.equals(direction)) {
+            if (U.equals(direction)) {
                 direction = L;
-            } else if(L.equals(direction)) {
+            } else if (L.equals(direction)) {
                 direction = D;
             } else if (D.equals(direction)) {
                 direction = R;

@@ -6,7 +6,10 @@ import com.adventofcode.common.SolutionController;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Queue;
 
 
 @Slf4j
@@ -21,17 +24,17 @@ public class Controller extends SolutionController {
 
         List<Asteroid> asteroids = parseAsteroidList();
 
-        for(Asteroid asteroidA : asteroids) {
-            for(Asteroid asteroidB : asteroids) {
-                if(!asteroidA.equals(asteroidB)) {
+        for (Asteroid asteroidA : asteroids) {
+            for (Asteroid asteroidB : asteroids) {
+                if (!asteroidA.equals(asteroidB)) {
                     assessVisibility(asteroidA, asteroidB);
                 }
             }
         }
 
         Asteroid maxVisibleAsteroid = asteroids.get(0);
-        for(Asteroid asteroid : asteroids) {
-            if(asteroid.getVisibleAsteroids().size() > maxVisibleAsteroid.getVisibleAsteroids().size()) {
+        for (Asteroid asteroid : asteroids) {
+            if (asteroid.getVisibleAsteroids().size() > maxVisibleAsteroid.getVisibleAsteroids().size()) {
                 maxVisibleAsteroid = asteroid;
             }
         }
@@ -47,7 +50,7 @@ public class Controller extends SolutionController {
 
     private List<Asteroid> parseAsteroidList() {
         List<Asteroid> asteroids = new ArrayList<>();
-        for(int i = 0; i < puzzleInput.size(); i++) {
+        for (int i = 0; i < puzzleInput.size(); i++) {
             for (int j = 0; j < puzzleInput.get(i).length(); j++) {
                 if (puzzleInput.get(i).charAt(j) == '#') {
                     asteroids.add(new Asteroid(j, i));
@@ -76,10 +79,10 @@ public class Controller extends SolutionController {
         Asteroid vaporizedAsteroid = null;
         Map<Double, Queue<AsteroidRelationship>> asteroidMap = asteroid.getVisibleAsteroids();
         for (Queue<AsteroidRelationship> asteroidRelationshipQueue : asteroidMap.values()) {
-            if(!asteroidRelationshipQueue.isEmpty()) {
+            if (!asteroidRelationshipQueue.isEmpty()) {
                 vaporizedAsteroidCount++;
                 vaporizedAsteroid = asteroidRelationshipQueue.poll().getAsteroid();
-                if(vaporizedAsteroidCount == 200) {
+                if (vaporizedAsteroidCount == 200) {
                     break;
                 }
             }

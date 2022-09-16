@@ -15,6 +15,11 @@ public class Panel {
     private Color color = BLACK;
     private boolean hasBeenPainted = false;
 
+    public Panel(Point point, Color color) {
+        this.coordinate = point;
+        this.color = color;
+    }
+
     public void paint(Color colorToPaint) {
         if (!colorToPaint.equals(color)) {
             color = colorToPaint;

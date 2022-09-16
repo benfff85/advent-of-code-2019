@@ -6,31 +6,37 @@ import com.adventofcode.common.SolutionController;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.awt.*;
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Map;
+
+import static com.adventofcode.day11.Color.BLACK;
+import static com.adventofcode.day11.Color.WHITE;
 
 
 @Slf4j
 @Component("controller-day-11")
 public class Controller extends SolutionController {
 
-    private final Robot robot;
-
-    public Controller(InputHelper inputHelper, Robot robot) {
+    public Controller(InputHelper inputHelper) {
         super(inputHelper, "puzzle-input/day-11.txt");
-        this.robot = robot;
     }
 
     public DailyAnswer execute() {
-        List<BigInteger> input = inputHelper.parseStringToBigIntList(puzzleInput.get(0));
-        robot.loadInstructions(input);
-        answer.setPart1(robot.process());
 
+        List<BigInteger> input = inputHelper.parseStringToBigIntList(puzzleInput.get(0));
+
+        Robot robot = new Robot();
+        answer.setPart1(robot.process(input, BLACK).values().stream().filter(Panel::isHasBeenPainted).count());
+
+        robot = new Robot();
+        Map<Point, Panel> panels = robot.process(input, WHITE);
+        answer.setPart2(PanelPrinter.print(panels));
+        log.info("{}", answer.getPart2());
 
         return answer;
 
     }
-
-
 
 }
