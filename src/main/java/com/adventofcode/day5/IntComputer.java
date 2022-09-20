@@ -32,7 +32,7 @@ public class IntComputer {
     public IntComputerContext process(IntComputerContext inputContext) {
         this.context = inputContext;
         List<BigInteger> instructions = context.getInstructions();
-        padInstructions(instructions, 2000);
+        padInstructions(instructions, 3000);
 
         Opcode opcode;
         int i = context.getInstructionIndex();
