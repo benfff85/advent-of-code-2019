@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.*;
 
 import static java.lang.Boolean.TRUE;
+import static java.math.BigInteger.ONE;
+import static java.math.BigInteger.ZERO;
 
 @Slf4j
 public class Arcade {
@@ -36,14 +38,74 @@ public class Arcade {
 
     public void play() {
         intComputer.process(intComputerContext);
-        Deque<BigInteger> output = intComputerContext.getOutputs();
+        applyOutputToGrid(intComputerContext.getOutputs());
+    }
+
+    public void play2() {
+        intComputerContext.getInstructions().set(0, BigInteger.TWO);
+
+        while (intComputerContext.getIsRunning()) {
+            intComputer.process(intComputerContext);
+            applyOutputToGrid(intComputerContext.getOutputs());
+            log.debug("{}", print());
+            calculateJoystickInput();
+        }
+        
+    }
+
+    private void applyOutputToGrid(Deque<BigInteger> output) {
         while (!output.isEmpty()) {
             grid.put(new Point(output.pop().intValue(), output.pop().intValue()), output.pop().intValue());
         }
     }
 
+    private void calculateJoystickInput() {
+        int xPositionOfBall = grid.entrySet().stream().filter(e -> e.getValue().equals(4)).findFirst().orElseThrow().getKey().x;
+        int xPositionOfPaddle = grid.entrySet().stream().filter(e -> e.getValue().equals(3)).findFirst().orElseThrow().getKey().x;
+        if (xPositionOfPaddle == xPositionOfBall) {
+            intComputerContext.getInputs().add(ZERO);
+        } else {
+            intComputerContext.getInputs().add(xPositionOfPaddle < xPositionOfBall ? ONE : BigInteger.valueOf(-1));
+        }
+    }
+
     public long getCountOfBlocks() {
         return grid.values().stream().filter(t -> t.equals(2)).count();
+    }
+
+    public long getScore() {
+        return grid.get(new Point(-1, 0)).longValue();
+    }
+
+    private String print() {
+        int maxX = grid.keySet().stream().map(p -> p.x).reduce(Integer::max).orElseThrow();
+        int maxY = grid.keySet().stream().map(p -> p.y).reduce(Integer::max).orElseThrow();
+
+        int value;
+        StringBuilder sb = new StringBuilder();
+        sb.append("\n\n");
+        for (int i = 0; i <= maxY; i++) {
+            for (int j = 0; j <= maxX; j++) {
+                value = grid.get(new Point(j, i));
+
+
+                if (0 == value) {
+                    sb.append(" ");
+                } else if (1 == value) {
+                    sb.append("X");
+                } else if (2 == value) {
+                    sb.append("0");
+                } else if (3 == value) {
+                    sb.append("_");
+                } else if (4 == value) {
+                    sb.append("*");
+                }
+
+            }
+            sb.append("\n");
+        }
+
+        return sb.toString();
     }
 
 

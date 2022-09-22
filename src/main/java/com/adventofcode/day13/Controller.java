@@ -27,6 +27,11 @@ public class Controller extends SolutionController {
         answer.setPart1(arcade.getCountOfBlocks());
         log.info("Count of blocks: {}", answer.getPart1());
 
+        arcade = new Arcade(input);
+        arcade.play2();
+        answer.setPart2(arcade.getScore());
+        log.info("Score: {}", answer.getPart2());
+
         return answer;
     }
 

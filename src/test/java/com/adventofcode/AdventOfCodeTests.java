@@ -120,13 +120,13 @@ class AdventOfCodeTests {
         assertEquals("""
 
 
-  XX  X    XXX  XXXX XXX    XX XXXX XXX   \s
- X  X X    X  X X    X  X    X    X X  X  \s
- X    X    XXX  XXX  X  X    X   X  X  X  \s
- X XX X    X  X X    XXX     X  X   XXX   \s
- X  X X    X  X X    X    X  X X    X     \s
-  XXX XXXX XXX  XXXX X     XX  XXXX X     \s
-"""
+                          XX  X    XXX  XXXX XXX    XX XXXX XXX   \s
+                         X  X X    X  X X    X  X    X    X X  X  \s
+                         X    X    XXX  XXX  X  X    X   X  X  X  \s
+                         X XX X    X  X X    XXX     X  X   XXX   \s
+                         X  X X    X  X X    X    X  X X    X     \s
+                          XXX XXXX XXX  XXXX X     XX  XXXX X     \s
+                        """
                 , answer.getPart2());
     }
 
@@ -141,7 +141,7 @@ class AdventOfCodeTests {
     void testDay13() {
         DailyAnswer answer = day13Controller.execute();
         assertEquals(265L, answer.getPart1());
-//        assertEquals("?", answer.getPart2());
+        assertEquals(13331L, answer.getPart2());
     }
 
 }
