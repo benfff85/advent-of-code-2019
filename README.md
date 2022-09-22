@@ -83,4 +83,5 @@ Notable use of LCM for lowest common multiple from Apache's commons-math3.
 
 IntComputer Arcade for pong-ling game.
 
-Interesting to see the IntComputer do something so complex. Instructions for the joystick were a bit hard to grasp at first but once it was printed it was clear. At 6,469 moves automating the joystick was a must.
+Interesting to see the IntComputer do something so complex. Instructions for the joystick were a bit hard to grasp at
+first but once it was printed it was clear. At 6,469 moves automating the joystick was a must.

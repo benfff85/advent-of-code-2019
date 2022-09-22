@@ -44,13 +44,13 @@ public class Arcade {
     public void play2() {
         intComputerContext.getInstructions().set(0, BigInteger.TWO);
 
-        while (intComputerContext.getIsRunning()) {
+        while (intComputerContext.isRunning()) {
             intComputer.process(intComputerContext);
             applyOutputToGrid(intComputerContext.getOutputs());
             log.debug("{}", print());
             calculateJoystickInput();
         }
-        
+
     }
 
     private void applyOutputToGrid(Deque<BigInteger> output) {

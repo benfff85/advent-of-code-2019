@@ -12,8 +12,6 @@ import org.springframework.stereotype.Component;
 import java.math.BigInteger;
 import java.util.*;
 
-import static java.lang.Boolean.FALSE;
-
 @Slf4j
 @Component("controller-day-7")
 public class Controller extends SolutionController {
@@ -63,7 +61,7 @@ public class Controller extends SolutionController {
             // It doesn't seem to be the case, but we must be careful amplifier E has not already stopped
             for (Amplifier amplifier : Iterables.cycle(amplifiers)) {
                 outputContext = amplifier.run(generateQueueOfPriorOutputs(outputContext.getOutputs()));
-                if ("e".equals(amplifier.getName()) && FALSE.equals(outputContext.getIsRunning())) {
+                if ("e".equals(amplifier.getName()) && !outputContext.isRunning()) {
                     signal = outputContext.getOutputs().removeLast();
                     if (signal.compareTo(maxSignal) > 0) {
                         maxSignal = signal;

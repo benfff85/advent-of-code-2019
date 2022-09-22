@@ -11,7 +11,6 @@ import java.util.Queue;
 
 import static com.adventofcode.day5.OperationType.*;
 import static com.adventofcode.day5.ParameterMode.*;
-import static java.lang.Boolean.FALSE;
 
 @Slf4j
 public class IntComputer {
@@ -24,6 +23,7 @@ public class IntComputer {
                 .instructionIndex(0)
                 .inputs(input)
                 .outputs(new LinkedList<>())
+                .isRunning(true)
                 .relativeBase(0)
                 .build())
                 .getOutputs().pollLast();
@@ -75,7 +75,7 @@ public class IntComputer {
                 processRelativeBaseOffset(i, opcode);
                 i += 2;
             } else if (TERMINATE.equals(opcode.getOperationType())) {
-                context.setIsRunning(FALSE);
+                context.setRunning(false);
                 context.setInstructionIndex(i);
                 return context;
             } else {

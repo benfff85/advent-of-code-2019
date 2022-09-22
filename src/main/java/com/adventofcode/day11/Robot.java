@@ -17,7 +17,6 @@ import static com.adventofcode.day11.Color.WHITE;
 import static com.adventofcode.day11.TurnDirection.CCW90;
 import static com.adventofcode.day11.TurnDirection.CW90;
 import static com.adventofcode.day3.Direction.*;
-import static java.lang.Boolean.TRUE;
 import static java.util.Objects.requireNonNull;
 
 @Slf4j
@@ -41,7 +40,7 @@ public class Robot {
         panels.put(position, new Panel(position, startingColor));
 
         Panel panel;
-        while (TRUE.equals(context.getIsRunning())) {
+        while (context.isRunning()) {
             panel = getPanel(position);
             context.getInputs().add(BigInteger.valueOf(getColorInt(panel.getColor())));
             context = intComputer.process(context);

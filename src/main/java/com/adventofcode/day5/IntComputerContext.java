@@ -16,7 +16,7 @@ public class IntComputerContext {
     private Queue<BigInteger> inputs;
     private Deque<BigInteger> outputs;
     private Integer instructionIndex;
-    private Boolean isRunning;
+    private boolean isRunning;
     private Integer relativeBase;
 
 }
