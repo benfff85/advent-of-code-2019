@@ -11,7 +11,7 @@ import java.util.Map;
 @Component
 public class ReactionRegistry {
 
-    private final Map<Chemical, Reaction> reactions = new HashMap<>();
+    private final Map<String, Reaction> reactions = new HashMap<>();
     private final ChemicalInventory chemicalInventory;
 
     public ReactionRegistry(ChemicalInventory chemicalInventory) {
@@ -20,53 +20,48 @@ public class ReactionRegistry {
 
     public void init(List<String> input) {
 
-        Chemical outputChemical;
-        int outputChemicalQuantity;
+        String outputChemical;
+        long outputChemicalQuantity;
         for (String s : input) {
-            outputChemical = chemicalInventory.getChemical(s.split(" => ")[1].split(" ")[1]);
+            outputChemical = s.split(" => ")[1].split(" ")[1];
+            chemicalInventory.initChemical(outputChemical);
             outputChemicalQuantity = Integer.parseInt(s.split(" => ")[1].split(" ")[0]);
 
-            Map<Chemical, Integer> inputChemicals = new HashMap<>();
+            Map<String, Integer> inputChemicals = new HashMap<>();
             String[] inputChemStrings = s.split(" => ")[0].split(",");
             for (String inputChemString : inputChemStrings) {
-                inputChemicals.put(chemicalInventory.getChemical(inputChemString.trim().split(" ")[1]), Integer.parseInt(inputChemString.trim().split(" ")[0]));
+                inputChemicals.put(inputChemString.trim().split(" ")[1], Integer.parseInt(inputChemString.trim().split(" ")[0]));
             }
             reactions.put(outputChemical, new Reaction(inputChemicals, outputChemical, outputChemicalQuantity));
         }
 
-        chemicalInventory.addChemical(chemicalInventory.getChemical("ORE"), 1000000);
-        log.info("X");
-
+        chemicalInventory.initChemical("ORE");
+        chemicalInventory.addChemical("ORE", 1000000000000L);
 
     }
 
-    public void executeReaction(Chemical desiredChemical, Integer desiredAmount) {
-        log.info("I want {} {}", desiredAmount, desiredChemical);
+    // TODO Currently not optimized, possible use for Memoization but current runtime is only about 100s
+    public void executeReaction(String desiredChemical, Long desiredAmount) {
 
         // If we already have what we want just return
-        int amountOfChemicalNeeded = desiredAmount - chemicalInventory.getChemicalQuantity(desiredChemical);
+        long amountOfChemicalNeeded = desiredAmount - chemicalInventory.getChemicalQuantity(desiredChemical);
         if (amountOfChemicalNeeded <= 0) {
-            log.info("I already have {} {}, returning", desiredAmount, desiredChemical);
             return;
         }
 
         // If we don't have the desired amount, check how many times we need to execute the reaction to get it
         Reaction r = reactions.get(desiredChemical);
-        int numberOfReactionsNeeded = Math.ceilDiv(amountOfChemicalNeeded, r.getOutputChemicalQuantity());
-        log.info("Attempting to make {} more {} by executing {} {}x", amountOfChemicalNeeded, desiredChemical, r, numberOfReactionsNeeded);
+        long numberOfReactionsNeeded = Math.ceilDiv(amountOfChemicalNeeded, r.outputChemicalQuantity());
 
         // Get required chemicals
-        Map<Chemical, Integer> inputs = r.getInputChemicals();
-        for (Map.Entry<Chemical, Integer> input : inputs.entrySet()) {
+        Map<String, Integer> inputs = r.inputChemicals();
+        for (Map.Entry<String, Integer> input : inputs.entrySet()) {
             executeReaction(input.getKey(), input.getValue() * numberOfReactionsNeeded);
-            log.info("Using {}/{} {}", input.getValue() * numberOfReactionsNeeded, chemicalInventory.getChemicalQuantity(input.getKey()), input.getKey());
             chemicalInventory.useChemical(input.getKey(), input.getValue() * numberOfReactionsNeeded);
         }
 
-        chemicalInventory.addChemical(desiredChemical, r.getOutputChemicalQuantity() * numberOfReactionsNeeded);
-
+        chemicalInventory.addChemical(desiredChemical, r.outputChemicalQuantity() * numberOfReactionsNeeded);
 
     }
-
 
 }

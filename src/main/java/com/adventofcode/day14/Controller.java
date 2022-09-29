@@ -23,8 +23,27 @@ public class Controller extends SolutionController {
     public DailyAnswer execute() {
 
         reactionRegistry.init(puzzleInput);
-        reactionRegistry.executeReaction(chemicalInventory.getChemical("FUEL"), 1);
-        answer.setPart1(1000000 - chemicalInventory.getChemicalQuantity(chemicalInventory.getChemical("ORE")));
+        long fuel = 0;
+
+        try {
+            // Some arbitrary large number that will cause ORE to be exhausted and an exception thrown
+            while (fuel <= 1000000000) {
+                reactionRegistry.executeReaction("FUEL", 1L);
+                fuel++;
+                chemicalInventory.useChemical("FUEL", 1L);
+
+                if (fuel == 1) {
+                    // TODO would be nice to move the initial ORE value to a constant so it can be referenced here and in the ReactionRegistry
+                    answer.setPart1(1000000000000L - chemicalInventory.getChemicalQuantity("ORE"));
+                    log.info("Ore required to generate one fuel: {}", answer.getPart1());
+                }
+
+            }
+        } catch (Exception e) {
+            answer.setPart2(fuel);
+            log.info("Total fuel created with one trillion ORE: {}", answer.getPart2());
+        }
+
         return answer;
     }
 
