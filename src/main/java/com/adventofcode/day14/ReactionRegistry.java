@@ -36,7 +36,7 @@ public class ReactionRegistry {
         }
 
         chemicalInventory.initChemical("ORE");
-        chemicalInventory.addChemical("ORE", 1000000000000L);
+        chemicalInventory.addChemical("ORE", Config.INITIAL_ORE);
 
     }
 

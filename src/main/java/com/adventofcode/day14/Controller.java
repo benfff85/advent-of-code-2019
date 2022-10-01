@@ -33,8 +33,7 @@ public class Controller extends SolutionController {
                 chemicalInventory.useChemical("FUEL", 1L);
 
                 if (fuel == 1) {
-                    // TODO would be nice to move the initial ORE value to a constant so it can be referenced here and in the ReactionRegistry
-                    answer.setPart1(1000000000000L - chemicalInventory.getChemicalQuantity("ORE"));
+                    answer.setPart1(Config.INITIAL_ORE - chemicalInventory.getChemicalQuantity("ORE"));
                     log.info("Ore required to generate one fuel: {}", answer.getPart1());
                 }
 
