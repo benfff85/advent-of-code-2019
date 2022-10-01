@@ -85,3 +85,15 @@ IntComputer Arcade for pong-ling game.
 
 Interesting to see the IntComputer do something so complex. Instructions for the joystick were a bit hard to grasp at
 first but once it was printed it was clear. At 6,469 moves automating the joystick was a must.
+
+## Day 14
+
+Chemical reactions to turn ORE into FUEL
+
+Good fit for recursion, got this one without too much trouble. Code is a bit messy, would be good to move magic numbers out of the code and also separate out the Reactor logic from the ReactionRegistry. Got lucky here with the assumption that there were no cyclic reactions otherwise this would have been more complicated.
+
+## Day 15
+
+Use the IntComputer to create a repair droid to map the craft and find/repair the oxygen generator.
+
+Initially solved without recursion by just randomly moving the droid in different directions and then counting the spaces between the starting position and the oxygen generator.

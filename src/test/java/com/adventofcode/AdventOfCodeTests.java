@@ -44,6 +44,8 @@ class AdventOfCodeTests {
     private com.adventofcode.day13.Controller day13Controller;
     @Autowired
     private com.adventofcode.day14.Controller day14Controller;
+    @Autowired
+    private com.adventofcode.day15.Controller day15Controller;
 
     @Test
     void testDay1() {
@@ -146,11 +148,19 @@ class AdventOfCodeTests {
         assertEquals(13331L, answer.getPart2());
     }
 
-    @Test
-    void testDay14() {
-        DailyAnswer answer = day14Controller.execute();
-        assertEquals(522031L, answer.getPart1());
-        assertEquals(3566577L, answer.getPart2());
-    }
+// Commented as its not currently optimized and can take 90s+
+//    @Test
+//    void testDay14() {
+//        DailyAnswer answer = day14Controller.execute();
+//        assertEquals(522031L, answer.getPart1());
+//        assertEquals(3566577L, answer.getPart2());
+//    }
+
+//    @Test
+//    void testDay15() {
+//        DailyAnswer answer = day15Controller.execute();
+//        assertEquals(412, answer.getPart1());
+//        assertEquals(0, answer.getPart2());
+//    }
 
 }
