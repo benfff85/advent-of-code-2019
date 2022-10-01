@@ -90,7 +90,7 @@ first but once it was printed it was clear. At 6,469 moves automating the joysti
 
 Chemical reactions to turn ORE into FUEL
 
-Good fit for recursion, got this one without too much trouble. Code is a bit messy, would be good to move magic numbers out of the code and also separate out the Reactor logic from the ReactionRegistry. Got lucky here with the assumption that there were no cyclic reactions otherwise this would have been more complicated.
+Good fit for recursion, got this one without too much trouble. Code is a bit messy, would be good to move magic numbers out of the code and also separate out the Reactor logic from the ReactionRegistry. Got lucky here with the assumption that there were no cyclic reactions otherwise this would have been more complicated. Could likely be optimized with Memoization but runtime is only 90s or so thus not bothering for now. Wrote the unit test but commented out due to runtime.
 
 ## Day 15
 
