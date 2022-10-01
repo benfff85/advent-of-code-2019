@@ -1,5 +1,6 @@
 package com.adventofcode.day15;
 
+import com.adventofcode.common.grid.GridPrinter;
 import com.adventofcode.day3.Direction;
 import com.adventofcode.day5.IntComputer;
 import com.adventofcode.day5.IntComputerContext;
@@ -25,7 +26,6 @@ public class RepairDroid {
     private Point currentPosition = new Point(0, 0);
     private Point targetPosition;
 
-
     public RepairDroid(List<BigInteger> instructions) {
         intComputerContext = generateIntComputerContext(instructions);
     }
@@ -43,6 +43,7 @@ public class RepairDroid {
 
 
     public void scan() {
+        Map<Point, String> printingOverrides = Map.of(new Point(0, 0), "X");
 
         while (intComputerContext.isRunning()) {
             Direction direction = gatherInput();
@@ -55,7 +56,7 @@ public class RepairDroid {
 
             applyOutputToGrid(output);
 
-            log.info("{}", print());
+            log.info("{}", GridPrinter.print(grid, printingOverrides, " "));
 
         }
 
@@ -93,29 +94,6 @@ public class RepairDroid {
         } else {
             grid.put(targetPosition, "*");
         }
-    }
-
-    // TODO Create grid printer class
-    private String print() {
-        int minX = grid.keySet().stream().map(p -> p.x).reduce(Integer::min).orElseThrow();
-        int maxX = grid.keySet().stream().map(p -> p.x).reduce(Integer::max).orElseThrow();
-        int minY = grid.keySet().stream().map(p -> p.y).reduce(Integer::min).orElseThrow();
-        int maxY = grid.keySet().stream().map(p -> p.y).reduce(Integer::max).orElseThrow();
-
-        StringBuilder sb = new StringBuilder();
-        sb.append("\n\n");
-        for (int i = maxY; i >= minY; i--) {
-            for (int j = minX; j <= maxX; j++) {
-                if (i == 0 && j == 0) {
-                    sb.append("X");
-                } else {
-                    sb.append(Optional.ofNullable(grid.get(new Point(j, i))).orElse(" "));
-                }
-            }
-            sb.append("\n");
-        }
-
-        return sb.toString();
     }
 
 }
