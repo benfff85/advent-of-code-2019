@@ -17,7 +17,6 @@ public class Controller extends SolutionController {
 
     public Controller(InputHelper inputHelper) {
         super(inputHelper, "puzzle-input/day-15.txt");
-        execute();
     }
 
     public DailyAnswer execute() {

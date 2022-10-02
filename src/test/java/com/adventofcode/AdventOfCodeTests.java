@@ -156,11 +156,11 @@ class AdventOfCodeTests {
 //        assertEquals(3566577L, answer.getPart2());
 //    }
 
-//    @Test
-//    void testDay15() {
+    @Test
+    void testDay15() {
 //        DailyAnswer answer = day15Controller.execute();
 //        assertEquals(412, answer.getPart1());
 //        assertEquals(0, answer.getPart2());
-//    }
+    }
 
 }

@@ -1,6 +1,8 @@
 package com.adventofcode.day15;
 
 import com.adventofcode.common.grid.GridPrinter;
+import com.adventofcode.common.grid.PrintableGridElement;
+import com.adventofcode.common.grid.SimplePrintableGridElement;
 import com.adventofcode.day3.Direction;
 import com.adventofcode.day5.IntComputer;
 import com.adventofcode.day5.IntComputerContext;
@@ -21,7 +23,7 @@ public class RepairDroid {
     private final IntComputer intComputer = new IntComputer();
     private final IntComputerContext intComputerContext;
 
-    private final Map<Point, String> grid = new HashMap<>();
+    private final Map<Point, PrintableGridElement> grid = new HashMap<>();
     private final Random random = new Random();
     private Point currentPosition = new Point(0, 0);
     private Point targetPosition;
@@ -43,7 +45,8 @@ public class RepairDroid {
 
 
     public void scan() {
-        Map<Point, String> printingOverrides = Map.of(new Point(0, 0), "X");
+        Map<Point, PrintableGridElement> printingOverrides = Map.of(new Point(0, 0), SimplePrintableGridElement.of("X"));
+        PrintableGridElement defaultPrintingElement = SimplePrintableGridElement.of(" ");
 
         while (intComputerContext.isRunning()) {
             Direction direction = gatherInput();
@@ -56,7 +59,7 @@ public class RepairDroid {
 
             applyOutputToGrid(output);
 
-            log.info("{}", GridPrinter.print(grid, printingOverrides, " "));
+            log.info("{}", GridPrinter.print(grid, printingOverrides, defaultPrintingElement));
 
         }
 
@@ -87,13 +90,7 @@ public class RepairDroid {
     }
 
     private void applyOutputToGrid(Integer output) {
-        if (output == 0) {
-            grid.put(targetPosition, "#");
-        } else if (output == 1) {
-            grid.put(targetPosition, ".");
-        } else {
-            grid.put(targetPosition, "*");
-        }
+        grid.put(targetPosition, GridElement.getFromValue(output));
     }
 
 }
