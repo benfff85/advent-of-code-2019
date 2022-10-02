@@ -20,10 +20,10 @@ public enum GridElement implements PrintableGridElement {
     }
 
     public static GridElement getFromValue(Integer value) {
-        GridElement[] directions = GridElement.values();
-        for (GridElement direction : directions) {
-            if (direction.value.equals(value)) {
-                return direction;
+        GridElement[] gridElements = GridElement.values();
+        for (GridElement gridElement : gridElements) {
+            if (gridElement.value.equals(value)) {
+                return gridElement;
             }
         }
         return null;

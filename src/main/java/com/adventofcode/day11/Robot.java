@@ -12,8 +12,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import static com.adventofcode.day11.Color.BLACK;
-import static com.adventofcode.day11.Color.WHITE;
 import static com.adventofcode.day11.TurnDirection.CCW90;
 import static com.adventofcode.day11.TurnDirection.CW90;
 import static com.adventofcode.day3.Direction.*;
@@ -42,37 +40,13 @@ public class Robot {
         Panel panel;
         while (context.isRunning()) {
             panel = getPanel(position);
-            context.getInputs().add(BigInteger.valueOf(getColorInt(panel.getColor())));
+            context.getInputs().add(BigInteger.valueOf(panel.getColor().getValue()));
             context = intComputer.process(context);
-            panel.paint(getColor(requireNonNull(context.getOutputs().poll()).intValue()));
-            move(getTurnDirection(requireNonNull(context.getOutputs().poll()).intValue()));
+            panel.paint(requireNonNull(Color.getFromValue(requireNonNull(context.getOutputs().poll()).intValue())));
+            move(TurnDirection.getFromValue(requireNonNull(context.getOutputs().poll()).intValue()));
         }
 
         return panels;
-    }
-
-    // TODO Move to Enum
-    private TurnDirection getTurnDirection(int i) {
-        if (0 == i) {
-            return CCW90;
-        }
-        return CW90;
-    }
-
-    // TODO Move to Enum
-    private Color getColor(int i) {
-        if (0 == i) {
-            return BLACK;
-        }
-        return WHITE;
-    }
-
-    // TODO Move to Enum
-    private int getColorInt(Color color) {
-        if (BLACK.equals(color)) {
-            return 0;
-        }
-        return 1;
     }
 
     private Panel getPanel(Point point) {
@@ -81,15 +55,13 @@ public class Robot {
 
     private void move(TurnDirection turnDirection) {
         determineNewDirection(turnDirection);
-        if (U.equals(direction)) {
-            position = new Point(position.x, position.y + 1);
-        } else if (R.equals(direction)) {
-            position = new Point(position.x + 1, position.y);
-        } else if (D.equals(direction)) {
-            position = new Point(position.x, position.y - 1);
-        } else {
-            position = new Point(position.x - 1, position.y);
-        }
+        position =  switch (direction) {
+            case U -> new Point(position.x, position.y + 1);
+            case D -> new Point(position.x, position.y - 1);
+            case L -> new Point(position.x - 1, position.y);
+            case R -> new Point(position.x + 1, position.y);
+        };
+
     }
 
     // TODO would be nice to move this to soem type of cyclic collection that just rotates

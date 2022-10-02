@@ -1,5 +1,6 @@
 package com.adventofcode.day11;
 
+import com.adventofcode.common.grid.PrintableGridElement;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -9,7 +10,7 @@ import static com.adventofcode.day11.Color.BLACK;
 
 @Getter
 @RequiredArgsConstructor
-public class Panel {
+public class Panel implements PrintableGridElement {
 
     private final Point coordinate;
     private Color color = BLACK;
@@ -27,4 +28,8 @@ public class Panel {
         }
     }
 
+    @Override
+    public String print() {
+        return color.print();
+    }
 }

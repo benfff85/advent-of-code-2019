@@ -3,11 +3,14 @@ package com.adventofcode.day11;
 import com.adventofcode.common.DailyAnswer;
 import com.adventofcode.common.InputHelper;
 import com.adventofcode.common.SolutionController;
+import com.adventofcode.common.grid.GridPrinter;
+import com.adventofcode.common.grid.PrintableGridElement;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.awt.*;
 import java.math.BigInteger;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -32,7 +35,8 @@ public class Controller extends SolutionController {
 
         robot = new Robot();
         Map<Point, Panel> panels = robot.process(input, WHITE);
-        answer.setPart2(PanelPrinter.print(panels));
+        Map<Point, PrintableGridElement> m = new HashMap<>(panels);
+        answer.setPart2(GridPrinter.print(m));
         log.info("{}", answer.getPart2());
 
         return answer;
