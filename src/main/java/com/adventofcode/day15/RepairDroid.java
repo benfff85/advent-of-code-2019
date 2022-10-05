@@ -23,6 +23,7 @@ public class RepairDroid {
 
     private final IntComputer intComputer = new IntComputer();
     private final IntComputerContext intComputerContext;
+    @Getter
     private final Map<Point, PrintableGridElement> grid = new HashMap<>();
     private final Map<Point, PrintableGridElement> printingOverrides = Map.of(new Point(0, 0), SimplePrintableGridElement.of("X"));
     private final PrintableGridElement defaultPrintingElement = SimplePrintableGridElement.of(" ");

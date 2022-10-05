@@ -26,6 +26,10 @@ public class Controller extends SolutionController {
         answer.setPart1(repairDroid.getPathLength());
         log.info("Distance of path to oxygen is: {}", answer.getPart1());
 
+        OxygenSimulator oxygenSimulator = new OxygenSimulator();
+        answer.setPart2(oxygenSimulator.run(repairDroid.getGrid()));
+        log.info("Minutes till capsule is full of oxygen: {}", answer.getPart2());
+
         return answer;
     }
 
