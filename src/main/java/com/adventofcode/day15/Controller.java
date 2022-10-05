@@ -14,7 +14,6 @@ import java.util.List;
 @Component("controller-day-15")
 public class Controller extends SolutionController {
 
-
     public Controller(InputHelper inputHelper) {
         super(inputHelper, "puzzle-input/day-15.txt");
     }

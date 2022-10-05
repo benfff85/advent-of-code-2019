@@ -22,11 +22,12 @@ public class RepairDroid {
 
     private final IntComputer intComputer = new IntComputer();
     private final IntComputerContext intComputerContext;
-
     private final Map<Point, PrintableGridElement> grid = new HashMap<>();
     private final Random random = new Random();
     private Point currentPosition = new Point(0, 0);
     private Point targetPosition;
+    private final Map<Point, PrintableGridElement> printingOverrides = Map.of(new Point(0, 0), SimplePrintableGridElement.of("X"));
+    private final PrintableGridElement defaultPrintingElement = SimplePrintableGridElement.of(" ");
 
     public RepairDroid(List<BigInteger> instructions) {
         intComputerContext = generateIntComputerContext(instructions);
@@ -45,10 +46,9 @@ public class RepairDroid {
 
 
     public void scan() {
-        Map<Point, PrintableGridElement> printingOverrides = Map.of(new Point(0, 0), SimplePrintableGridElement.of("X"));
-        PrintableGridElement defaultPrintingElement = SimplePrintableGridElement.of(" ");
 
         while (intComputerContext.isRunning()) {
+
             Direction direction = gatherInput();
             applyDirectionToIntComputerContext(direction, intComputerContext.getInputs());
             targetPosition = calculateTargetPosition(direction);
