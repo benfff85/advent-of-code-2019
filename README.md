@@ -99,3 +99,5 @@ Use the IntComputer to create a repair droid to map the craft and find/repair th
 Initially solved without recursion by just randomly moving the droid in different directions and then counting the spaces between the starting position and the oxygen generator.
 
 Extracted the grid printing functionality into a reusable GridPrinter class.
+
+Later used recursion to solve part 1 fully.

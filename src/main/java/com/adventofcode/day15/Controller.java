@@ -23,6 +23,8 @@ public class Controller extends SolutionController {
 
         RepairDroid repairDroid = new RepairDroid(input);
         repairDroid.scan();
+        answer.setPart1(repairDroid.getPathLength());
+        log.info("Distance of path to oxygen is: {}", answer.getPart1());
 
         return answer;
     }

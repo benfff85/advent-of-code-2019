@@ -23,4 +23,14 @@ public enum Direction {
         }
         return null;
     }
+
+    public Direction opposite() {
+        return switch (this) {
+            case U -> D;
+            case D -> U;
+            case L -> R;
+            case R -> L;
+        };
+    }
+
 }

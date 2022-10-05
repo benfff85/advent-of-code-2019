@@ -6,6 +6,7 @@ import com.adventofcode.common.grid.SimplePrintableGridElement;
 import com.adventofcode.day3.Direction;
 import com.adventofcode.day5.IntComputer;
 import com.adventofcode.day5.IntComputerContext;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.awt.*;
@@ -23,11 +24,12 @@ public class RepairDroid {
     private final IntComputer intComputer = new IntComputer();
     private final IntComputerContext intComputerContext;
     private final Map<Point, PrintableGridElement> grid = new HashMap<>();
-    private final Random random = new Random();
-    private Point currentPosition = new Point(0, 0);
-    private Point targetPosition;
     private final Map<Point, PrintableGridElement> printingOverrides = Map.of(new Point(0, 0), SimplePrintableGridElement.of("X"));
     private final PrintableGridElement defaultPrintingElement = SimplePrintableGridElement.of(" ");
+    private Point currentPosition = new Point(0, 0);
+    private Point targetPosition;
+    @Getter
+    private Integer pathLength;
 
     public RepairDroid(List<BigInteger> instructions) {
         intComputerContext = generateIntComputerContext(instructions);
@@ -47,27 +49,51 @@ public class RepairDroid {
 
     public void scan() {
 
-        while (intComputerContext.isRunning()) {
-
-            Direction direction = gatherInput();
-            applyDirectionToIntComputerContext(direction, intComputerContext.getInputs());
-            targetPosition = calculateTargetPosition(direction);
-
-            intComputer.process(intComputerContext);
-            Integer output = intComputerContext.getOutputs().pop().intValue();
-            calculateNewPosition(output);
-
-            applyOutputToGrid(output);
-
-            log.info("{}", GridPrinter.print(grid, printingOverrides, defaultPrintingElement));
-
+        Deque<Point> path = new ArrayDeque<>();
+        for (Direction direction : List.of(U, D, L, R)) {
+            processMove(direction, path);
         }
 
     }
 
+    // Kinda wierd mix of recursion and modifying globals
+    public void processMove(Direction direction, Deque<Point> path) {
 
-    private Direction gatherInput() {
-        return List.of(U, D, L, R).get(random.nextInt(4));
+        applyDirectionToIntComputerContext(direction, intComputerContext.getInputs());
+        targetPosition = calculateTargetPosition(direction);
+        intComputer.process(intComputerContext);
+        int output = intComputerContext.getOutputs().pop().intValue();
+        applyOutputToGrid(output);
+        log.debug("{}", GridPrinter.print(grid, printingOverrides, defaultPrintingElement));
+
+        // Hit a wall, return
+        if (output == 0) {
+            return;
+        }
+
+        currentPosition = targetPosition;
+        path.push(currentPosition);
+
+        // Found the oxygen, record the distance of the path
+        if (output == 2) {
+            pathLength = path.size();
+        }
+
+        // Try next moves, do not double back by moving the opposite direction that got us here
+        List<Direction> nextDirections = new ArrayList<>(List.of(U, D, L, R));
+        nextDirections.remove(direction.opposite());
+        for (Direction nextDirection : nextDirections) {
+            processMove(nextDirection, path);
+        }
+
+        // Rollback position
+        applyDirectionToIntComputerContext(direction.opposite(), intComputerContext.getInputs());
+        targetPosition = calculateTargetPosition(direction.opposite());
+        intComputer.process(intComputerContext);
+        intComputerContext.getOutputs().pop();
+        currentPosition = targetPosition;
+        path.poll();
+
     }
 
     private void applyDirectionToIntComputerContext(Direction direction, Queue<BigInteger> inputs) {
@@ -81,12 +107,6 @@ public class RepairDroid {
             case L -> new Point(currentPosition.x - 1, currentPosition.y);
             case R -> new Point(currentPosition.x + 1, currentPosition.y);
         };
-    }
-
-    private void calculateNewPosition(Integer output) {
-        if (output == 1 || output == 2) {
-            currentPosition = targetPosition;
-        }
     }
 
     private void applyOutputToGrid(Integer output) {
