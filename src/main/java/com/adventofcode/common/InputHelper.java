@@ -40,4 +40,8 @@ public class InputHelper {
         return textList.stream().map(Integer::parseInt).toList();
     }
 
+    public List<Integer> parseStringToSingleDigitIntList(String text) {
+        return Arrays.stream(text.split("")).map(Integer::parseInt).toList();
+    }
+
 }

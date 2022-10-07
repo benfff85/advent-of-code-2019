@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigInteger;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -46,6 +47,8 @@ class AdventOfCodeTests {
     private com.adventofcode.day14.Controller day14Controller;
     @Autowired
     private com.adventofcode.day15.Controller day15Controller;
+    @Autowired
+    private com.adventofcode.day16.Controller day16Controller;
 
     @Test
     void testDay1() {
@@ -163,4 +166,10 @@ class AdventOfCodeTests {
         assertEquals(418, answer.getPart2());
     }
 
+    @Test
+    void testDay16() {
+        DailyAnswer answer = day16Controller.execute();
+        assertEquals(List.of(6, 8, 3, 1, 7, 9, 8, 8), answer.getPart1());
+//        assertEquals(0, answer.getPart2());
+    }
 }

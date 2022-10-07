@@ -101,3 +101,9 @@ Initially solved without recursion by just randomly moving the droid in differen
 Extracted the grid printing functionality into a reusable GridPrinter class.
 
 Later used recursion to solve part 1 fully. Part 2 was easy, considering extracting grid helper methods but haven't yet.
+
+## Day 16
+
+Decoding signals using FFT patterns
+
+The trivial answer to part one was fairly easy but unit test runtime is currently 18 seconds and will likely need to be optimized in some way for part 2.
