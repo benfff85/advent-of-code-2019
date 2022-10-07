@@ -3,11 +3,11 @@ package com.adventofcode.day16;
 import com.adventofcode.common.DailyAnswer;
 import com.adventofcode.common.InputHelper;
 import com.adventofcode.common.SolutionController;
+import com.google.common.collect.Streams;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import static java.lang.Math.abs;
@@ -26,11 +26,16 @@ public class Controller extends SolutionController {
         List<Integer> output = processPhases(inputSignal, 100);
         answer.setPart1(output.subList(0, 8));
 
+        List<Integer> inputSignalPart2 = new ArrayList<>(inputSignal.size() * 10000);
+        for (int i = 0; i < 10000; i++) {
+            inputSignalPart2.addAll(inputSignal);
+        }
+        List<Integer> outputPart2 = processPhases(inputSignalPart2, 100);
+
         return answer;
     }
 
     private List<Integer> processPhases(List<Integer> input, Integer phaseCount) {
-        int sum;
         List<Integer> pattern;
         List<Integer> inputSignal = new ArrayList<>(input.size());
         List<Integer> outputSignal = new ArrayList<>(input.size());
@@ -40,11 +45,7 @@ public class Controller extends SolutionController {
             outputSignal.clear();
             for (int i = 0; i < inputSignal.size(); i++) {
                 pattern = getPattern(i + 1, inputSignal.size());
-                sum = 0;
-                for (int j = 0; j < inputSignal.size(); j++) {
-                    sum += (inputSignal.get(j) * pattern.get(j));
-                }
-                outputSignal.add(i, abs(sum % 10));
+                outputSignal.add(i, abs(Streams.zip(inputSignal.stream(), pattern.stream(), (a, b) -> a * b).mapToInt(Integer::intValue).sum() % 10));
             }
             inputSignal.clear();
             inputSignal.addAll(outputSignal);
@@ -53,23 +54,21 @@ public class Controller extends SolutionController {
         return outputSignal;
     }
 
-
     // Element number is index + 1
     private List<Integer> getPattern(Integer elementNumber, Integer totalElementCount) {
-
-        List<Integer> pattern = new LinkedList<>();
+        List<Integer> pattern = new ArrayList<>();
         for (Integer integer : List.of(0, 1, 0, -1)) {
             for (int i = 0; i < elementNumber; i++) {
                 pattern.add(integer);
             }
         }
 
-        List<Integer> pattern2 = new LinkedList<>();
+        List<Integer> pattern2 = new ArrayList<>();
         while (pattern2.size() <= totalElementCount) {
             pattern2.addAll(pattern);
         }
-        return pattern2.subList(1, totalElementCount + 1);
 
+        return pattern2.subList(1, totalElementCount + 1);
     }
 
 }

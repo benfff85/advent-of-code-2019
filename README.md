@@ -107,3 +107,5 @@ Later used recursion to solve part 1 fully. Part 2 was easy, considering extract
 Decoding signals using FFT patterns
 
 The trivial answer to part one was fairly easy but unit test runtime is currently 18 seconds and will likely need to be optimized in some way for part 2.
+
+Notable use of Guava's Streams.zip() method.
