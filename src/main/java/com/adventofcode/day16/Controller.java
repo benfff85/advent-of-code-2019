@@ -3,14 +3,11 @@ package com.adventofcode.day16;
 import com.adventofcode.common.DailyAnswer;
 import com.adventofcode.common.InputHelper;
 import com.adventofcode.common.SolutionController;
-import com.google.common.collect.Streams;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Stream;
 
 import static java.lang.Math.abs;
 
@@ -41,35 +38,42 @@ public class Controller extends SolutionController {
     private List<Byte> processPhases(List<Byte> input, Integer phaseCount) {
         long start;
 
-        List<Byte> inputSignal = new ArrayList<>(input.size());
-        List<Byte> outputSignal = new ArrayList<>(input.size());
+        int signalSize = input.size();
+        List<Byte> inputSignal = new ArrayList<>(signalSize);
+        List<Byte> outputSignal = new ArrayList<>(signalSize);
         inputSignal.addAll(input);
 
-        int sum = 0;
+        int sum;
+        int blockSize;
+int blockGroupSize;
+        int halfBlockGroupSize;
+
 
         // Loop through phases
         for (int phase = 0; phase < phaseCount; phase++) {
             outputSignal.clear();
 
             // Loop through digits in input signal
-            for (int e = 0; e < inputSignal.size(); e++) {
+            for (int e = 0; e < signalSize; e++) {
                 start = System.currentTimeMillis();
+                blockSize = e + 1;
+                blockGroupSize = (4 * blockSize);
+                halfBlockGroupSize = blockGroupSize / 2;
                 sum = 0;
 
                 // Loop through blocks starting points
-                for (int i = e; i < inputSignal.size(); i += (4*(e+1))) {
+                for (int startingIndexOfOnes = e; startingIndexOfOnes < signalSize; startingIndexOfOnes += blockGroupSize) {
 
-                    int startingIndexOfOnes = i;
-                    int startingIndexOfNegOnes = i + (2*(e+1));
+                    int startingIndexOfNegOnes = startingIndexOfOnes + halfBlockGroupSize;
 
                     // Loop through block for ones
-                    for (int j = 0; j < (e + 1) && (startingIndexOfOnes+j) < inputSignal.size(); j++) {
-                        sum += inputSignal.get(startingIndexOfOnes+j);
+                    for (int j = 0; j < blockSize && (startingIndexOfOnes + j) < signalSize; j++) {
+                        sum += inputSignal.get(startingIndexOfOnes + j);
                     }
 
                     // Loop through block for negative ones
-                    for (int j = 0; j < (e + 1) && (startingIndexOfNegOnes+j) < inputSignal.size(); j++) {
-                        sum -= inputSignal.get(startingIndexOfNegOnes+j);
+                    for (int j = 0; j < blockSize && (startingIndexOfNegOnes + j) < signalSize; j++) {
+                        sum -= inputSignal.get(startingIndexOfNegOnes + j);
                     }
 
                 }
@@ -78,61 +82,12 @@ public class Controller extends SolutionController {
                 log.info("Calculation of one digit Runtime: {} | {} | {}", System.currentTimeMillis() - start, phase, e);
 
             }
+
             inputSignal.clear();
             inputSignal.addAll(outputSignal);
         }
 
         return outputSignal;
-    }
-
-    private List<Byte> processPhases2(List<Byte> input, Integer phaseCount) {
-        List<Byte> inputSignal = new ArrayList<>(input.size());
-        List<Byte> outputSignal = new ArrayList<>(input.size());
-        inputSignal.addAll(input);
-        long start;
-
-        for (int phase = 0; phase < phaseCount; phase++) {
-            outputSignal.clear();
-            for (int i = 0; i < inputSignal.size(); i++) {
-
-                start = System.currentTimeMillis();
-                outputSignal.add(i, (byte) abs(Streams.zip(inputSignal.stream(), getPattern(i + 1, inputSignal.size()), (a, b) ->  a * b).reduce(0, Integer::sum) % 10));
-                log.info("Calculation of one digit Runtime: {}", System.currentTimeMillis() - start);
-
-            }
-            inputSignal.clear();
-            inputSignal.addAll(outputSignal);
-        }
-
-        return outputSignal;
-    }
-
-
-    // Element number is index + 1
-    private Stream<Byte> getPattern(Integer elementNumber, Integer totalElementCount) {
-        long start = System.currentTimeMillis();
-
-        Byte[] pattern = new Byte[4 * elementNumber];
-        byte index = (byte) 0;
-        for (Byte b : List.of((byte) 0, (byte) 1, (byte) 0, (byte) -1)) {
-            for (int i = 0; i < elementNumber; i++) {
-                pattern[(index * elementNumber) + i] = b;
-            }
-            index++;
-        }
-
-        Stream<Byte> s = Arrays.stream(repeat(pattern, totalElementCount + 1)).skip(1);
-        log.info("Get Pattern Runtime: {}", System.currentTimeMillis() - start);
-
-        return s;
-    }
-
-    public static <T> T[] repeat(T[] arr, int newLength) {
-        T[] dup = Arrays.copyOf(arr, newLength);
-        for (int last = arr.length; last != 0 && last < newLength; last <<= 1) {
-            System.arraycopy(dup, 0, dup, last, Math.min(last << 1, newLength) - last);
-        }
-        return dup;
     }
 
 }
