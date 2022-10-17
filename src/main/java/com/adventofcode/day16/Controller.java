@@ -7,8 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import static java.lang.Math.abs;
 
@@ -16,6 +16,9 @@ import static java.lang.Math.abs;
 @Slf4j
 @Component("controller-day-16")
 public class Controller extends SolutionController {
+
+    private long start;
+    private int count;
 
     public Controller(InputHelper inputHelper) {
         super(inputHelper, "puzzle-input/day-16.txt");
@@ -32,6 +35,7 @@ public class Controller extends SolutionController {
             inputSignalPart2.addAll(inputSignal);
         }
         List<Byte> outputPart2 = processPhases(inputSignalPart2, 100);
+        answer.setPart2(outputPart2);
 
         return answer;
     }
@@ -40,20 +44,23 @@ public class Controller extends SolutionController {
 
         int signalSize = input.size();
         List<Byte> inputSignal = new ArrayList<>(signalSize);
-//        List<Byte> outputSignal = new ArrayList<>(signalSize);
-        List<Byte> outputSignal = new LinkedList<>();
+        List<Byte> outputSignal = new ArrayList<>(signalSize);
         inputSignal.addAll(input);
 
-        long start = System.currentTimeMillis();
+        start = System.currentTimeMillis();
 
         // Loop through phases
         for (int phase = 0; phase < phaseCount; phase++) {
-            outputSignal.clear();
+            count = 0;
+            // Clear out
+            for (int i = 0; i < signalSize; i++) {
+                outputSignal.add(i, (byte) 0);
+            }
 
             // Loop through digits in input signal
-            for (int e = 0; e < signalSize; e++) {
-                start = processElement(signalSize, inputSignal, outputSignal, start, phase, e);
-            }
+            int finalPhase = phase;
+            IntStream.rangeClosed(0, signalSize - 1).boxed().parallel().forEach(e -> processElement(signalSize, inputSignal, outputSignal, finalPhase, e));
+
             log.info("Done Phase: {}", phase);
 
             inputSignal.clear();
@@ -63,81 +70,48 @@ public class Controller extends SolutionController {
         return outputSignal;
     }
 
-    private long processElement(int signalSize, List<Byte> inputSignal, List<Byte> outputSignal, long start, int phase, int e) {
-        int blockGroupSize;
-        int blockSize;
-        int halfBlockGroupSize;
-        int sum;
-
-        //                start = System.currentTimeMillis();
-        blockSize = e + 1;
-        blockGroupSize = (4 * blockSize);
-        halfBlockGroupSize = blockGroupSize / 2;
-        sum = 0;
-        int startingIndexOfNegOnes;
+    private void processElement(int signalSize, List<Byte> inputSignal, List<Byte> outputSignal, int phase, int e) {
+        int blockSize = e + 1;
+        int blockGroupSize = (4 * blockSize);
+        int halfBlockGroupSize = blockGroupSize / 2;
+        int phaseSum = 0;
 
         // Loop through blocks starting points
         for (int startingIndexOfOnes = e; startingIndexOfOnes < signalSize; startingIndexOfOnes += blockGroupSize) {
-
-            sum = processBlockGroup(signalSize, inputSignal, blockSize, halfBlockGroupSize, sum, startingIndexOfOnes);
-
+            phaseSum += processBlockGroup(signalSize, inputSignal, blockSize, halfBlockGroupSize, startingIndexOfOnes);
         }
 
-        addCalculatedElement(outputSignal, sum, e);
+        addCalculatedElement(outputSignal, phaseSum, e);
 
-        start = printPerf(start, phase, e);
-        return start;
+        printPerf(phase, e);
     }
 
-    private int processBlockGroup(int signalSize, List<Byte> inputSignal, int blockSize, int halfBlockGroupSize, int sum, int startingIndexOfOnes) {
-        int startingIndexOfNegOnes;
-        startingIndexOfNegOnes = startingIndexOfOnes + halfBlockGroupSize;
-
-        sum = processOnesBlock(signalSize, inputSignal, blockSize, sum, startingIndexOfOnes);
-        sum = processNegOnesBlock(signalSize, inputSignal, blockSize, sum, startingIndexOfNegOnes);
-
-        return sum;
+    private int processBlockGroup(int signalSize, List<Byte> inputSignal, int blockSize, int halfBlockGroupSize, int startingIndexOfOnes) {
+        int blockGroupSum = 0;
+        blockGroupSum += processBlock(signalSize, inputSignal, blockSize, startingIndexOfOnes);
+        blockGroupSum -= processBlock(signalSize, inputSignal, blockSize, startingIndexOfOnes + halfBlockGroupSize);
+        return blockGroupSum;
     }
 
-    private static int processNegOnesBlock(int signalSize, List<Byte> inputSignal, int blockSize, int sum, int startingIndexOfNegOnes) {
-        // Loop through block for negative ones
-        for (int j = 0; j < blockSize && (startingIndexOfNegOnes + j) < signalSize; j++) {
-            sum -= inputSignal.get(startingIndexOfNegOnes + j);
+    private int processBlock(int signalSize, List<Byte> inputSignal, int blockSize, int startingIndex) {
+        int blockSum = 0;
+        for (int j = 0; j < blockSize && (startingIndex + j) < signalSize; j++) {
+            blockSum += inputSignal.get(startingIndex + j);
         }
-        return sum;
-    }
-
-    private int processOnesBlock(int signalSize, List<Byte> inputSignal, int blockSize, int sum, int startingIndexOfOnes) {
-        // Loop through block for ones
-        for (int j = 0; j < blockSize && (startingIndexOfOnes + j) < signalSize; j++) {
-            sum += inputSignal.get(startingIndexOfOnes + j);
-        }
-        return sum;
+        return blockSum;
     }
 
     private void addCalculatedElement(List<Byte> outputSignal, int sum, int e) {
-        outputSignal.add(getaByte(sum));
-    }
-
-    private byte getaByte(int sum) {
-        return (byte) getAbs(sum);
-    }
-
-    private int getAbs(int sum) {
-        return abs(calculateMod10(sum));
-    }
-
-    private int calculateMod10(int sum) {
-        return sum % 10;
+        outputSignal.set(e, (byte) (abs(sum) % 10));
     }
 
 
-    private static long printPerf(long start, int phase, int e) {
-        if(e % 10000 == 0) {
-            log.info("Calculation of one digit Runtime: {} | {} | {}", System.currentTimeMillis() - start, phase, e);
+    private void printPerf(int phase, int e) {
+        count++;
+        if (count % 10000 == 0) {
+            log.info("Calculation of one digit Runtime: {} | {} | {}", System.currentTimeMillis() - start, phase, count);
             start = System.currentTimeMillis();
         }
-        return start;
     }
 
 }
