@@ -170,6 +170,6 @@ class AdventOfCodeTests {
     void testDay16() {
         DailyAnswer answer = day16Controller.execute();
         assertEquals(List.of(6, 8, 3, 1, 7, 9, 8, 8), answer.getPart1());
-//        assertEquals(0, answer.getPart2());
+        assertEquals(List.of(1), answer.getPart2());
     }
 }

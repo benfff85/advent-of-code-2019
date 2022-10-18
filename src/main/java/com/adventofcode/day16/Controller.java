@@ -30,12 +30,13 @@ public class Controller extends SolutionController {
         answer.setPart1(output.subList(0, 8));
         log.info("Part 1: {}", answer.getPart1());
 
+        int indexOfAnswer = Integer.parseInt(inputSignal.subList(0,7).toString().replace(" ", "").replace(",","").replace("[","").replace("]",""));
         List<Byte> inputSignalPart2 = new ArrayList<>(inputSignal.size() * 10000);
         for (int i = 0; i < 10000; i++) {
             inputSignalPart2.addAll(inputSignal);
         }
         List<Byte> outputPart2 = processPhases(inputSignalPart2, 100);
-        answer.setPart2(outputPart2);
+        answer.setPart2(outputPart2.subList(indexOfAnswer -1, indexOfAnswer + 10));
 
         return answer;
     }
