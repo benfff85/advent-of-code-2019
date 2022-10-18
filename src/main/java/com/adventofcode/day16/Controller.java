@@ -47,24 +47,24 @@ public class Controller extends SolutionController {
         List<Byte> outputSignal = new ArrayList<>(signalSize);
         inputSignal.addAll(input);
 
+        IntStream.rangeClosed(0, signalSize - 1).boxed().forEach(e -> outputSignal.add(e, (byte) 0));
+
         start = System.currentTimeMillis();
 
         // Loop through phases
         for (int phase = 0; phase < phaseCount; phase++) {
             count = 0;
-            // Clear out
-            for (int i = 0; i < signalSize; i++) {
-                outputSignal.add(i, (byte) 0);
-            }
+            // Clear out output list
+            IntStream.rangeClosed(0, signalSize - 1).boxed().parallel().forEach(e -> outputSignal.set(e, (byte) 0));
 
             // Loop through digits in input signal
             int finalPhase = phase;
             IntStream.rangeClosed(0, signalSize - 1).boxed().parallel().forEach(e -> processElement(signalSize, inputSignal, outputSignal, finalPhase, e));
 
-            log.info("Done Phase: {}", phase);
+            // Copy output to input for next iteration
+            IntStream.rangeClosed(0, signalSize - 1).boxed().parallel().forEach(e -> inputSignal.set(e, outputSignal.get(e)));
 
-            inputSignal.clear();
-            inputSignal.addAll(outputSignal);
+            log.info("Done Phase: {}", phase);
         }
 
         return outputSignal;
@@ -83,7 +83,7 @@ public class Controller extends SolutionController {
 
         addCalculatedElement(outputSignal, phaseSum, e);
 
-        printPerf(phase, e);
+        printPerf(phase);
     }
 
     private int processBlockGroup(int signalSize, List<Byte> inputSignal, int blockSize, int halfBlockGroupSize, int startingIndexOfOnes) {
@@ -106,10 +106,10 @@ public class Controller extends SolutionController {
     }
 
 
-    private void printPerf(int phase, int e) {
+    private void printPerf(int phase) {
         count++;
         if (count % 10000 == 0) {
-            log.info("Calculation of one digit Runtime: {} | {} | {}", System.currentTimeMillis() - start, phase, count);
+            log.info("Calculation of elements for phase {} took {} ms. {} total elements calculated", phase, System.currentTimeMillis() - start, count);
             start = System.currentTimeMillis();
         }
     }
