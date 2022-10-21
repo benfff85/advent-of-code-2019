@@ -49,6 +49,8 @@ class AdventOfCodeTests {
     private com.adventofcode.day15.Controller day15Controller;
     @Autowired
     private com.adventofcode.day16.Controller day16Controller;
+    @Autowired
+    private com.adventofcode.day17.Controller day17Controller;
 
     @Test
     void testDay1() {
@@ -151,13 +153,13 @@ class AdventOfCodeTests {
         assertEquals(13331L, answer.getPart2());
     }
 
-// Commented as its not currently optimized and can take 90s+
-//    @Test
-//    void testDay14() {
-//        DailyAnswer answer = day14Controller.execute();
-//        assertEquals(522031L, answer.getPart1());
-//        assertEquals(3566577L, answer.getPart2());
-//    }
+    // Commented as it's not currently optimized and can take 90s+
+    @Test
+    void testDay14() {
+        DailyAnswer answer = day14Controller.execute();
+        assertEquals(522031L, answer.getPart1());
+        assertEquals(3566577L, answer.getPart2());
+    }
 
     @Test
     void testDay15() {
@@ -166,10 +168,18 @@ class AdventOfCodeTests {
         assertEquals(418, answer.getPart2());
     }
 
+//    @Test
+//    void testDay16() {
+//        DailyAnswer answer = day16Controller.execute();
+//        assertEquals(List.of(6, 8, 3, 1, 7, 9, 8, 8), answer.getPart1());
+////        assertEquals(0, answer.getPart2());
+//    }
+
     @Test
-    void testDay16() {
-        DailyAnswer answer = day16Controller.execute();
-        assertEquals(List.of(6, 8, 3, 1, 7, 9, 8, 8), answer.getPart1());
+    void testDay17() {
+        DailyAnswer answer = day17Controller.execute();
+        assertEquals(8084, answer.getPart1());
 //        assertEquals(0, answer.getPart2());
     }
+
 }
