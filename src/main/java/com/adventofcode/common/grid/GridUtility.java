@@ -1,13 +1,14 @@
 package com.adventofcode.common.grid;
 
 import java.awt.*;
+import java.util.HashMap;
 import java.util.Map;
 
 import static java.util.Collections.emptyMap;
 
-public class GridPrinter {
+public class GridUtility {
 
-    private GridPrinter() {
+    private GridUtility() {
         // Masking default constructor
     }
 
@@ -34,4 +35,18 @@ public class GridPrinter {
         }
         return sb.toString();
     }
+
+    public static Map<Point, PrintableGridElement> getSurroundingElements(Map<Point, PrintableGridElement> grid, Point point) {
+        Point key;
+        Map<Point, PrintableGridElement> surroundingElements = new HashMap<>();
+        for (Map.Entry<Point, PrintableGridElement> entry : grid.entrySet()) {
+            key = entry.getKey();
+            if ((key.x == point.x && (key.y == point.y - 1 || key.y == point.y + 1))
+                    || (key.y == point.y && (key.x == point.x - 1 || key.x == point.x + 1))) {
+                surroundingElements.put(key, entry.getValue());
+            }
+        }
+        return surroundingElements;
+    }
+
 }

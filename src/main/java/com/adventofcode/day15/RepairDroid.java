@@ -1,6 +1,6 @@
 package com.adventofcode.day15;
 
-import com.adventofcode.common.grid.GridPrinter;
+import com.adventofcode.common.grid.GridUtility;
 import com.adventofcode.common.grid.PrintableGridElement;
 import com.adventofcode.common.grid.SimplePrintableGridElement;
 import com.adventofcode.day3.Direction;
@@ -65,7 +65,7 @@ public class RepairDroid {
         intComputer.process(intComputerContext);
         int output = intComputerContext.getOutputs().pop().intValue();
         applyOutputToGrid(output);
-        log.debug("{}", GridPrinter.print(grid, printingOverrides, defaultPrintingElement));
+        log.debug("{}", GridUtility.print(grid, printingOverrides, defaultPrintingElement));
 
         // Hit a wall, return
         if (output == 0) {

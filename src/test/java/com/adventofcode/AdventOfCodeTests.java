@@ -8,9 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -50,6 +48,8 @@ class AdventOfCodeTests {
     private com.adventofcode.day15.Controller day15Controller;
     @Autowired
     private com.adventofcode.day16.Controller day16Controller;
+    @Autowired
+    private com.adventofcode.day17.Controller day17Controller;
 
     @Test
     void testDay1() {
@@ -152,13 +152,13 @@ class AdventOfCodeTests {
         assertEquals(13331L, answer.getPart2());
     }
 
-// Commented as its not currently optimized and can take 90s+
-//    @Test
-//    void testDay14() {
-//        DailyAnswer answer = day14Controller.execute();
-//        assertEquals(522031L, answer.getPart1());
-//        assertEquals(3566577L, answer.getPart2());
-//    }
+    // Commented as it's not currently optimized and can take 90s+
+    @Test
+    void testDay14() {
+        DailyAnswer answer = day14Controller.execute();
+        assertEquals(522031L, answer.getPart1());
+        assertEquals(3566577L, answer.getPart2());
+    }
 
     @Test
     void testDay15() {
@@ -172,6 +172,13 @@ class AdventOfCodeTests {
         DailyAnswer answer = day16Controller.execute();
         assertEquals("[6, 8, 3, 1, 7, 9, 8, 8]", answer.getPart1().toString());
         assertEquals("[5, 3, 8, 5, 0, 8, 0, 0]", answer.getPart2().toString());
+    }
+
+    @Test
+    void testDay17() {
+        DailyAnswer answer = day17Controller.execute();
+        assertEquals(8084, answer.getPart1());
+//        assertEquals(0, answer.getPart2());
     }
 
 }
