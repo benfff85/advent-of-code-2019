@@ -108,4 +108,17 @@ Decoding signals using FFT patterns
 
 The trivial answer to part one was fairly easy but unit test runtime is currently 18 seconds and will likely need to be optimized in some way for part 2.
 
-Notable use of Guava's Streams.zip() method.
+Notable use of Guava's Streams.zip() method but later removed.
+> Streams.zip(inputSignal.stream(), pattern.stream(), (a, b) -> a * b).mapToInt(Integer::intValue).sum();
+
+Part 2 was brutal, took about a week, got runtime down to 24 hours only.
+
+## Day 17
+
+Restoring Wi-Fi with vacuum robot
+
+Part one was pretty easy, the reusable grid printing logic was useful here. 
+
+Notable use of Apache Common Collections getCardinalityMap for finding the frequency map of elements in a collection, in this case to determine if the surrounding elements from a given element are all scaffolding.
+
+> CollectionUtils.getCardinalityMap(GridUtility.getSurroundingElements(grid, entry.getKey()).values())

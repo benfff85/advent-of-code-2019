@@ -152,7 +152,7 @@ class AdventOfCodeTests {
         assertEquals(13331L, answer.getPart2());
     }
 
-    // Commented as it's not currently optimized and can take 90s+
+    // Runtime currently 90s+
     @Test
     void testDay14() {
         DailyAnswer answer = day14Controller.execute();
@@ -167,6 +167,7 @@ class AdventOfCodeTests {
         assertEquals(418, answer.getPart2());
     }
 
+    // Runtime currently 24hrs
     @Test
     void testDay16() {
         DailyAnswer answer = day16Controller.execute();
