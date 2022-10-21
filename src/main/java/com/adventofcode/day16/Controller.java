@@ -17,9 +17,6 @@ import static java.lang.Math.abs;
 @Component("controller-day-16")
 public class Controller extends SolutionController {
 
-    private long start;
-    private int count;
-
     public Controller(InputHelper inputHelper) {
         super(inputHelper, "puzzle-input/day-16.txt");
     }
@@ -30,13 +27,14 @@ public class Controller extends SolutionController {
         answer.setPart1(output.subList(0, 8));
         log.info("Part 1: {}", answer.getPart1());
 
-        int indexOfAnswer = Integer.parseInt(inputSignal.subList(0,7).toString().replace(" ", "").replace(",","").replace("[","").replace("]",""));
+        int indexOfAnswer = Integer.parseInt(inputSignal.subList(0, 7).toString().replace(" ", "").replace(",", "").replace("[", "").replace("]", ""));
         List<Byte> inputSignalPart2 = new ArrayList<>(inputSignal.size() * 10000);
         for (int i = 0; i < 10000; i++) {
             inputSignalPart2.addAll(inputSignal);
         }
         List<Byte> outputPart2 = processPhases(inputSignalPart2, 100);
-        answer.setPart2(outputPart2.subList(indexOfAnswer -1, indexOfAnswer + 10));
+        answer.setPart2(outputPart2.subList(indexOfAnswer, indexOfAnswer + 8));
+        log.info("Part 2: {}", answer.getPart2());
 
         return answer;
     }
@@ -50,11 +48,9 @@ public class Controller extends SolutionController {
 
         IntStream.rangeClosed(0, signalSize - 1).boxed().forEach(e -> outputSignal.add(e, (byte) 0));
 
-        start = System.currentTimeMillis();
-
         // Loop through phases
         for (int phase = 0; phase < phaseCount; phase++) {
-            count = 0;
+
             // Clear out output list
             IntStream.rangeClosed(0, signalSize - 1).boxed().parallel().forEach(e -> outputSignal.set(e, (byte) 0));
 
@@ -84,7 +80,6 @@ public class Controller extends SolutionController {
 
         addCalculatedElement(outputSignal, phaseSum, e);
 
-        printPerf(phase);
     }
 
     private int processBlockGroup(int signalSize, List<Byte> inputSignal, int blockSize, int halfBlockGroupSize, int startingIndexOfOnes) {
@@ -104,15 +99,6 @@ public class Controller extends SolutionController {
 
     private void addCalculatedElement(List<Byte> outputSignal, int sum, int e) {
         outputSignal.set(e, (byte) (abs(sum) % 10));
-    }
-
-
-    private void printPerf(int phase) {
-        count++;
-        if (count % 10000 == 0) {
-            log.info("Calculation of elements for phase {} took {} ms. {} total elements calculated", phase, System.currentTimeMillis() - start, count);
-            start = System.currentTimeMillis();
-        }
     }
 
 }

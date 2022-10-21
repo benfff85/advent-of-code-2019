@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -169,7 +170,8 @@ class AdventOfCodeTests {
     @Test
     void testDay16() {
         DailyAnswer answer = day16Controller.execute();
-        assertEquals(List.of(6, 8, 3, 1, 7, 9, 8, 8), answer.getPart1());
-        assertEquals(List.of(1), answer.getPart2());
+        assertEquals("[6, 8, 3, 1, 7, 9, 8, 8]", answer.getPart1().toString());
+        assertEquals("[5, 3, 8, 5, 0, 8, 0, 0]", answer.getPart2().toString());
     }
+
 }
