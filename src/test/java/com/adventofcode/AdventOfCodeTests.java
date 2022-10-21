@@ -9,7 +9,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigInteger;
 import java.util.Arrays;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -168,12 +167,12 @@ class AdventOfCodeTests {
         assertEquals(418, answer.getPart2());
     }
 
-//    @Test
-//    void testDay16() {
-//        DailyAnswer answer = day16Controller.execute();
-//        assertEquals(List.of(6, 8, 3, 1, 7, 9, 8, 8), answer.getPart1());
-////        assertEquals(0, answer.getPart2());
-//    }
+    @Test
+    void testDay16() {
+        DailyAnswer answer = day16Controller.execute();
+        assertEquals("[6, 8, 3, 1, 7, 9, 8, 8]", answer.getPart1().toString());
+        assertEquals("[5, 3, 8, 5, 0, 8, 0, 0]", answer.getPart2().toString());
+    }
 
     @Test
     void testDay17() {
