@@ -179,7 +179,7 @@ class AdventOfCodeTests {
     void testDay17() {
         DailyAnswer answer = day17Controller.execute();
         assertEquals(8084, answer.getPart1());
-//        assertEquals(0, answer.getPart2());
+        assertEquals(BigInteger.valueOf(1119775), answer.getPart2());
     }
 
 }

@@ -6,7 +6,7 @@ import lombok.Getter;
 
 public enum GridElement implements PrintableGridElement {
 
-    SCAFFOLD(35, "#"), EMPTY(46, "."), UP(94, "^");
+    SCAFFOLD(35, "#"), EMPTY(46, "."), UP(94, "^"), DOWN(118, "v"), LEFT(60, "<"), RIGHT(62, ">"), OFF_GRID(88, "X");
 
     @Getter
     private final Integer value;

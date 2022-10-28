@@ -26,10 +26,16 @@ public class GridUtility {
 
         Point point;
         StringBuilder sb = new StringBuilder().append("\n\n");
+        PrintableGridElement element;
         for (int i = maxY; i >= minY; i--) {
             for (int j = minX; j <= maxX; j++) {
                 point = new Point(j, i);
-                sb.append(overrides.getOrDefault(point, grid.getOrDefault(point, defaultElement)).print());
+                element = overrides.getOrDefault(point, grid.getOrDefault(point, defaultElement));
+                // Above catches if point is missing from grid, below catches if point is present but has a null value
+                if (element == null) {
+                    element = defaultElement;
+                }
+                sb.append(element.print());
             }
             sb.append("\n");
         }

@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import java.awt.*;
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Queue;
 import java.util.*;
 
 import static java.lang.Boolean.TRUE;
@@ -43,6 +44,20 @@ public class Controller extends SolutionController {
 
         answer.setPart1(overlay.keySet().stream().map(p -> p.x * p.y * -1).mapToInt(Integer::intValue).sum());
         log.info("Sum of alignment parameters: {}", answer.getPart1());
+
+        IntComputerContext context = generateIntComputerContext(input);
+        context.getInstructions().set(0, BigInteger.TWO);
+        Queue<BigInteger> inputs = context.getInputs();
+        addStringAsInput("A,B,A,B,C,B,C,A,C,C", inputs); // Movement routine
+        addStringAsInput("R,12,L,10,L,10", inputs); // A
+        addStringAsInput("L,6,L,12,R,12,L,4", inputs); // B
+        addStringAsInput("L,12,R,12,L,6", inputs); // C
+        addStringAsInput("n", inputs); // Print debugging
+        intComputer.process(context);
+
+        log.info(GridUtility.print(mapOutputToGrid(context.getOutputs())));
+        answer.setPart2(context.getOutputs().getLast());
+        log.info("Dust collected: {}", answer.getPart2());
 
         return answer;
     }
@@ -89,6 +104,11 @@ public class Controller extends SolutionController {
             }
         }
         return overlay;
+    }
+
+    private void addStringAsInput(String string, Queue<BigInteger> inputs) {
+        string.chars().boxed().map(BigInteger::valueOf).forEach(inputs::add);
+        inputs.add(BigInteger.valueOf(10));
     }
 
 }
