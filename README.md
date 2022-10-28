@@ -122,3 +122,5 @@ Part one was pretty easy, the reusable grid printing logic was useful here.
 Notable use of Apache Common Collections getCardinalityMap for finding the frequency map of elements in a collection, in this case to determine if the surrounding elements from a given element are all scaffolding.
 
 > CollectionUtils.getCardinalityMap(GridUtility.getSurroundingElements(grid, entry.getKey()).values())
+
+Part 2 was a struggle, not sure if there was a systemic way to find the answer. I printed the grid on paper and looked for patterns by hand, took 2-3 days to find the correct main/movement routines.
