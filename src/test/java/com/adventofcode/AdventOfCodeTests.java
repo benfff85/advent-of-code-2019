@@ -50,6 +50,8 @@ class AdventOfCodeTests {
     private com.adventofcode.day16.Controller day16Controller;
     @Autowired
     private com.adventofcode.day17.Controller day17Controller;
+    @Autowired
+    private com.adventofcode.day18.Controller day18Controller;
 
     @Test
     void testDay1() {
@@ -153,12 +155,12 @@ class AdventOfCodeTests {
     }
 
     // Runtime currently 90s+
-    @Test
-    void testDay14() {
-        DailyAnswer answer = day14Controller.execute();
-        assertEquals(522031L, answer.getPart1());
-        assertEquals(3566577L, answer.getPart2());
-    }
+//    @Test
+//    void testDay14() {
+//        DailyAnswer answer = day14Controller.execute();
+//        assertEquals(522031L, answer.getPart1());
+//        assertEquals(3566577L, answer.getPart2());
+//    }
 
     @Test
     void testDay15() {
@@ -168,18 +170,25 @@ class AdventOfCodeTests {
     }
 
     // Runtime currently 24hrs
-    @Test
-    void testDay16() {
-        DailyAnswer answer = day16Controller.execute();
-        assertEquals("[6, 8, 3, 1, 7, 9, 8, 8]", answer.getPart1().toString());
-        assertEquals("[5, 3, 8, 5, 0, 8, 0, 0]", answer.getPart2().toString());
-    }
+//    @Test
+//    void testDay16() {
+//        DailyAnswer answer = day16Controller.execute();
+//        assertEquals("[6, 8, 3, 1, 7, 9, 8, 8]", answer.getPart1().toString());
+//        assertEquals("[5, 3, 8, 5, 0, 8, 0, 0]", answer.getPart2().toString());
+//    }
 
     @Test
     void testDay17() {
         DailyAnswer answer = day17Controller.execute();
         assertEquals(8084, answer.getPart1());
         assertEquals(BigInteger.valueOf(1119775), answer.getPart2());
+    }
+
+    @Test
+    void testDay18() {
+        DailyAnswer answer = day18Controller.execute();
+        assertEquals(0, answer.getPart1());
+//        assertEquals(0, answer.getPart2());
     }
 
 }
