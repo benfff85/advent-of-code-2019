@@ -1,4 +1,6 @@
-# advent-of-code-2019
+# Advent of Code
+
+# 2019
 
 ## Day 1
 
@@ -124,3 +126,7 @@ Notable use of Apache Common Collections getCardinalityMap for finding the frequ
 > CollectionUtils.getCardinalityMap(GridUtility.getSurroundingElements(grid, entry.getKey()).values())
 
 Part 2 was a struggle, not sure if there was a systemic way to find the answer. I printed the grid on paper and looked for patterns by hand, took 2-3 days to find the correct main/movement routines.
+
+# 2022
+
+# Day 1

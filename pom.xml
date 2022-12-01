@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.adventofcode</groupId>
-    <artifactId>advent-of-code-2019</artifactId>
+    <artifactId>advent-of-code</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>advent-of-code-2019</name>
-    <description>Advent of Code 2019</description>
+    <name>advent-of-code</name>
+    <description>Advent of Code</description>
     <properties>
         <java.version>18</java.version>
     </properties>
