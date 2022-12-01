@@ -156,12 +156,12 @@ class AdventOfCodeTests {
     }
 
     // Runtime currently 90s+
-//    @Test
-//    void testDay14() {
-//        DailyAnswer answer = day14Controller.execute();
-//        assertEquals(522031L, answer.getPart1());
-//        assertEquals(3566577L, answer.getPart2());
-//    }
+    @Test
+    void testDay14() {
+        DailyAnswer answer = day14Controller.execute();
+        assertEquals(522031L, answer.getPart1());
+        assertEquals(3566577L, answer.getPart2());
+    }
 
     @Test
     void testDay15() {

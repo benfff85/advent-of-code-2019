@@ -129,4 +129,4 @@ Part 2 was a struggle, not sure if there was a systemic way to find the answer. 
 
 # 2022
 
-# Day 1
+## Day 1
