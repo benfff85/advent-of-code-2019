@@ -130,3 +130,13 @@ Part 2 was a struggle, not sure if there was a systemic way to find the answer. 
 # 2022
 
 ## Day 1
+
+Elves carrying snacks and calculation of calories
+
+Nothing too exciting, lots of summing of Streams, may want to consider making some Util methods in the future.
+
+## Day 2 
+
+Rock Paper Scissors
+
+Good use of ENUMs, used the new Java Switch statement and also cleaned up with a shape relationship map that can go key->value or value->key to determine if one shape beats or loses to another. I should check if there's an existing collection for this in Guava/ApacheCollectionUtils.
