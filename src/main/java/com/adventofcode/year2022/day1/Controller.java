@@ -32,8 +32,7 @@ public class Controller extends SolutionController {
         }
         elves.add(elf);
 
-        List<Integer> sumsOfCalories = new ArrayList<>(elves.stream().map(Elf::getTotalCalories).toList());
-        sumsOfCalories.sort(Integer::compare);
+        List<Integer> sumsOfCalories = new ArrayList<>(elves.stream().map(Elf::getTotalCalories).sorted().toList());
 
         answer.setPart1(sumsOfCalories.get(sumsOfCalories.size() - 1));
         log.info("Max Calories carried by an elf: {}", answer.getPart1());
