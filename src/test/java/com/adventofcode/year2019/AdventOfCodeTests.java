@@ -3,7 +3,6 @@ package com.adventofcode.year2019;
 
 import com.adventofcode.common.DailyAnswer;
 import com.adventofcode.year2019.day8.Layer;
-import com.adventofcode.year2019.day1.Controller;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class AdventOfCodeTests {
 
     @Autowired
-    private Controller day1Controller;
+    private com.adventofcode.year2019.day1.Controller day1Controller;
     @Autowired
     private com.adventofcode.year2019.day2.Controller day2Controller;
     @Autowired
