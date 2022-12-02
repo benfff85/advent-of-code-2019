@@ -1,7 +1,6 @@
 package com.adventofcode.year2019.day5;
 
 import com.adventofcode.common.AdventOfCodeException;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 import java.math.BigInteger;
@@ -156,7 +155,6 @@ public class IntComputer {
         }
     }
 
-    @SneakyThrows
     private void writeValue(ParameterMode parameterMode, Integer indexOfParameter, BigInteger value) {
         if (IMMEDIATE.equals(parameterMode)) {
             throw new AdventOfCodeException("Something is wrong, trying to write to parameter but in immediate mode");
