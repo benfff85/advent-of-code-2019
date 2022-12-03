@@ -140,3 +140,11 @@ Nothing too exciting, lots of summing of Streams, may want to consider making so
 Rock Paper Scissors
 
 Good use of ENUMs, used the new Java Switch statement and also cleaned up with a shape relationship map that can go key->value or value->key to determine if one shape beats or loses to another. I should check if there's an existing collection for this in Guava/ApacheCollectionUtils.
+
+Update: turns out both Guava and Apache support the item above, they're called Bidirectional maps.
+
+## Day 3
+
+Common elements in Rucksacks and among elves
+
+Pretty straight forward, used Sets and Apache's CollectionUtils.intersection(a,b) to find common elements across collections.
