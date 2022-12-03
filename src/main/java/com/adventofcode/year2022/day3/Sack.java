@@ -23,7 +23,7 @@ public class Sack {
     }
 
     public Integer getPriorityOfTypeInBothCompartments() {
-        return getTypesInBothCompartments().stream().map(commonType -> TypeUtil.getPriority(commonType)).mapToInt(Integer::intValue).sum();
+        return getTypesInBothCompartments().stream().map(TypeUtil::getPriority).mapToInt(Integer::intValue).sum();
     }
 
     public Set<String> getAllUniqueTypes() {
