@@ -148,3 +148,9 @@ Update: turns out both Guava and Apache support the item above, they're called B
 Common elements in Rucksacks and among elves
 
 Pretty straight forward, used Sets and Apache's CollectionUtils.intersection(a,b) to find common elements across collections.
+
+## Day 4
+
+Find section overlap and subcollection status
+
+Notable use of Apache's IntegerSequence.Range, IterableUtils.toList(), CollectionUtils.containsAny(), CollectionUtils.containsAll().
