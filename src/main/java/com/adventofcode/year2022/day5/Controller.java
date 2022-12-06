@@ -5,10 +5,13 @@ import com.adventofcode.common.InputHelper;
 import com.adventofcode.common.SolutionController;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 
 @Slf4j
@@ -25,12 +28,12 @@ public class Controller extends SolutionController {
 
         List<List<String>> stacks = initStacks();
         processInstructions(instructions, stacks, true);
-        // Set Answer
+        answer.setPart1(getTopContainers(stacks));
         log.info("P1: {}", answer.getPart1());
 
         stacks = initStacks();
         processInstructions(instructions, stacks, false);
-        // Set Answer
+        answer.setPart2(getTopContainers(stacks));
         log.info("P2: {}", answer.getPart2());
 
         return answer;
@@ -67,6 +70,10 @@ public class Controller extends SolutionController {
         stacks.add(8, new ArrayList<>(List.of("D", "N", "J", "V", "R", "Z", "H", "Q")));
         stacks.add(9, new ArrayList<>(List.of("B", "N", "H", "M", "S")));
         return stacks;
+    }
+
+    private String getTopContainers(List<List<String>> stacks) {
+        return stacks.stream().filter(Objects::nonNull).map(CollectionUtils::lastElement).collect(Collectors.joining(""));
     }
 
 }

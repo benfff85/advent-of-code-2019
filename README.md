@@ -154,3 +154,15 @@ Pretty straight forward, used Sets and Apache's CollectionUtils.intersection(a,b
 Find section overlap and subcollection status
 
 Notable use of Apache's IntegerSequence.Range, IterableUtils.toList(), CollectionUtils.containsAny(), CollectionUtils.containsAll().
+
+## Day 5 
+
+Moving of containers between stacks.
+
+Misread the part 1 and actually accidentally solved part 2 first not realizing. Took an embarrassing amount of time to re-read the problem and realize. Nothing to interesting, used the Java libs to reverse a string, used the Spring collection utils to get the last element of a list, notably this method doesn't seem to exist in Apache commons. Cut some corners by hard coding the initial stack state instead of parsing it from input.
+
+## Day 6
+
+Finding marker string in a signal
+
+Unusually easy for day 6, converted to set and got size to find unique elements in a potential marker.
