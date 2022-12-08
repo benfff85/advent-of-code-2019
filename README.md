@@ -172,3 +172,9 @@ Unusually easy for day 6, converted to set and got size to find unique elements 
 Finding the side of directories and subdirectories
 
 Created custom map, hit issue with false assumption that directory names were globally unique. Calculated directory size with every file addition and oddly ignored the ls command just assuming lists of files/directories took place in the tracked current working directory.
+
+## Day 8
+
+Find visible trees from outside a forrest and from each tree within the forrest.
+
+Not too hard but a bit tedious, not a fan of my solution, didn't break into any other classes. Finished at the Tampa airport. No external libraries used. Refactored out a handful of methods but no classes. Might be worth enhancing grid utils to find elements above, below, to the left and to the right of an element and return a list of them.
