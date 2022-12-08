@@ -166,3 +166,9 @@ Misread the part 1 and actually accidentally solved part 2 first not realizing. 
 Finding marker string in a signal
 
 Unusually easy for day 6, converted to set and got size to find unique elements in a potential marker.
+
+## Day 7
+
+Finding the side of directories and subdirectories
+
+Created custom map, hit issue with false assumption that directory names were globally unique. Calculated directory size with every file addition and oddly ignored the ls command just assuming lists of files/directories took place in the tracked current working directory.
