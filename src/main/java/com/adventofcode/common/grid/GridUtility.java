@@ -4,6 +4,7 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.adventofcode.common.grid.SurroundingType.ALL;
 import static java.util.Collections.emptyMap;
 
 public class GridUtility {
@@ -42,13 +43,18 @@ public class GridUtility {
         return sb.toString();
     }
 
-    public static Map<Point, PrintableGridElement> getSurroundingElements(Map<Point, PrintableGridElement> grid, Point point) {
+    public static Map<Point, PrintableGridElement> getSurroundingElements(Map<Point, PrintableGridElement> grid, Point point, SurroundingType surroundingType) {
         Point key;
         Map<Point, PrintableGridElement> surroundingElements = new HashMap<>();
         for (Map.Entry<Point, PrintableGridElement> entry : grid.entrySet()) {
             key = entry.getKey();
+            // Get elements directly above, below, left and right provided point
             if ((key.x == point.x && (key.y == point.y - 1 || key.y == point.y + 1))
                     || (key.y == point.y && (key.x == point.x - 1 || key.x == point.x + 1))) {
+                surroundingElements.put(key, entry.getValue());
+            }
+            // Get elements diagonal to provided point
+            if (ALL.equals(surroundingType) && (key.x == point.x - 1 || key.x == point.x + 1) && (key.y == point.y - 1 || key.y == point.y + 1)) {
                 surroundingElements.put(key, entry.getValue());
             }
         }

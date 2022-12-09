@@ -6,6 +6,7 @@ import com.adventofcode.common.SolutionController;
 import com.adventofcode.common.grid.GridUtility;
 import com.adventofcode.common.grid.PrintableGridElement;
 import com.adventofcode.common.grid.SimplePrintableGridElement;
+import com.adventofcode.common.grid.SurroundingType;
 import com.adventofcode.year2019.day5.IntComputer;
 import com.adventofcode.year2019.day5.IntComputerContext;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.Queue;
 import java.util.*;
 
+import static com.adventofcode.common.grid.SurroundingType.CARDINAL;
 import static java.lang.Boolean.TRUE;
 
 
@@ -96,7 +98,7 @@ public class Controller extends SolutionController {
         Map<Point, PrintableGridElement> overlay = new HashMap<>();
         for (Map.Entry<Point, PrintableGridElement> entry : grid.entrySet()) {
             if (entry.getValue().equals(GridElement.SCAFFOLD)) {
-                surroundingElementCardinalityMap = CollectionUtils.getCardinalityMap(GridUtility.getSurroundingElements(grid, entry.getKey()).values());
+                surroundingElementCardinalityMap = CollectionUtils.getCardinalityMap(GridUtility.getSurroundingElements(grid, entry.getKey(), CARDINAL).values());
                 // Only one type of surrounding element, which is SCAFFOLD, and occurs 4x
                 if (surroundingElementCardinalityMap.size() == 1 && surroundingElementCardinalityMap.containsKey(GridElement.SCAFFOLD) && surroundingElementCardinalityMap.containsValue(4)) {
                     overlay.put(entry.getKey(), SimplePrintableGridElement.of("O"));
