@@ -178,3 +178,9 @@ Created custom map, hit issue with false assumption that directory names were gl
 Find visible trees from outside a forrest and from each tree within the forrest.
 
 Not too hard but a bit tedious, not a fan of my solution, didn't break into any other classes. Finished at the Tampa airport. No external libraries used. Refactored out a handful of methods but no classes. Might be worth enhancing grid utils to find elements above, below, to the left and to the right of an element and return a list of them.
+
+## Day 9
+
+Tracing positions visited by the tail end of a rope
+
+A bit challenging, only refactored out the RopeSegment for part 2. Took the oportunity to write some PointUtil methods in addition to GridUtil. Solved using just points, grid is used only for printing in this case. Wasted way too much time thinking part 2 was for 10 rope segments instead of 10 knots (9 rope segments).

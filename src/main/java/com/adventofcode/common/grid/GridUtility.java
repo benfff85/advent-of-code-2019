@@ -1,8 +1,10 @@
 package com.adventofcode.common.grid;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
 
 import static com.adventofcode.common.grid.SurroundingType.ALL;
 import static java.util.Collections.emptyMap;
@@ -44,21 +46,39 @@ public class GridUtility {
     }
 
     public static Map<Point, PrintableGridElement> getSurroundingElements(Map<Point, PrintableGridElement> grid, Point point, SurroundingType surroundingType) {
-        Point key;
+//        Point key;
+
+
+
         Map<Point, PrintableGridElement> surroundingElements = new HashMap<>();
-        for (Map.Entry<Point, PrintableGridElement> entry : grid.entrySet()) {
-            key = entry.getKey();
-            // Get elements directly above, below, left and right provided point
-            if ((key.x == point.x && (key.y == point.y - 1 || key.y == point.y + 1))
-                    || (key.y == point.y && (key.x == point.x - 1 || key.x == point.x + 1))) {
-                surroundingElements.put(key, entry.getValue());
-            }
-            // Get elements diagonal to provided point
-            if (ALL.equals(surroundingType) && (key.x == point.x - 1 || key.x == point.x + 1) && (key.y == point.y - 1 || key.y == point.y + 1)) {
-                surroundingElements.put(key, entry.getValue());
+
+        for(Point point1 : PointUtil.getSurroundingPoints(point, surroundingType)) {
+            if(grid.containsKey(point1)) {
+                surroundingElements.put(point1, grid.get(point1));
             }
         }
+
+//        for (Map.Entry<Point, PrintableGridElement> entry : grid.entrySet()) {
+//            key = entry.getKey();
+//            // Get elements directly above, below, left and right provided point
+//            if ((key.x == point.x && (key.y == point.y - 1 || key.y == point.y + 1))
+//                    || (key.y == point.y && (key.x == point.x - 1 || key.x == point.x + 1))) {
+//                surroundingElements.put(key, entry.getValue());
+//            }
+//            // Get elements diagonal to provided point
+//            if (ALL.equals(surroundingType) && (key.x == point.x - 1 || key.x == point.x + 1) && (key.y == point.y - 1 || key.y == point.y + 1)) {
+//                surroundingElements.put(key, entry.getValue());
+//            }
+//        }
         return surroundingElements;
     }
+
+    //get elements as list
+//    public static List<Map.Entry<Point, PrintableGridElement>> getElementsAsOrderedList(Map<Point, PrintableGridElement> grid, OrderingType verticalOrdering, OrderingType horizontalOrdering) {
+//        List<Map.Entry<Point, PrintableGridElement>> list = new ArrayList<>();
+//
+//
+//        return null;
+//    }
 
 }
