@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
@@ -31,6 +30,8 @@ class AdventOfCodeTests {
     private com.adventofcode.year2022.day8.Controller day8Controller;
     @Autowired
     private com.adventofcode.year2022.day9.Controller day9Controller;
+    @Autowired
+    private com.adventofcode.year2022.day10.Controller day10Controller;
 
     @Test
     void testDay1() {
@@ -94,5 +95,21 @@ class AdventOfCodeTests {
         assertEquals(6190, answer.getPart1());
         assertEquals(2516, answer.getPart2());
     }
+
+    @Test
+    void testDay10() {
+        DailyAnswer answer = day10Controller.execute();
+        assertEquals(17020, answer.getPart1());
+        assertEquals("""
+                        ###..#....####.####.####.#.....##..####.
+                        #..#.#....#.......#.#....#....#..#.#....
+                        #..#.#....###....#..###..#....#....###..
+                        ###..#....#.....#...#....#....#.##.#....
+                        #.#..#....#....#....#....#....#..#.#....
+                        #..#.####.####.####.#....####..###.####.
+                        """
+                , answer.getPart2());
+    }
+
 
 }

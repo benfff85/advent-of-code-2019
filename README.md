@@ -183,4 +183,11 @@ Not too hard but a bit tedious, not a fan of my solution, didn't break into any 
 
 Tracing positions visited by the tail end of a rope
 
-A bit challenging, only refactored out the RopeSegment for part 2. Took the oportunity to write some PointUtil methods in addition to GridUtil. Solved using just points, grid is used only for printing in this case. Wasted way too much time thinking part 2 was for 10 rope segments instead of 10 knots (9 rope segments).
+A bit challenging, only refactored out the RopeSegment for part 2. Took the opportunity to write some PointUtil methods in addition to GridUtil. Solved using just points, grid is used only for printing in this case. Wasted way too much time thinking part 2 was for 10 rope segments instead of 10 knots (9 rope segments).
+
+## Day 10
+
+Process instructions in cycles and outputting to a screen.
+
+Minor logical errors, did it in the middle of the night in between dealing with Jack's first stomach bug. Minor confusion around pixel and cycle differing by 1. Also a bit odd, I kept cycles in a list and kept the index and cycle number in sync but it doesn't seem like a best practice, may have been better to throw in a map with the key of the cycle number.
+
