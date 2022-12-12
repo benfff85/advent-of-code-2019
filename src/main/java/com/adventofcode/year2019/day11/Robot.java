@@ -1,6 +1,7 @@
 package com.adventofcode.year2019.day11;
 
-import com.adventofcode.year2019.day3.Direction;
+import com.adventofcode.common.grid.PointUtil;
+import com.adventofcode.common.grid.Direction;
 import com.adventofcode.year2019.day5.IntComputer;
 import com.adventofcode.year2019.day5.IntComputerContext;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +15,7 @@ import java.util.Map;
 
 import static com.adventofcode.year2019.day11.TurnDirection.CCW90;
 import static com.adventofcode.year2019.day11.TurnDirection.CW90;
-import static com.adventofcode.year2019.day3.Direction.*;
+import static com.adventofcode.common.grid.Direction.*;
 import static java.util.Objects.requireNonNull;
 
 @Slf4j
@@ -55,16 +56,10 @@ public class Robot {
 
     private void move(TurnDirection turnDirection) {
         determineNewDirection(turnDirection);
-        position =  switch (direction) {
-            case U -> new Point(position.x, position.y + 1);
-            case D -> new Point(position.x, position.y - 1);
-            case L -> new Point(position.x - 1, position.y);
-            case R -> new Point(position.x + 1, position.y);
-        };
-
+        position = PointUtil.getAdjacentPoint(position, direction);
     }
 
-    // TODO would be nice to move this to soem type of cyclic collection that just rotates
+    // TODO would be nice to move this to some type of cyclic collection that just rotates
     private void determineNewDirection(TurnDirection turnDirection) {
         if (CW90.equals(turnDirection)) {
             if (U.equals(direction)) {

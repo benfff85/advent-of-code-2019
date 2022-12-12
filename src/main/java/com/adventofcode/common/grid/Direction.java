@@ -1,7 +1,10 @@
-package com.adventofcode.year2019.day3;
+package com.adventofcode.common.grid;
 
 
 import lombok.Getter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public enum Direction {
 
@@ -31,6 +34,28 @@ public enum Direction {
             case L -> R;
             case R -> L;
         };
+    }
+
+    public Direction cw90() {
+        return switch (this) {
+            case U -> R;
+            case R -> D;
+            case D -> L;
+            case L -> U;
+        };
+    }
+
+    public Direction ccw90() {
+        return switch (this) {
+            case U -> L;
+            case L -> D;
+            case D -> R;
+            case R -> U;
+        };
+    }
+
+    public static List<Direction> allCardinal() {
+        return new ArrayList<>(List.of(U, D, L, R));
     }
 
 }

@@ -1,9 +1,10 @@
 package com.adventofcode.year2019.day15;
 
 import com.adventofcode.common.grid.GridUtility;
+import com.adventofcode.common.grid.PointUtil;
 import com.adventofcode.common.grid.PrintableGridElement;
 import com.adventofcode.common.grid.SimplePrintableGridElement;
-import com.adventofcode.year2019.day3.Direction;
+import com.adventofcode.common.grid.Direction;
 import com.adventofcode.year2019.day5.IntComputer;
 import com.adventofcode.year2019.day5.IntComputerContext;
 import lombok.Getter;
@@ -15,7 +16,7 @@ import java.util.List;
 import java.util.Queue;
 import java.util.*;
 
-import static com.adventofcode.year2019.day3.Direction.*;
+import static com.adventofcode.common.grid.Direction.*;
 import static java.lang.Boolean.TRUE;
 
 @Slf4j
@@ -61,7 +62,7 @@ public class RepairDroid {
     public void processMove(Direction direction, Deque<Point> path) {
 
         applyDirectionToIntComputerContext(direction, intComputerContext.getInputs());
-        targetPosition = calculateTargetPosition(direction);
+        targetPosition = PointUtil.getAdjacentPoint(currentPosition, direction);
         intComputer.process(intComputerContext);
         int output = intComputerContext.getOutputs().pop().intValue();
         applyOutputToGrid(output);
@@ -81,7 +82,7 @@ public class RepairDroid {
         }
 
         // Try next moves, do not double back by moving the opposite direction that got us here
-        List<Direction> nextDirections = new ArrayList<>(List.of(U, D, L, R));
+        List<Direction> nextDirections = Direction.allCardinal();
         nextDirections.remove(direction.opposite());
         for (Direction nextDirection : nextDirections) {
             processMove(nextDirection, path);
@@ -89,7 +90,7 @@ public class RepairDroid {
 
         // Rollback position
         applyDirectionToIntComputerContext(direction.opposite(), intComputerContext.getInputs());
-        targetPosition = calculateTargetPosition(direction.opposite());
+        targetPosition = PointUtil.getAdjacentPoint(currentPosition, direction.opposite());
         intComputer.process(intComputerContext);
         intComputerContext.getOutputs().pop();
         currentPosition = targetPosition;
@@ -99,15 +100,6 @@ public class RepairDroid {
 
     private void applyDirectionToIntComputerContext(Direction direction, Queue<BigInteger> inputs) {
         inputs.add(BigInteger.valueOf(direction.getValue()));
-    }
-
-    private Point calculateTargetPosition(Direction direction) {
-        return switch (direction) {
-            case U -> new Point(currentPosition.x, currentPosition.y + 1);
-            case D -> new Point(currentPosition.x, currentPosition.y - 1);
-            case L -> new Point(currentPosition.x - 1, currentPosition.y);
-            case R -> new Point(currentPosition.x + 1, currentPosition.y);
-        };
     }
 
     private void applyOutputToGrid(Integer output) {

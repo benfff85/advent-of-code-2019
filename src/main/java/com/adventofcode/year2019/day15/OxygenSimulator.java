@@ -1,14 +1,14 @@
 package com.adventofcode.year2019.day15;
 
+import com.adventofcode.common.grid.PointUtil;
 import com.adventofcode.common.grid.PrintableGridElement;
-import com.adventofcode.year2019.day3.Direction;
 
 import java.awt.*;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import static com.adventofcode.year2019.day3.Direction.*;
+import static com.adventofcode.common.grid.Direction.*;
 
 public class OxygenSimulator {
 
@@ -42,21 +42,12 @@ public class OxygenSimulator {
 
     }
 
+    // TODO use getSurroundingPoints
     private boolean atLeastOneAdjacentPointIsOxygen(Map<Point, PrintableGridElement> grid, Point point) {
-        return grid.getOrDefault(getAdjacentPoint(U, point), GridElement.WALL).equals(GridElement.OXYGEN)
-                || grid.getOrDefault(getAdjacentPoint(D, point), GridElement.WALL).equals(GridElement.OXYGEN)
-                || grid.getOrDefault(getAdjacentPoint(L, point), GridElement.WALL).equals(GridElement.OXYGEN)
-                || grid.getOrDefault(getAdjacentPoint(R, point), GridElement.WALL).equals(GridElement.OXYGEN);
-    }
-
-
-    private Point getAdjacentPoint(Direction direction, Point point) {
-        return switch (direction) {
-            case U -> new Point(point.x, point.y + 1);
-            case D -> new Point(point.x, point.y - 1);
-            case L -> new Point(point.x - 1, point.y);
-            case R -> new Point(point.x + 1, point.y);
-        };
+        return grid.getOrDefault(PointUtil.getAdjacentPoint(point, U), GridElement.WALL).equals(GridElement.OXYGEN)
+                || grid.getOrDefault(PointUtil.getAdjacentPoint(point, D), GridElement.WALL).equals(GridElement.OXYGEN)
+                || grid.getOrDefault(PointUtil.getAdjacentPoint(point, L), GridElement.WALL).equals(GridElement.OXYGEN)
+                || grid.getOrDefault(PointUtil.getAdjacentPoint(point, R), GridElement.WALL).equals(GridElement.OXYGEN);
     }
 
 }

@@ -1,12 +1,11 @@
 package com.adventofcode.common.grid;
 
-import com.adventofcode.year2019.day3.Direction;
-
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.adventofcode.common.grid.SurroundingType.ALL;
+import static com.adventofcode.common.grid.Direction.*;
 
 public class PointUtil {
 
@@ -19,10 +18,10 @@ public class PointUtil {
         List<Point> points = new ArrayList<>();
 
         // Get points directly above, below, left and right provided point
-        points.add(new Point(point.x + 1, point.y));
-        points.add(new Point(point.x - 1, point.y));
-        points.add(new Point(point.x, point.y + 1));
-        points.add(new Point(point.x, point.y - 1));
+        points.add(getAdjacentPoint(point, U));
+        points.add(getAdjacentPoint(point, D));
+        points.add(getAdjacentPoint(point, L));
+        points.add(getAdjacentPoint(point, R));
 
         // Get elements diagonal to provided point
         if (ALL.equals(surroundingType)) {

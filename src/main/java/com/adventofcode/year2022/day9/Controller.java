@@ -7,7 +7,7 @@ import com.adventofcode.common.grid.GridUtility;
 import com.adventofcode.common.grid.PointUtil;
 import com.adventofcode.common.grid.PrintableGridElement;
 import com.adventofcode.common.grid.SimplePrintableGridElement;
-import com.adventofcode.year2019.day3.Direction;
+import com.adventofcode.common.grid.Direction;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
