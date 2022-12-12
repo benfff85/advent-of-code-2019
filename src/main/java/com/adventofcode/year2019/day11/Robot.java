@@ -59,28 +59,11 @@ public class Robot {
         position = PointUtil.getAdjacentPoint(position, direction);
     }
 
-    // TODO would be nice to move this to some type of cyclic collection that just rotates
     private void determineNewDirection(TurnDirection turnDirection) {
         if (CW90.equals(turnDirection)) {
-            if (U.equals(direction)) {
-                direction = R;
-            } else if (R.equals(direction)) {
-                direction = D;
-            } else if (D.equals(direction)) {
-                direction = L;
-            } else {
-                direction = U;
-            }
+            direction = direction.cw90();
         } else if (CCW90.equals(turnDirection)) {
-            if (U.equals(direction)) {
-                direction = L;
-            } else if (L.equals(direction)) {
-                direction = D;
-            } else if (D.equals(direction)) {
-                direction = R;
-            } else {
-                direction = U;
-            }
+            direction = direction.ccw90();
         }
     }
 

@@ -1,10 +1,13 @@
 package com.adventofcode.common.grid;
 
+import org.apache.commons.math3.util.Pair;
+
 import java.awt.*;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static java.util.Collections.emptyMap;
+import static java.util.Objects.nonNull;
 
 public class GridUtility {
 
@@ -44,14 +47,12 @@ public class GridUtility {
 
     public static Map<Point, PrintableGridElement> getSurroundingElements(Map<Point, PrintableGridElement> grid, Point point, SurroundingType surroundingType) {
 
-        Map<Point, PrintableGridElement> surroundingElements = new HashMap<>();
+        return PointUtil.getSurroundingPoints(point, surroundingType)
+                .stream()
+                .map(p -> Pair.create(p, grid.get(p)))
+                .filter(e -> nonNull(e.getValue()))
+                .collect(Collectors.toMap(Pair::getKey, Pair::getValue));
 
-        for(Point point1 : PointUtil.getSurroundingPoints(point, surroundingType)) {
-            if (grid.containsKey(point1)) {
-                surroundingElements.put(point1, grid.get(point1));
-            }
-        }
-        return surroundingElements;
     }
 
 }

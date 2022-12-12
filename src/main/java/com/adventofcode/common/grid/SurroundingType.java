@@ -1,5 +1,5 @@
 package com.adventofcode.common.grid;
 
 public enum SurroundingType {
-    CARDINAL, ALL
+    CARDINAL, DIAGONAL, ALL
 }
