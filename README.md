@@ -191,3 +191,8 @@ Process instructions in cycles and outputting to a screen.
 
 Minor logical errors, did it in the middle of the night in between dealing with Jack's first stomach bug. Minor confusion around pixel and cycle differing by 1. Also a bit odd, I kept cycles in a list and kept the index and cycle number in sync but it doesn't seem like a best practice, may have been better to throw in a map with the key of the cycle number.
 
+## Day 11
+
+Find the most active monkeys that are tossing your items 
+
+Part one was fairly easy, created an abstract class for monkeys and ended up hard coding the inputs. Part 2 I fell for just trying to use a BigInteger but computation would never complete. Admittedly took a bit of a blind guess at reducing the worry level by modding by the greatest common denominator which seemed like a reasonable guess and turned out to be right. Notable use of abstract classes and the stream skip method to get the last two elements in a sorted stream as well as stream reduce to determine the product. 

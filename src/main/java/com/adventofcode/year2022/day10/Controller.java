@@ -18,10 +18,6 @@ public class Controller extends SolutionController {
         super(inputHelper, "puzzle-input/2022/day-10.txt");
     }
 
-    private static void addCycle(List<Cycle> cycles, Integer x, Integer cycleCount) {
-        cycles.add(Cycle.builder().number(cycleCount).x(x).signalStrength(x * cycleCount).build());
-    }
-
     public DailyAnswer execute() {
 
         List<Instruction> instructions = puzzleInput.stream().map(Instruction::new).toList();
@@ -57,6 +53,10 @@ public class Controller extends SolutionController {
             }
         }
         return cycles;
+    }
+
+    private void addCycle(List<Cycle> cycles, Integer x, Integer cycleCount) {
+        cycles.add(Cycle.builder().number(cycleCount).x(x).signalStrength(x * cycleCount).build());
     }
 
     private int calculateSignalStrengthSum(List<Cycle> cycles) {
