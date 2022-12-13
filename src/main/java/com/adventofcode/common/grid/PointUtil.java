@@ -3,6 +3,8 @@ package com.adventofcode.common.grid;
 import java.awt.*;
 import java.util.List;
 
+import static java.lang.Math.abs;
+
 public class PointUtil {
 
     private PointUtil() {
@@ -32,6 +34,20 @@ public class PointUtil {
             case DL -> new Point(point.x - 1, point.y - 1);
             case DR -> new Point(point.x + 1, point.y - 1);
         };
+    }
+
+    public static Integer getManhattanDistance(Point p1, Point p2) {
+        return abs(p1.x - p2.x) + abs(p1.y - p2.y);
+    }
+
+    // Returns the direction needed to get from point1 to point2, points must be adjacent
+    public static Direction getDirection(Point point1, Point point2) {
+        for (Direction direction : Direction.all()) {
+            if (getAdjacentPoint(point1, direction).equals(point2)) {
+                return direction;
+            }
+        }
+        return null;
     }
 
 }

@@ -196,3 +196,9 @@ Minor logical errors, did it in the middle of the night in between dealing with 
 Find the most active monkeys that are tossing your items 
 
 Part one was fairly easy, created an abstract class for monkeys and ended up hard coding the inputs. Part 2 I fell for just trying to use a BigInteger but computation would never complete. Admittedly took a bit of a blind guess at reducing the worry level by modding by the greatest common denominator which seemed like a reasonable guess and turned out to be right. Notable use of abstract classes and the stream skip method to get the last two elements in a sorted stream as well as stream reduce to determine the product. 
+
+## Day 12
+
+Find path between source and destination while ascending at most one level of elevation.
+
+This one was a challenge for me, tried to make DFS work for far too long, at least I got some useful utility methods for Grids/Points out of it. Looked into BFS and that was the key. The way I track depth in my BFS implementation is odd, not sure if there is a better way. 
