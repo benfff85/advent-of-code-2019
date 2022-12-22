@@ -208,3 +208,12 @@ This one was a challenge for me, tried to make DFS work for far too long, at lea
 Sorting signals, lists of lists/integers.
 
 Paused for a while before this one. Imported Jackson to help with the input parsing, difficult to deal with collections of different types in Java (Integer / List), ended up just treating them all as Objects and checking types with instanceof. Used the new feature to allow binding to a variable directly in the instance of clause. Also implemented custom compare function for the packets.
+
+## Day 14
+
+Falling sand!
+
+Wrote utility methods for finding the min/max x/y coordinates in a grid and also utility method for finding ranges of points between two points. The grid utils came in handy for this one. Saved some time and confusion by making the Y values negative.
+
+Notable use of Apache Math's int ranges
+> toList(new IntegerSequence.Range(min(p1.x, p2.x), max(p1.x, p2.x), 1))

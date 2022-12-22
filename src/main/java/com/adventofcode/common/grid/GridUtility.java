@@ -24,10 +24,10 @@ public class GridUtility {
     // Prints the grid starting with MinX,MaxY in the top left
     public static <T extends PrintableGridElement> String print(Map<Point, T> grid, Map<Point, T> overrides, PrintableGridElement defaultElement) {
 
-        int minX = grid.keySet().stream().map(p -> p.x).reduce(Integer::min).orElseThrow();
-        int maxX = grid.keySet().stream().map(p -> p.x).reduce(Integer::max).orElseThrow();
-        int minY = grid.keySet().stream().map(p -> p.y).reduce(Integer::min).orElseThrow();
-        int maxY = grid.keySet().stream().map(p -> p.y).reduce(Integer::max).orElseThrow();
+        int minX = getMinX(grid);
+        int maxX = getMaxX(grid);
+        int minY = getMinY(grid);
+        int maxY = getMaxY(grid);
 
         Point point;
         StringBuilder sb = new StringBuilder().append("\n\n");
@@ -74,6 +74,36 @@ public class GridUtility {
 
         return elementList;
 
+    }
+
+    // Returns null if key not present
+    public static <T> Map.Entry<Point, T> getAdjacentElement(Map<Point, T> grid, Point point, Direction direction) {
+        try {
+            return Map.entry(point, grid.get(PointUtil.getAdjacentPoint(point, direction)));
+        } catch (Exception e) {
+            // Ignore
+        }
+        return null;
+    }
+
+    public static <T> Long countValues(Map<Point, T> grid, T value) {
+        return grid.values().stream().filter(v -> v.equals(value)).count();
+    }
+
+    public static <T> Integer getMinX(Map<Point, T> grid) {
+        return grid.keySet().stream().map(p -> p.x).reduce(Integer::min).orElseThrow();
+    }
+
+    public static <T> Integer getMaxX(Map<Point, T> grid) {
+        return grid.keySet().stream().map(p -> p.x).reduce(Integer::max).orElseThrow();
+    }
+
+    public static <T> Integer getMinY(Map<Point, T> grid) {
+        return grid.keySet().stream().map(p -> p.y).reduce(Integer::min).orElseThrow();
+    }
+
+    public static <T> Integer getMaxY(Map<Point, T> grid) {
+        return grid.keySet().stream().map(p -> p.y).reduce(Integer::max).orElseThrow();
     }
 
 }

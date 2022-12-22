@@ -1,9 +1,14 @@
 package com.adventofcode.common.grid;
 
+import com.adventofcode.common.AdventOfCodeException;
+import org.apache.commons.math3.util.IntegerSequence;
+
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
-import static java.lang.Math.abs;
+import static java.lang.Math.*;
+import static org.apache.commons.collections4.IterableUtils.toList;
 
 public class PointUtil {
 
@@ -48,6 +53,28 @@ public class PointUtil {
             }
         }
         return null;
+    }
+
+    public static List<Point> getPointsBetween(Point p1, Point p2) {
+        if (p1.x != p2.x && p1.y != p2.y) {
+            throw new AdventOfCodeException("Can only get points between two points that share an X or Y axis");
+        }
+
+        List<Point> points = new ArrayList<>();
+        if (p1.x == p2.x) {
+            for (Integer i : toList(new IntegerSequence.Range(min(p1.y, p2.y), max(p1.y, p2.y), 1))) {
+                points.add(new Point(p1.x, i));
+            }
+        }
+
+        if (p1.y == p2.y) {
+            for (Integer i : toList(new IntegerSequence.Range(min(p1.x, p2.x), max(p1.x, p2.x), 1))) {
+                points.add(new Point(i, p1.y));
+            }
+        }
+
+        return points;
+
     }
 
 }
