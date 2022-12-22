@@ -202,3 +202,9 @@ Part one was fairly easy, created an abstract class for monkeys and ended up har
 Find path between source and destination while ascending at most one level of elevation.
 
 This one was a challenge for me, tried to make DFS work for far too long, at least I got some useful utility methods for Grids/Points out of it. Looked into BFS and that was the key. The way I track depth in my BFS implementation is odd, not sure if there is a better way. 
+
+## Day 13
+
+Sorting signals, lists of lists/integers.
+
+Paused for a while before this one. Imported Jackson to help with the input parsing, difficult to deal with collections of different types in Java (Integer / List), ended up just treating them all as Objects and checking types with instanceof. Used the new feature to allow binding to a variable directly in the instance of clause. Also implemented custom compare function for the packets.
