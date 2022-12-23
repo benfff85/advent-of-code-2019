@@ -86,6 +86,10 @@ public class GridUtility {
         return null;
     }
 
+    public static <T> List<Map.Entry<Point, T>> getElementsOnRow(Map<Point, T> grid, Integer y) {
+        return grid.entrySet().stream().filter(p -> p.getKey().y == y).toList();
+    }
+
     public static <T> Long countValues(Map<Point, T> grid, T value) {
         return grid.values().stream().filter(v -> v.equals(value)).count();
     }
