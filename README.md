@@ -217,3 +217,9 @@ Wrote utility methods for finding the min/max x/y coordinates in a grid and also
 
 Notable use of Apache Math's int ranges
 > toList(new IntegerSequence.Range(min(p1.x, p2.x), max(p1.x, p2.x), 1))
+
+## Day 15
+
+Signals and Beacons, finding covered points per row and the one uncovered point in a 4,000,000 x 4,000,000 grid.
+
+I tried to treat these as individual points in a grid, it worked for part one but was not performant enough for part 2. Switched to tracking the points covered by each sensor as a range from x1-x2. I just used the Apache commons math pair to track the range. It would be nice to find a library for ranges to reduce them and see if they are continuous or not and such. There is IntegerSequence.Range but it looks very basic for just iterating through int ranges with a given stepping.

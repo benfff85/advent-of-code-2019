@@ -3,17 +3,14 @@ package com.adventofcode.year2022.day15;
 import com.adventofcode.common.DailyAnswer;
 import com.adventofcode.common.InputHelper;
 import com.adventofcode.common.SolutionController;
-import com.adventofcode.common.grid.GridUtility;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.math3.util.Pair;
 import org.springframework.stereotype.Component;
 
-import java.awt.*;
-import java.util.*;
+import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import static com.adventofcode.year2022.day15.GridElement.COVERED;
-import static com.adventofcode.year2022.day15.GridElement.SENSOR;
+import static java.util.Objects.nonNull;
 
 
 @Slf4j
@@ -27,53 +24,51 @@ public class Controller extends SolutionController {
 
     public DailyAnswer execute() {
 
-
         List<Sensor> sensors = puzzleInput.stream().map(Sensor::new).toList();
-        Map<Point, GridElement> grid = initGrid(sensors);
 
-        answer.setPart1(GridUtility.getElementsOnRow(grid, 2000000).stream().filter(e -> List.of(COVERED, SENSOR).contains(e.getValue())).count());
+        answer.setPart1(getCoveredCountForRow(getCoveredRangeListForGivenRow(sensors, 2000000)));
         log.info("P1: {}", answer.getPart1());
 
-
-        Set<Point> coveredPoints = new HashSet<>();
-        for(int y = 0; y <= 4000000; y ++) {
-
-            coveredPoints.clear();
-            for(Sensor sensor : sensors) {
-                sensor.getCoveredPointsOnRow(y,coveredPoints);
+        for (int y = 0; y <= 4000000; y++) {
+            Integer uncoveredXCord = getUncoveredXCord(getCoveredRangeListForGivenRow(sensors, y));
+            if (nonNull(uncoveredXCord)) {
+                answer.setPart2((uncoveredXCord * 4000000L) + y);
+                break;
             }
-
-            for (int x = 0; x <= 4000000; x++) {
-                if(!grid.keySet().contains(new Point(x,y)) && !coveredPoints.contains(new Point(x,y))) {
-                    log.info("{},{}", x,y);
-                }
-            }
-            if(y % 1000 == 0) {
-                log.info("y={}", y);
-            }
-
         }
-
+        log.info("P2: {}", answer.getPart2());
 
         return answer;
 
     }
 
-    private Map<Point, GridElement> initGrid(List<Sensor> sensors) {
-        Map<Point, GridElement> grid = new HashMap<>();
-
-        // Add all covered points
-        sensors.stream()
-                .map(s -> s.getCoveredPointsOnRow(2000000).stream().collect(Collectors.toMap(Point::new, x -> COVERED)))
-                .forEach(grid::putAll);
-
-        // Add all Sensors
-        sensors.forEach(s -> grid.put(s.getSensorPoint(), SENSOR));
-
-        // Add all Beacons
-        sensors.forEach(s -> grid.put(s.getBeaconPoint(), GridElement.BEACON));
-
-        return grid;
-
+    private int getCoveredCountForRow(List<Pair<Integer, Integer>> rangeList) {
+        int coveredCount = 0;
+        int index = rangeList.get(0).getFirst();
+        for (Pair<Integer, Integer> range : rangeList) {
+            if (range.getSecond() > index) {
+                coveredCount += range.getSecond() - index;
+                index = range.getSecond();
+            }
+        }
+        return coveredCount;
     }
+
+    private Integer getUncoveredXCord(List<Pair<Integer, Integer>> rangeList) {
+        int index = rangeList.get(0).getFirst();
+        for (Pair<Integer, Integer> range : rangeList) {
+            if (range.getSecond() > index) {
+                if (range.getFirst() >= index + 2) {
+                    return index + 1;
+                }
+                index = range.getSecond();
+            }
+        }
+        return null;
+    }
+
+    private List<Pair<Integer, Integer>> getCoveredRangeListForGivenRow(List<Sensor> sensors, int y) {
+        return sensors.stream().map(s -> s.getCoveredPointsOnRow(y)).filter(p -> p.getFirst() != 0 || p.getSecond() != 0).sorted(Comparator.comparing(Pair::getFirst)).toList();
+    }
+
 }
