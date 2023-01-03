@@ -11,6 +11,7 @@ public class CacheKey {
 
     private Set<Valve> openValves;
     private int minutesRemaining;
-    private Valve currentValve;
+    private Valve currentValveA;
+    private Valve currentValveB;
 
 }
