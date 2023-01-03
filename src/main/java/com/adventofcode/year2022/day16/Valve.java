@@ -23,7 +23,7 @@ public class Valve {
     }
 
     public void linkValves(Map<String, Valve> valves) {
-        for(String valveName : connectedValveNames) {
+        for (String valveName : connectedValveNames) {
             connectedValves.add(valves.get(valveName));
         }
     }
@@ -37,4 +37,3 @@ public class Valve {
     }
 
 }
-

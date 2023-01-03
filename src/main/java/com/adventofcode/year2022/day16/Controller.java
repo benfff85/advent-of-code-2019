@@ -6,10 +6,11 @@ import com.adventofcode.common.SolutionController;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import java.util.LinkedList;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.Stack;
 import java.util.stream.Collectors;
+
+import static java.util.Objects.nonNull;
 
 
 @Slf4j
@@ -17,7 +18,7 @@ import java.util.stream.Collectors;
 public class Controller extends SolutionController {
 
     private Map<String, Valve> valves;
-    private Integer maxPressureReleased = 0;
+    private final Map<CacheKey, Integer> cache = new HashMap<>();
 
     public Controller(InputHelper inputHelper) {
         super(inputHelper, "puzzle-input/2022/day-16.txt");
@@ -28,35 +29,45 @@ public class Controller extends SolutionController {
         valves = puzzleInput.stream().map(Valve::new).collect(Collectors.toMap(Valve::getName, valve -> valve));
         valves.values().forEach(v -> v.linkValves(valves));
 
-        processNext(1, valves.get("AA"), 0);
-
+        answer.setPart1(getMax(30, valves.get("AA")));
 
         return answer;
     }
 
 
+    private Integer getMax(int minutesRemaining, Valve currentValve) {
 
-    private void processNext(int minute, Valve valve, int totalPressureReleased) {
-
-        if(minute > 30) {
-            if(maxPressureReleased < totalPressureReleased) {
-               maxPressureReleased = totalPressureReleased;
-            }
-            return;
+        // Terminal condition
+        if (minutesRemaining == 0) {
+            return 0;
         }
 
-        totalPressureReleased += valves.values().stream().filter(Valve::isOpen).map(Valve::getFlowRate).mapToInt(Integer::intValue).sum();
-
-        if(!valve.isOpen() && valve.getFlowRate() > 0) {
-            valve.open();
-            processNext(minute + 1, valve, totalPressureReleased);
-            valve.close();
+        // Check if in cache and if so return value
+        CacheKey cacheKey = CacheKey.builder()
+                .minutesRemaining(minutesRemaining)
+                .currentValve(currentValve)
+                .openValves(valves.values().stream().filter(Valve::isOpen).collect(Collectors.toSet()))
+                .build();
+        Integer cacheResult = cache.get(cacheKey);
+        if (nonNull(cacheResult)) {
+            return cacheResult;
         }
 
-        for(Valve nextValve : valve.getConnectedValves()) {
-            processNext(minute + 1, nextValve, totalPressureReleased);
+        // check other options, add the max to the cache and return it
+        int maxPressureReleased = 0;
+
+        if (!currentValve.isOpen() && currentValve.getFlowRate() > 0) {
+            currentValve.open();
+            maxPressureReleased = (currentValve.getFlowRate() * (minutesRemaining - 1)) + getMax(minutesRemaining - 1, currentValve);
+            currentValve.close();
         }
 
+        for (Valve nextValve : currentValve.getConnectedValves()) {
+            maxPressureReleased = Math.max(maxPressureReleased, getMax(minutesRemaining - 1, nextValve));
+        }
+
+        cache.put(cacheKey, maxPressureReleased);
+        return maxPressureReleased;
 
     }
 
