@@ -19,9 +19,8 @@ import static java.util.Objects.nonNull;
 @Component("controller-2022-16")
 public class Controller extends SolutionController {
 
-    private final Map<CacheKey, Integer> cache = new LRUMap<>(7500000);
+    private final Map<CacheKey, Integer> cache = new LRUMap<>(2500000);
     private final Set<String> openValves = new HashSet<>();
-    private Map<String, Valve> valves;
     private int maxMinutesRemainingExited = 0;
 
     public Controller(InputHelper inputHelper) {
@@ -30,7 +29,7 @@ public class Controller extends SolutionController {
 
     public DailyAnswer execute() {
 
-        valves = puzzleInput.stream().map(Valve::new).collect(Collectors.toMap(Valve::getName, valve -> valve));
+        Map<String, Valve> valves = puzzleInput.stream().map(Valve::new).collect(Collectors.toMap(Valve::getName, valve -> valve));
         valves.values().forEach(v -> v.linkValves(valves));
 
         answer.setPart1(getMax(30, valves.get("AA")));
@@ -89,8 +88,7 @@ public class Controller extends SolutionController {
             return 0;
         }
 
-        // 1868 too low, 2123, too low, 2169!!!
-        // 15 with flow rate > 0
+        // Prune options for performance
         if ((minutesRemaining == 22 && openValves.size() <= 1) || (minutesRemaining == 18 && openValves.size() <= 3) || (minutesRemaining == 14 && openValves.size() <= 5) || (minutesRemaining == 10 && openValves.size() <= 7) || (minutesRemaining == 6 && openValves.size() <= 9)) {
             return 0;
         }

@@ -223,3 +223,15 @@ Notable use of Apache Math's int ranges
 Signals and Beacons, finding covered points per row and the one uncovered point in a 4,000,000 x 4,000,000 grid.
 
 I tried to treat these as individual points in a grid, it worked for part one but was not performant enough for part 2. Switched to tracking the points covered by each sensor as a range from x1-x2. I just used the Apache commons math pair to track the range. It would be nice to find a library for ranges to reduce them and see if they are continuous or not and such. There is IntegerSequence.Range but it looks very basic for just iterating through int ranges with a given stepping.
+
+## Day 16
+
+Finding path between valves to relieve the most pressure.
+
+First part I tried to first do with just recursion but even on the sample input it would never complete. Got fairly lucky that my memoization approach worked off the bat.
+
+The second part was much more challenging, few key things I did was replace the valves with just the valve name in my cache to save space. I realized that when caching based on two points A,B was the same as B,A so I checked the cache twice. Also I needed to add manual pruning to terminate paths that didn't look promising.
+
+Notable use of the LRUMap from ApacheCollections that will fix the size of the map and automatically evict entries based on which was least recently accessed if a new entry is attempting to be added to a full map. Thia was useful to keep memory in check when troubleshooting part 2.
+
+> private final Map<CacheKey, Integer> cache = new LRUMap<>(2500000);
