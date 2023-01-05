@@ -9,9 +9,9 @@ import java.util.Set;
 @Builder
 public class CacheKey {
 
-    private Set<Valve> openValves;
+    private Set<String> openValves;
     private int minutesRemaining;
-    private Valve currentValveA;
-    private Valve currentValveB;
+    private String currentValveA;
+    private String currentValveB;
 
 }
