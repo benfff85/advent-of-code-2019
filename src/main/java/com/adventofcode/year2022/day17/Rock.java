@@ -1,0 +1,51 @@
+package com.adventofcode.year2022.day17;
+
+import com.adventofcode.common.grid.Direction;
+import com.adventofcode.common.grid.PointUtil;
+import lombok.Getter;
+import org.apache.commons.collections4.CollectionUtils;
+
+import java.awt.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+public class Rock {
+
+    @Getter
+    private List<Point> points = new LinkedList<>();
+
+    public Rock(Integer highestRock, RockType rockType) {
+        int startingCordY = highestRock + 4;
+
+        switch (rockType) {
+            case DASH -> {
+                points = List.of(new Point(3, startingCordY), new Point(4, startingCordY), new Point(5, startingCordY), new Point(6, startingCordY));
+            }
+            case PLUS -> {
+                points = List.of(new Point(3, startingCordY + 1), new Point(4, startingCordY + 2), new Point(4, startingCordY + 1), new Point(4, startingCordY), new Point(5, startingCordY + 1));
+            }
+            case ANGLE -> {
+                points = List.of(new Point(3, startingCordY), new Point(4, startingCordY), new Point(5, startingCordY), new Point(5, startingCordY + 1), new Point(5, startingCordY + 2));
+            }
+            case LINE -> {
+                points = List.of(new Point(3, startingCordY), new Point(3, startingCordY + 1), new Point(3, startingCordY + 2), new Point(3, startingCordY + 3));
+            }
+            case SQUARE -> {
+                points = List.of(new Point(3, startingCordY), new Point(3, startingCordY + 1), new Point(4, startingCordY), new Point(4, startingCordY + 1));
+            }
+        }
+
+    }
+
+    public boolean move(Direction direction, Map<Point, GridElement> grid) {
+        List<Point> targetPoints = PointUtil.getAdjacentPoints(points, direction);
+        if (CollectionUtils.containsAny(grid.keySet(), targetPoints)) {
+            return false;
+        }
+
+        points = targetPoints;
+        return true;
+    }
+
+}

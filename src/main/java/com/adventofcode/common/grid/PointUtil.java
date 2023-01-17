@@ -41,6 +41,10 @@ public class PointUtil {
         };
     }
 
+    public static List<Point> getAdjacentPoints(List<Point> points, Direction direction) {
+        return points.stream().map(p -> PointUtil.getAdjacentPoint(p, direction)).toList();
+    }
+
     public static Integer getManhattanDistance(Point p1, Point p2) {
         return abs(p1.x - p2.x) + abs(p1.y - p2.y);
     }

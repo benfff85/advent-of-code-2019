@@ -6,6 +6,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static java.util.Collections.emptyMap;
@@ -108,6 +109,10 @@ public class GridUtility {
 
     public static <T> Integer getMaxY(Map<Point, T> grid) {
         return grid.keySet().stream().map(p -> p.y).reduce(Integer::max).orElseThrow();
+    }
+
+    public static <T> Integer getMaxY(Map<Point, T> grid, Predicate<Map.Entry<Point, T>> predicate, Integer defaultResult) {
+        return grid.entrySet().stream().filter(predicate).map(e -> e.getKey().y).reduce(Integer::max).orElse(defaultResult);
     }
 
 }
