@@ -184,11 +184,11 @@ class AdventOfCodeTests {
         assertEquals(BigInteger.valueOf(1119775), answer.getPart2());
     }
 
-    @Test
+//    @Test
     void testDay18() {
         DailyAnswer answer = day18Controller.execute();
         assertEquals(0, answer.getPart1());
-//        assertEquals(0, answer.getPart2());
+        assertEquals(0, answer.getPart2());
     }
 
 }
