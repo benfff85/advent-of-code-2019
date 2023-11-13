@@ -55,8 +55,7 @@ public class Controller extends SolutionController {
             IntStream.rangeClosed(0, signalSize - 1).boxed().parallel().forEach(e -> outputSignal.set(e, (byte) 0));
 
             // Loop through digits in input signal
-            int finalPhase = phase;
-            IntStream.rangeClosed(0, signalSize - 1).boxed().parallel().forEach(e -> processElement(signalSize, inputSignal, outputSignal, finalPhase, e));
+            IntStream.rangeClosed(0, signalSize - 1).boxed().parallel().forEach(e -> processElement(signalSize, inputSignal, outputSignal, e));
 
             // Copy output to input for next iteration
             IntStream.rangeClosed(0, signalSize - 1).boxed().parallel().forEach(e -> inputSignal.set(e, outputSignal.get(e)));
@@ -67,7 +66,7 @@ public class Controller extends SolutionController {
         return outputSignal;
     }
 
-    private void processElement(int signalSize, List<Byte> inputSignal, List<Byte> outputSignal, int phase, int e) {
+    private void processElement(int signalSize, List<Byte> inputSignal, List<Byte> outputSignal, int e) {
         int blockSize = e + 1;
         int blockGroupSize = (4 * blockSize);
         int halfBlockGroupSize = blockGroupSize / 2;
