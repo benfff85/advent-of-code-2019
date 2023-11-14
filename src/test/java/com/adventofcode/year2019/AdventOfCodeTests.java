@@ -3,6 +3,7 @@ package com.adventofcode.year2019;
 
 import com.adventofcode.common.DailyAnswer;
 import com.adventofcode.year2019.day8.Layer;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,6 +14,7 @@ import java.util.Arrays;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
+@DisplayName("2019")
 @SpringBootTest
 class AdventOfCodeTests {
 
