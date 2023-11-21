@@ -3,6 +3,7 @@ package com.adventofcode.year2019;
 
 import com.adventofcode.common.DailyAnswer;
 import com.adventofcode.year2019.day8.Layer;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,46 +15,30 @@ import java.util.Arrays;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
-@DisplayName("2019")
 @SpringBootTest
+@DisplayName("2019")
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 class AdventOfCodeTests {
 
-    @Autowired
-    private com.adventofcode.year2019.day1.Controller day1Controller;
-    @Autowired
-    private com.adventofcode.year2019.day2.Controller day2Controller;
-    @Autowired
-    private com.adventofcode.year2019.day3.Controller day3Controller;
-    @Autowired
-    private com.adventofcode.year2019.day4.Controller day4Controller;
-    @Autowired
-    private com.adventofcode.year2019.day5.Controller day5Controller;
-    @Autowired
-    private com.adventofcode.year2019.day6.Controller day6Controller;
-    @Autowired
-    private com.adventofcode.year2019.day7.Controller day7Controller;
-    @Autowired
-    private com.adventofcode.year2019.day8.Controller day8Controller;
-    @Autowired
-    private com.adventofcode.year2019.day9.Controller day9Controller;
-    @Autowired
-    private com.adventofcode.year2019.day10.Controller day10Controller;
-    @Autowired
-    private com.adventofcode.year2019.day11.Controller day11Controller;
-    @Autowired
-    private com.adventofcode.year2019.day12.Controller day12Controller;
-    @Autowired
-    private com.adventofcode.year2019.day13.Controller day13Controller;
-    @Autowired
-    private com.adventofcode.year2019.day14.Controller day14Controller;
-    @Autowired
-    private com.adventofcode.year2019.day15.Controller day15Controller;
-    @Autowired
-    private com.adventofcode.year2019.day16.Controller day16Controller;
-    @Autowired
-    private com.adventofcode.year2019.day17.Controller day17Controller;
-    @Autowired
-    private com.adventofcode.year2019.day18.Controller day18Controller;
+
+    private final com.adventofcode.year2019.day1.Controller day1Controller;
+    private final com.adventofcode.year2019.day2.Controller day2Controller;
+    private final com.adventofcode.year2019.day3.Controller day3Controller;
+    private final com.adventofcode.year2019.day4.Controller day4Controller;
+    private final com.adventofcode.year2019.day5.Controller day5Controller;
+    private final com.adventofcode.year2019.day6.Controller day6Controller;
+    private final com.adventofcode.year2019.day7.Controller day7Controller;
+    private final com.adventofcode.year2019.day8.Controller day8Controller;
+    private final com.adventofcode.year2019.day9.Controller day9Controller;
+    private final com.adventofcode.year2019.day10.Controller day10Controller;
+    private final com.adventofcode.year2019.day11.Controller day11Controller;
+    private final com.adventofcode.year2019.day12.Controller day12Controller;
+    private final com.adventofcode.year2019.day13.Controller day13Controller;
+    private final com.adventofcode.year2019.day14.Controller day14Controller;
+    private final com.adventofcode.year2019.day15.Controller day15Controller;
+    private final com.adventofcode.year2019.day16.Controller day16Controller;
+    private final com.adventofcode.year2019.day17.Controller day17Controller;
+    private final com.adventofcode.year2019.day18.Controller day18Controller;
 
     @Test
     void testDay1() {

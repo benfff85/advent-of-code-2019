@@ -116,8 +116,8 @@ public class Controller extends SolutionController {
             addToCache(cache, rock.getRockType(), preActionTopology, gustDirections, postActionTopology, i);
         }
 
-        answer.setPart1(findHeightOfRocks(grid));
-        log.info("P1: {}", answer.getPart1());
+        answer.setPart2(findHeightOfRocks(grid));
+        log.info("P2: {}", answer.getPart2());
     }
 
     private void addToCache(Map<RockType, Map<List<Integer>, Map<List<Direction>, CacheResult>>> cache, RockType rockType, List<Integer> initialTopology, List<Direction> gustDirections, List<Integer> postActionTopology, int i) {
