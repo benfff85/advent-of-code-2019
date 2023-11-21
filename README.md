@@ -235,3 +235,15 @@ The second part was much more challenging, few key things I did was replace the 
 Notable use of the LRUMap from ApacheCollections that will fix the size of the map and automatically evict entries based on which was least recently accessed if a new entry is attempting to be added to a full map. Thia was useful to keep memory in check when troubleshooting part 2.
 
 > private final Map<CacheKey, Integer> cache = new LRUMap<>(2500000);
+
+## Day 17
+
+Tetris style falling rocks with gusts of wind. 
+
+The first part wasn't so bad, used the grid I had used before and looped through rock types and gusts of wind. Both of which were cyclic, it was useful to loop with a resetting iterator from Apache.
+
+> ResettableListIterator<RockType> rockTypes = IteratorUtils.loopingListIterator(List.of(DASH, PLUS, ANGLE, LINE, SQUARE));
+ 
+The first section only loops through 2022 rocks and is fairly straight forward. 
+
+Part 2 requires looping through 1000000000000 rocks. Obviously this isn't computable in the same fashion. I created a cache of rocks type, topology and gusts to cache the input/output topology pre/post the rock fall. After manually examining I found a cycle and then simply computed the height gain from the cycle * the number of cycles plus the rocks prior to the cycle plus the rocks post the cycle needed to get to 1000000000000. I have not yet systemically identified the cycle and still relied on manual calculations.
