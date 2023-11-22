@@ -18,18 +18,16 @@ public class Controller extends SolutionController {
 
     public DailyAnswer execute() {
 
-        solvePart1();
-        log.info("P1: {}", answer.getPart1());
-        return answer;
-    }
-
-    private void solvePart1() {
-
         LavaDroplet droplet = new LavaDroplet();
         puzzleInput.stream().map(Cube::new).forEach(droplet::addCube);
 
         answer.setPart1(droplet.calculateSurfaceArea());
+        log.info("P1: {}", answer.getPart1());
 
+        answer.setPart2(droplet.calculateContiguousSurfaceArea());
+        log.info("P2: {}", answer.getPart2());
+
+        return answer;
     }
 
 }

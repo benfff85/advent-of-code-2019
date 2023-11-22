@@ -15,4 +15,10 @@ public class Cube {
         z = Integer.parseInt(splitString[2]);
     }
 
+    public Cube(int x, int y, int z) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+    }
+
 }
