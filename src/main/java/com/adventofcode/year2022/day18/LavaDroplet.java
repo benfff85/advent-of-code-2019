@@ -13,7 +13,9 @@ public class LavaDroplet {
     private static final int SIZE = 25;
     private final List<List<List<Cube>>> droplet = new ArrayList<>(SIZE);
     private final Set<Cube> allCubes = new HashSet<>();
-
+    private final Set<Cube> processedCubes = new HashSet<>();
+    private final Deque<Cube> cubesToProcess = new LinkedList<>();
+    private int contactPointCount = 0;
 
     public LavaDroplet() {
 
@@ -64,20 +66,12 @@ public class LavaDroplet {
     }
 
     public Cube getCube(int x, int y, int z) {
-        return droplet.get(x + 1).get(y + 1).get(z + 1);
-//        return droplet.get(x).get(y).get(z);
-
+        return droplet.get(x).get(y).get(z);
     }
 
     public void setCube(Cube cube) {
-        // Adding 1 to pad lava droplet away from the edge
-        droplet.get(cube.getX() + 1).get(cube.getY() + 1).set(cube.getZ() + 1, cube);
+        droplet.get(cube.getX()).get(cube.getY()).set(cube.getZ(), cube);
     }
-
-    // TODO move this all somewhere
-    private int contactPointCount = 0;
-    private final Set<Cube> processedCubes = new HashSet<>();
-    private final Deque<Cube> cubesToProcess = new LinkedList<>();
 
     public int calculateContiguousSurfaceArea() {
         cubesToProcess.push(new Cube(0, 0, 0));
@@ -92,99 +86,35 @@ public class LavaDroplet {
             cube = cubesToProcess.pop();
             processedCubes.add(cube);
 
-            Cube adjecentCube;
+            // Check all six directions
+            checkAdjacent(cube, -1, 0, 0); // left
+            checkAdjacent(cube, 1, 0, 0);  // right
+            checkAdjacent(cube, 0, -1, 0); // down
+            checkAdjacent(cube, 0, 1, 0);  // up
+            checkAdjacent(cube, 0, 0, -1); // forward
+            checkAdjacent(cube, 0, 0, 1);  // backward
 
-            // Check left
-            if (cube.getX() >= 0) {
-                // If it exists as a cube (lava) add it as a contact point
-                if (nonNull(getCube(cube.getX() - 1, cube.getY(), cube.getZ()))) {
-                    contactPointCount++;
-                }
-                // Otherwise check if not already processed, process it
-                else {
-                    adjecentCube = new Cube(cube.getX() - 1, cube.getY(), cube.getZ());
-                    if (!processedCubes.contains(adjecentCube) && !cubesToProcess.contains(adjecentCube)) {
-                        cubesToProcess.push(adjecentCube);
-                    }
-                }
+        }
+    }
+
+    private void checkAdjacent(Cube cube, int dx, int dy, int dz) {
+        int newX = cube.getX() + dx;
+        int newY = cube.getY() + dy;
+        int newZ = cube.getZ() + dz;
+
+        // Check bounds
+        if (newX >= 0 && newX < SIZE - 1 && newY >= 0 && newY < SIZE - 1 && newZ >= 0 && newZ < SIZE - 1) {
+            Cube adjacentCube = new Cube(newX, newY, newZ);
+
+            // If it exists as a cube (lava) add it as a contact point
+            if (nonNull(getCube(newX, newY, newZ))) {
+                contactPointCount++;
             }
-
-            // Check right
-            if (cube.getX() < SIZE - 2) {
-                // If it exists as a cube (lava) add it as a contact point
-                if (nonNull(getCube(cube.getX() + 1, cube.getY(), cube.getZ()))) {
-                    contactPointCount++;
-                }
-                // Otherwise check if not already processed, process it
-                else {
-                    adjecentCube = new Cube(cube.getX() + 1, cube.getY(), cube.getZ());
-                    if (!processedCubes.contains(adjecentCube) && !cubesToProcess.contains(adjecentCube)) {
-                        cubesToProcess.push(adjecentCube);
-                    }
-                }
-            }
-
-            // Check down
-            if (cube.getY() >= 0) {
-                // If it exists as a cube (lava) add it as a contact point
-                if (nonNull(getCube(cube.getX(), cube.getY() - 1, cube.getZ()))) {
-                    contactPointCount++;
-                }
-                // Otherwise check if not already processed, process it
-                else {
-                    adjecentCube = new Cube(cube.getX(), cube.getY() - 1, cube.getZ());
-                    if (!processedCubes.contains(adjecentCube) && !cubesToProcess.contains(adjecentCube)) {
-                        cubesToProcess.push(adjecentCube);
-                    }
-                }
-            }
-
-            // Check up
-            if (cube.getY() < SIZE - 2) {
-                // If it exists as a cube (lava) add it as a contact point
-                if (nonNull(getCube(cube.getX(), cube.getY() + 1, cube.getZ()))) {
-                    contactPointCount++;
-                }
-                // Otherwise check if not already processed, process it
-                else {
-                    adjecentCube = new Cube(cube.getX(), cube.getY() + 1, cube.getZ());
-                    if (!processedCubes.contains(adjecentCube) && !cubesToProcess.contains(adjecentCube)) {
-                        cubesToProcess.push(adjecentCube);
-                    }
-                }
-            }
-
-            // Check forward
-            if (cube.getZ() >= 0) {
-                // If it exists as a cube (lava) add it as a contact point
-                if (nonNull(getCube(cube.getX(), cube.getY(), cube.getZ() - 1))) {
-                    contactPointCount++;
-                }
-                // Otherwise check if not already processed, process it
-                else {
-                    adjecentCube = new Cube(cube.getX(), cube.getY(), cube.getZ() - 1);
-                    if (!processedCubes.contains(adjecentCube) && !cubesToProcess.contains(adjecentCube)) {
-                        cubesToProcess.push(adjecentCube);
-                    }
-                }
-            }
-
-            // Check backward
-            if (cube.getZ() < SIZE - 2) {
-                // If it exists as a cube (lava) add it as a contact point
-                if (nonNull(getCube(cube.getX(), cube.getY(), cube.getZ() + 1))) {
-                    contactPointCount++;
-                }
-                // Otherwise check if not already processed, process it
-                else {
-                    adjecentCube = new Cube(cube.getX(), cube.getY(), cube.getZ() + 1);
-                    if (!processedCubes.contains(adjecentCube) && !cubesToProcess.contains(adjecentCube)) {
-                        cubesToProcess.push(adjecentCube);
-                    }
-                }
+            // Otherwise check if not already processed, process it
+            else if (!processedCubes.contains(adjacentCube) && !cubesToProcess.contains(adjacentCube)) {
+                cubesToProcess.push(adjacentCube);
             }
         }
-
     }
 
 }

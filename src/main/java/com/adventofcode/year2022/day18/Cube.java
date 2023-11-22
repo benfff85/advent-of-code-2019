@@ -10,9 +10,10 @@ public class Cube {
     private int z;
     public Cube(String input) {
         String[] splitString = input.split(",");
-        x = Integer.parseInt(splitString[0]);
-        y = Integer.parseInt(splitString[1]);
-        z = Integer.parseInt(splitString[2]);
+        // Padding by one to keep away from the edge
+        x = Integer.parseInt(splitString[0]) + 1;
+        y = Integer.parseInt(splitString[1]) + 1;
+        z = Integer.parseInt(splitString[2]) + 1;
     }
 
     public Cube(int x, int y, int z) {
