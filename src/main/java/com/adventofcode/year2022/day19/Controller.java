@@ -5,7 +5,6 @@ import com.adventofcode.common.InputHelper;
 import com.adventofcode.common.SolutionController;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.map.LRUMap;
-import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
 
@@ -19,7 +18,6 @@ import static java.util.Objects.nonNull;
 
 
 @Slf4j
-@EnableAsync
 @Component("controller-2022-19")
 public class Controller extends SolutionController {
 
