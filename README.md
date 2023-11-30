@@ -247,3 +247,11 @@ The first part wasn't so bad, used the grid I had used before and looped through
 The first section only loops through 2022 rocks and is fairly straight forward. 
 
 Part 2 requires looping through 1000000000000 rocks. Obviously this isn't computable in the same fashion. I created a cache of rocks type, topology and gusts to cache the input/output topology pre/post the rock fall. After manually examining I found a cycle and then simply computed the height gain from the cycle * the number of cycles plus the rocks prior to the cycle plus the rocks post the cycle needed to get to 1000000000000. I have not yet systemically identified the cycle and still relied on manual calculations.
+
+## Day 18 
+
+Calculating the surface area of a 3D lava droplet. 
+
+Solved by creating a 3D list of all the cubes that make up the lava droplet, then just looping through all cubes and seeing if there was another cube immediately in every direction, for any direction where there was not an adjacent cube add one to the surface area. 
+
+This worked fine for part 1, for part 2 we only care about exterior surface area (and not internal cavities). I used a flood fill algorithm for this, the one catch was the droplet was up against the edge of the box. To address this I shifted the droplet coordinates by 1 when initially placing the droplet since its exact location isn't important, just its surface area.
