@@ -264,6 +264,6 @@ Part 1 took 30 different robot blueprints and ran them each for 24 steps. Concep
 
 This worked but performance was a concern. I do some simple math to calculate max possible geodes and if its not more than the already identified max I preemptively terminate the branch. Additionally I cache method calls based on resource inventory, robot to build, step and robot inventory. This helps but part one still runs for about 3 minutes.
 
-Part 2 just looks at the first 3 blueprints but runs them for 32 steps. With my existing solution it was able to solve this as well but runtime was delayed further to about 11 minnutes. 
+Part 2 just looks at the first 3 blueprints but runs them for 32 steps. With my existing solution it was able to solve this as well but runtime was delayed further to about 5 minutes. 
 
 I think most of the performance degradation is because I clone my resource and robot maps every time the step method is called but not clear how this can easily be avoided.
