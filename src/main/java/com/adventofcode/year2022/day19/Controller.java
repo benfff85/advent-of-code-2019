@@ -81,7 +81,7 @@ public class Controller extends SolutionController {
 
         Map<RobotType, Integer> activeRobots;
         Map<RobotType, Integer> resourceInventory;
-        cacheCutoff = 22;
+        cacheCutoff = 23;
         stepCount = 32;
         int totalQualityLevel = 1;
 
