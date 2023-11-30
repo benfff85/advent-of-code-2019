@@ -28,11 +28,13 @@ public class Controller extends SolutionController {
     private int maxGeode;
     private Map<CacheKey, Integer> cache;
     private final List<Integer> maxPossibleGeodesFromYetToBeCreatedRobots = new ArrayList<>();
+    private Integer cacheCutoff;
+    private Integer stepCount;
 
     public Controller(InputHelper inputHelper) {
         super(inputHelper, "puzzle-input/2022/day-19.txt");
 
-        for (int i = 0; i < 24; i++) {
+        for (int i = 0; i < 32; i++) {
             maxPossibleGeodesFromYetToBeCreatedRobots.add(IntStream.range(0, i).sum());
         }
     }
@@ -40,11 +42,19 @@ public class Controller extends SolutionController {
 
     public DailyAnswer execute() {
 
+        solvePart1();
+        solvePart2();
+        return answer;
+    }
+
+    private void solvePart1() {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
 
         Map<RobotType, Integer> activeRobots;
         Map<RobotType, Integer> resourceInventory;
+        cacheCutoff = 19;
+        stepCount = 24;
         int totalQualityLevel = 0;
 
         log.info("Beginning processing");
@@ -63,15 +73,41 @@ public class Controller extends SolutionController {
         log.info("P1: {}", answer.getPart1());
         stopWatch.stop();
         log.info("Time taken: {}s", stopWatch.getTotalTimeSeconds());
+    }
 
-        return answer;
+    private void solvePart2() {
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+
+        Map<RobotType, Integer> activeRobots;
+        Map<RobotType, Integer> resourceInventory;
+        cacheCutoff = 24;
+        stepCount = 32;
+        int totalQualityLevel = 1;
+
+        log.info("Beginning processing");
+        for (int i = 0; i < 3; i++) {
+            activeBlueprint = blueprints.get(i);
+            maxGeode = 0;
+            activeRobots = new EnumMap<>(Map.of(RobotType.ORE, 1, RobotType.CLAY, 0, RobotType.OBSIDIAN, 0, RobotType.GEODE, 0));
+            resourceInventory = new EnumMap<>(Map.of(RobotType.ORE, 0, RobotType.CLAY, 0, RobotType.OBSIDIAN, 0, RobotType.GEODE, 0));
+            cache = new LRUMap<>(2500000);
+            processStep(1, activeRobots, resourceInventory, null);
+            totalQualityLevel *= maxGeode;
+            log.info("Blueprint {}, Max {}", i + 1, maxGeode);
+        }
+
+        answer.setPart2(totalQualityLevel);
+        log.info("P2: {}", answer.getPart2());
+        stopWatch.stop();
+        log.info("Time taken: {}s", stopWatch.getTotalTimeSeconds());
     }
 
 
     private void processStep(int step, Map<RobotType, Integer> activeRobots, Map<RobotType, Integer> resourceInventory, RobotType robotTypeToBuild) {
 
         CacheKey cacheKey = null;
-        if (step <= 19) {
+        if (step <= cacheCutoff) {
             cacheKey = new CacheKey(step, activeRobots, resourceInventory, robotTypeToBuild);
             if (cache.containsKey(cacheKey)) {
                 return;
@@ -88,7 +124,7 @@ public class Controller extends SolutionController {
         processResourceCreation(activeRobots, resourceInventory);
 
         // If we hit last step check if new max and return
-        if (step == 24) {
+        if (step == stepCount) {
             maxGeode = Math.max(maxGeode, resourceInventory.get(RobotType.GEODE));
             return;
         }
@@ -120,7 +156,7 @@ public class Controller extends SolutionController {
             return false;
         }
 
-        int remainingSteps = (24 - step);
+        int remainingSteps = (stepCount - step);
         int maxPossibleGeodes = maxPossibleGeodesFromYetToBeCreatedRobots.get(remainingSteps) + // Geodes produced by yet-to-be-created robots
                 currentGeodes + // Current geodes
                 (geodeRobotCount * remainingSteps); // Geodes produced by existing robots

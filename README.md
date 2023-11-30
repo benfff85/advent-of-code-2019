@@ -255,3 +255,15 @@ Calculating the surface area of a 3D lava droplet.
 Solved by creating a 3D list of all the cubes that make up the lava droplet, then just looping through all cubes and seeing if there was another cube immediately in every direction, for any direction where there was not an adjacent cube add one to the surface area. 
 
 This worked fine for part 1, for part 2 we only care about exterior surface area (and not internal cavities). I used a flood fill algorithm for this, the one catch was the droplet was up against the edge of the box. To address this I shifted the droplet coordinates by 1 when initially placing the droplet since its exact location isn't important, just its surface area.
+
+## Day 19
+
+Creating resource generating robots to ultimately collect geodes. 
+
+Part 1 took 30 different robot blueprints and ran them each for 24 steps. Conceptually this wasn't too bad. I made a recursive method that would process each step and then call itself with each options or robot to build (or not build any robots) effectively creating a possibility tree. 
+
+This worked but performance was a concern. I do some simple math to calculate max possible geodes and if its not more than the already identified max I preemptively terminate the branch. Additionally I cache method calls based on resource inventory, robot to build, step and robot inventory. This helps but part one still runs for about 3 minutes.
+
+Part 2 just looks at the first 3 blueprints but runs them for 32 steps. With my existing solution it was able to solve this as well but runtime was delayed further to about 11 minnutes. 
+
+I think most of the performance degradation is because I clone my resource and robot maps every time the step method is called but not clear how this can easily be avoided.
