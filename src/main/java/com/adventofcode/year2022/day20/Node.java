@@ -3,13 +3,13 @@ package com.adventofcode.year2022.day20;
 
 import lombok.Getter;
 
+@Getter
 public class Node {
 
-    @Getter
-    private final Integer value;
+    private final Long value;
 
-    public Node(String input) {
-        value = Integer.parseInt(input);
+    public Node(String input, Long multiplier) {
+        value = Integer.parseInt(input) * multiplier;
     }
 
     public String toString() {

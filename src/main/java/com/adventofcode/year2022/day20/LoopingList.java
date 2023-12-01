@@ -16,15 +16,15 @@ public class LoopingList {
         listSize = list.size();
     }
 
-    public void slide(Node node, Integer value) {
+    public void slide(Node node, Long value) {
         int startingIndex = list.indexOf(node);
         list.remove(startingIndex);
-        list.add(calculateShiftedIndex(startingIndex, value), node);
+        list.add((int) calculateShiftedIndex(startingIndex, value), node);
     }
 
 
-    private int calculateShiftedIndex(int startingIndex, Integer value) {
-        int shiftedIndex = startingIndex + (value % (listSize - 1));
+    private long calculateShiftedIndex(int startingIndex, Long value) {
+        long shiftedIndex = startingIndex + (value % (listSize - 1));
         if (shiftedIndex >= listSize) {
             shiftedIndex = (shiftedIndex % listSize) + 1;
         } else if (shiftedIndex < 0) {
@@ -33,17 +33,17 @@ public class LoopingList {
         return shiftedIndex;
     }
 
-    public Node getNodeGivenOffset(Integer value, Integer offset) {
+    public Node getNodeGivenOffset(Long value, Long offset) {
 
-        int startingIndex = list.indexOf(list.stream().filter(n -> n.getValue() == value).findFirst().orElseThrow());
+        long startingIndex = list.indexOf(list.stream().filter(n -> n.getValue() == value).findFirst().orElseThrow());
 
-        int shiftedIndex = startingIndex + offset;
+        long shiftedIndex = startingIndex + offset;
         if (shiftedIndex >= listSize) {
             shiftedIndex = (shiftedIndex % listSize);
         } else if (shiftedIndex < 0) {
             shiftedIndex = listSize + (shiftedIndex % listSize);
         }
 
-        return list.get(shiftedIndex);
+        return list.get((int) shiftedIndex);
     }
 }
