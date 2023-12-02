@@ -267,3 +267,19 @@ This worked but performance was a concern. I do some simple math to calculate ma
 Part 2 just looks at the first 3 blueprints but runs them for 32 steps. With my existing solution it was able to solve this as well but runtime was delayed further to about 5 minutes. 
 
 I think most of the performance degradation is because I clone my resource and robot maps every time the step method is called but not clear how this can easily be avoided.
+
+# 2023
+
+## Day 1
+
+Finding first and last numeric values in a string. 
+
+2023 started off with a bit of frustration, part one was pretty easy but my solution was delayed due to a off-by-1 error. To get the last digit I just reversed the string and passed it to the same function.
+
+Part two involved resolving text to digits, for example "one" -> 1. I initially fell for the string replacement trap which fails for scenarios like "twone", instead iterated through each character checking for numeric string values and constructed a new string.
+
+## Day 2
+
+Playing game of unknown number of colored cubes in a bag.
+
+Nothing too notable today, solved with a simple loop max observed values of cubes of each color. Then looped through the list, filtered games not possible and summed. Part 2 just required one additional power() method that multiplied the max observed cube count together. Similarly looped through games, mapped to the power value and summed.
