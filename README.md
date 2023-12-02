@@ -268,6 +268,24 @@ Part 2 just looks at the first 3 blueprints but runs them for 32 steps. With my 
 
 I think most of the performance degradation is because I clone my resource and robot maps every time the step method is called but not clear how this can easily be avoided.
 
+## Day 20
+
+Ring of sliding integer nodes.
+
+Created a LoopingList class that handled the placement and shifting of elements. Implemented based on a linked list. When an elements needed to be shifted it would first be removed from the list, then its new position calculated, then re-inserted. this helps avoid shifting one position at a time and repeated removal/inserts to the list. Took a while to come up with the shifted index algorithm but once done it was straight forward.
+
+Part two involved increasing the amount each node would be shifted, the existing solution handled this fine but if nodes were shifted one node at a time would have presented a significant performance isuse. 
+
+## Day 21 
+
+Monkey's hollering either numbers or waiting on computation to do so. 
+
+Part one was straight forward, created essentially a tree and looped through all nodes repeatedly until the root node was calculated.
+
+Part two made you determine one of the monkey's numbers such that the two monkeys referenced by the root monkey had equal values. Took a manual approach to this one, I saw that as the monkey in questions value increased the one monkey referenced by root decreased and slowly was converging to the other monkey referenced by root.
+
+I looped through values 100000000 at a time until I got close to the value desired, then 10000 at a time. I used this value as a magic number and then iterated through possible values 1 at a time until finding the exact value.
+
 # 2023
 
 ## Day 1
