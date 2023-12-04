@@ -309,3 +309,13 @@ Finding numeric part numbers with adjacent symbols.
 Not my best work, part one was pretty straight forward, initially ran for a few seconds due to re-calculating the max X/Y of my grid repetitively.
 
 Part 2 I spent way too much time on before realizing Guavas `HashMultimap` doesn't insert duplicate values, if the values are equal which was throwing off my gear map. I switched to using Spring's `LinkedMultiValueMap` instead and it worked great.
+
+## Day 4
+
+Scratch off card with winning numbers list of scratch off card numbers. 
+
+Easier than the last two weekend days. Created a Card object to parse the input into two number Sets and added logic to identify the count of numbers that were winners using Apache CollectionUtils `intersection(c1, c2)` method. 
+
+Part 2 spun the logic a little where winning numbers from one card would earn you additional copies of subsequent cards. I maintained a cardCount map that tracked how many of each card I had as each card was evaluated in sequence. Nothing too tricky, just one handup where I forgot to call `boxed()` on an `IntSteam` to convert it to a `Stream<Integer>` for the `collect` method to work when initializing my cardCountMap.
+
+> Map<Integer, Integer> cardCountMap = IntStream.rangeClosed(1, cards.size()).boxed().collect(Collectors.toMap(i -> i, i -> 1));
