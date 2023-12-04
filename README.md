@@ -301,3 +301,11 @@ Part two involved resolving text to digits, for example "one" -> 1. I initially 
 Playing game of unknown number of colored cubes in a bag.
 
 Nothing too notable today, solved with a simple loop max observed values of cubes of each color. Then looped through the list, filtered games not possible and summed. Part 2 just required one additional power() method that multiplied the max observed cube count together. Similarly looped through games, mapped to the power value and summed.
+
+## Day 3 
+
+Finding numeric part numbers with adjacent symbols.
+
+Not my best work, part one was pretty straight forward, initially ran for a few seconds due to re-calculating the max X/Y of my grid repetitively.
+
+Part 2 I spent way too much time on before realizing Guavas `HashMultimap` doesn't insert duplicate values, if the values are equal which was throwing off my gear map. I switched to using Spring's `LinkedMultiValueMap` instead and it worked great.

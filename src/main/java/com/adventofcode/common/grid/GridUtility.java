@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 
 import static java.util.Collections.emptyMap;
 import static java.util.Objects.nonNull;
+import static org.apache.commons.math3.util.MathUtils.reduce;
 
 public class GridUtility {
 
@@ -56,6 +57,23 @@ public class GridUtility {
                 .filter(e -> nonNull(e.getValue()))
                 .collect(Collectors.toMap(Pair::getKey, Pair::getValue));
 
+    }
+
+    public static <T> Map<Point, T> getAllSurroundingElementsExcludingProvided(Map<Point, T> grid, List<Point> points, SurroundingType surroundingType) {
+        return getAllSurroundingElements(grid, points, surroundingType, false);
+    }
+
+    public static <T> Map<Point, T> getAllSurroundingElementsIncludingProvided(Map<Point, T> grid, List<Point> points, SurroundingType surroundingType) {
+        return getAllSurroundingElements(grid, points, surroundingType, true);
+    }
+
+    private static <T> Map<Point, T> getAllSurroundingElements(Map<Point, T> grid, List<Point> points, SurroundingType surroundingType, boolean shouldIncludeProvided) {
+
+        return points
+                .stream()
+                .flatMap(point -> getSurroundingElements(grid, point, surroundingType).entrySet().stream())
+                .filter(entry -> shouldIncludeProvided || !points.contains(entry.getKey()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a, b) -> b));
     }
 
     // Returns all elements in a specified direction from the specific point, path terminates when point is not in grid or when element of point is null. Specific element will be first in the list.
