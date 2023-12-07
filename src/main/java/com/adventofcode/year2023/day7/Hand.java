@@ -1,11 +1,14 @@
 package com.adventofcode.year2023.day7;
 
 import lombok.Data;
-import org.apache.commons.collections4.CollectionUtils;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+
+import static com.adventofcode.year2023.day7.HandType.*;
+import static java.lang.Integer.parseInt;
+import static java.util.Arrays.stream;
+import static org.apache.commons.collections4.CollectionUtils.getCardinalityMap;
 
 @Data
 public class Hand implements Comparable<Hand> {
@@ -18,10 +21,10 @@ public class Hand implements Comparable<Hand> {
 
     public Hand(String input, boolean isJokerWild) {
         this.isJokerWild = isJokerWild;
-        bid = Integer.parseInt(input.split(" ")[1]);
-        cards = Arrays.stream(input.split(" ")[0].split("")).map(this::calcIntValue).toList();
+        bid = parseInt(input.split(" ")[1]);
+        cards = stream(input.split(" ")[0].split("")).map(this::calcIntValue).toList();
 
-        cardFreqMap = CollectionUtils.getCardinalityMap(cards);
+        cardFreqMap = getCardinalityMap(cards);
         if (isJokerWild && cardFreqMap.containsKey(1) && cardFreqMap.get(1) != 5) {
             int jokerCount = cardFreqMap.remove(1);
             int maxFrequency = cardFreqMap.values().stream().mapToInt(Integer::intValue).max().orElseThrow();
@@ -42,25 +45,25 @@ public class Hand implements Comparable<Hand> {
             case "Q" -> 12;
             case "K" -> 13;
             case "A" -> 14;
-            default -> Integer.parseInt(input);
+            default -> parseInt(input);
         };
     }
 
     private HandType calcHandType() {
         if (cardFreqMap.containsValue(5)) {
-            return HandType.FIVE_OF_A_KIND;
+            return FIVE_OF_A_KIND;
         } else if (cardFreqMap.containsValue(4)) {
-            return HandType.FOUR_OF_A_KIND;
+            return FOUR_OF_A_KIND;
         } else if (cardFreqMap.containsValue(3) && cardFreqMap.containsValue(2)) {
-            return HandType.FULL_HOUSE;
+            return FULL_HOUSE;
         } else if (cardFreqMap.containsValue(3)) {
-            return HandType.THREE_OF_A_KIND;
+            return THREE_OF_A_KIND;
         } else if (cardFreqMap.containsValue(2) && cardFreqMap.size() == 3) {
-            return HandType.TWO_PAIRS;
+            return TWO_PAIRS;
         } else if (cardFreqMap.containsValue(2)) {
-            return HandType.ONE_PAIR;
+            return ONE_PAIR;
         } else {
-            return HandType.HIGH_CARD;
+            return HIGH_CARD;
         }
     }
 
