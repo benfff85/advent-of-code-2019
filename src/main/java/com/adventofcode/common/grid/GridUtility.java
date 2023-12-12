@@ -8,10 +8,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static java.util.Collections.emptyMap;
 import static java.util.Objects.nonNull;
-import static org.apache.commons.math3.util.MathUtils.reduce;
 
 public class GridUtility {
 
@@ -131,6 +131,18 @@ public class GridUtility {
 
     public static <T> Integer getMaxY(Map<Point, T> grid, Predicate<Map.Entry<Point, T>> predicate, Integer defaultResult) {
         return grid.entrySet().stream().filter(predicate).map(e -> e.getKey().y).reduce(Integer::max).orElse(defaultResult);
+    }
+
+    public static <T> List<Map.Entry<Point, T>> getElementsByValue(Map<Point, T> grid, T input) {
+        return getElementStreamByValue(grid,input).toList();
+    }
+
+    public static <T> Map.Entry<Point, T>  getFirstElementByValue(Map<Point, T> grid, T input) {
+        return getElementStreamByValue(grid,input).findFirst().orElseThrow();
+    }
+
+    private static <T> Stream<Map.Entry<Point, T>> getElementStreamByValue(Map<Point, T> grid, T input) {
+        return grid.entrySet().stream().filter(e -> e.getValue().equals(input));
     }
 
 }
