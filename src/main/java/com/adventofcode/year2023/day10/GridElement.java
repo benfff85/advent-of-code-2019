@@ -9,7 +9,7 @@ import java.util.Arrays;
 @Getter
 public enum GridElement implements PrintableGridElement {
 
-    LR_PIPE("-"), UD_PIPE("|"), DR_PIPE("F"), LD_PIPE("7"), RU_PIPE("L"), UL_PIPE("J"), AIR("."), START("S");
+    LR_PIPE("-"), UD_PIPE("|"), DR_PIPE("F"), LD_PIPE("7"), RU_PIPE("L"), UL_PIPE("J"), AIR("."), START("S"), EMPTY("X"), INTERIOR(" "), STAR("*");
 
     private final String string;
 

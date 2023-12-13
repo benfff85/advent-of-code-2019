@@ -8,14 +8,17 @@ import com.adventofcode.common.grid.GridUtility;
 import com.adventofcode.common.grid.PointUtil;
 import com.adventofcode.common.grid.SurroundingType;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.stereotype.Component;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Queue;
+import java.util.*;
+import java.util.stream.Collectors;
 
+import static com.adventofcode.common.grid.Direction.D;
+import static com.adventofcode.common.grid.Direction.U;
 import static com.adventofcode.year2023.day10.GridElement.*;
 
 
@@ -36,8 +39,6 @@ public class Controller extends SolutionController {
     public DailyAnswer execute() {
 
         Map<Point, GridElement> grid = initMap();
-
-        log.info("{}", GridUtility.print(grid));
 
         Point point = GridUtility.getFirstElementByValue(grid, START).getKey();
         Point nextPoint;
@@ -63,11 +64,64 @@ public class Controller extends SolutionController {
 
         }
 
-
         answer.setPart1((path.size() + 1) / 2);
         log.info("Part 1: {}", answer.getPart1());
 
-        answer.setPart2(0);
+        // Explode Grid
+        Map<Point, GridElement> explodedGrid = grid.entrySet().stream().map(e -> Pair.of(new Point(e.getKey().x * 2, e.getKey().y * 2), e.getValue())).collect(Collectors.toMap(Pair::getLeft, Pair::getRight));
+        path.add(GridUtility.getFirstElementByValue(grid, START).getKey());
+        List<Point> explodedPath = new ArrayList<>();
+        for (int i = 0; i < path.size() - 1; i++) {
+            Point p1 = new Point(path.get(i).x * 2, path.get(i).y * 2);
+            Point p2 = new Point(path.get(i + 1).x * 2, path.get(i + 1).y * 2);
+
+            explodedPath.add(p1);
+            Point mid = PointUtil.getPointsBetween(p1, p2).get(1);
+            explodedPath.add(mid);
+            if (List.of(U, D).contains(PointUtil.getDirection(p1, mid))) {
+                explodedGrid.put(mid, UD_PIPE);
+            } else {
+                explodedGrid.put(mid, LR_PIPE);
+            }
+        }
+
+        // Fill with empty spaces
+        int maxX = GridUtility.getMaxX(explodedGrid);
+        int maxY = GridUtility.getMaxY(explodedGrid);
+        for (int x = 0; x <= maxX; x++) {
+            for (int y = 0; y <= maxY; y++) {
+                explodedGrid.putIfAbsent(new Point(x, y), EMPTY);
+            }
+        }
+
+        // Flood Fill
+        int countOfElements = 0;
+        Set<Point> processedPoints = new HashSet<>();
+        Queue<Point> pointsToProcess = new LinkedList<>();
+        pointsToProcess.add(PointUtil.getAdjacentPoint(explodedPath.getFirst(), D));
+        while (!pointsToProcess.isEmpty()) {
+            Point p = pointsToProcess.poll();
+
+            if (!explodedGrid.get(p).equals(EMPTY)) {
+                countOfElements++;
+                explodedGrid.put(p, STAR);
+            } else {
+                explodedGrid.put(p, INTERIOR);
+            }
+
+            processedPoints.add(p);
+
+            GridUtility.getSurroundingElements(explodedGrid, p, SurroundingType.ALL).entrySet().stream()
+                    .filter(e -> !processedPoints.contains(e.getKey()))
+                    .filter(e -> !pointsToProcess.contains(e.getKey()))
+                    .filter(e -> !explodedPath.contains(e.getKey()))
+                    .forEach(e -> pointsToProcess.add(e.getKey()));
+
+        }
+
+        log.info("{}", GridUtility.print(explodedGrid));
+
+        answer.setPart2(countOfElements);
         log.info("Part 2: {}", answer.getPart2());
 
         return answer;
@@ -79,7 +133,6 @@ public class Controller extends SolutionController {
         assert direction != null;
         GridElement lastElement = grid.get(point);
 
-        // LR_PIPE("-"), UD_PIPE("|"), DR_PIPE("F"), LD_PIPE("7"), RU_PIPE("L"), UL_PIPE("J"), AIR("."), START("S");
         if (lastElement.equals(START)) {
             return switch (direction) {
                 case U -> upSupportedPipes.contains(e.getValue());
