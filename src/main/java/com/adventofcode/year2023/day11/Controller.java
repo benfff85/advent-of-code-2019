@@ -10,10 +10,8 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.stereotype.Component;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 import static com.adventofcode.year2023.day11.GridElement.GALAXY;
 
@@ -41,7 +39,7 @@ public class Controller extends SolutionController {
             }
         }
 
-        List<Point> galaxies = GridUtility.getElementsByValue(grid, GALAXY).stream().map(Map.Entry::getKey).toList();
+        List<Point> galaxies = new ArrayList<>(GridUtility.getElementsByValue(grid, GALAXY).keySet());
 
         List<Pair<Point, Point>> galaxyPairs = new ArrayList<>();
         for (int i = 0; i < galaxies.size(); i++) {

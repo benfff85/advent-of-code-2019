@@ -189,9 +189,8 @@ public class GridUtility {
         return grid.entrySet().stream().filter(predicate).map(e -> e.getKey().y).reduce(Integer::max).orElse(defaultResult);
     }
 
-    // TODO make this return a map
-    public static <T> List<Map.Entry<Point, T>> getElementsByValue(Map<Point, T> grid, T input) {
-        return getElementStreamByValue(grid, input).toList();
+    public static <T> Map<Point, T> getElementsByValue(Map<Point, T> grid, T input) {
+        return getElementStreamByValue(grid, input).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
     public static <T> Map.Entry<Point, T> getFirstElementByValue(Map<Point, T> grid, T input) {
