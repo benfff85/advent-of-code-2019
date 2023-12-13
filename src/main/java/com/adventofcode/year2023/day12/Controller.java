@@ -21,12 +21,14 @@ public class Controller extends SolutionController {
 
     public DailyAnswer execute() {
 
-        List<SpringRow> springs = puzzleInput.stream().map(SpringRow::new).toList();
+        List<SpringRow> springs = puzzleInput.stream().map(s -> new SpringRow(s, false)).toList();
 
-        answer.setPart1(springs.stream().mapToInt(s -> s.getCombinations().size()).sum());
+        answer.setPart1(springs.stream().mapToInt(SpringRow::getCombinationsCount).sum());
         log.info("Part 1: {}", answer.getPart1());
 
-        answer.setPart2(0);
+        springs = puzzleInput.stream().map(s -> new SpringRow(s, true)).toList();
+
+        answer.setPart2(springs.stream().mapToInt(SpringRow::getUnknownCount).sum());
         log.info("Part 2: {}", answer.getPart2());
 
         return answer;
