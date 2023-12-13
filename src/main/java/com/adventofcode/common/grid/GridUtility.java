@@ -1,5 +1,6 @@
 package com.adventofcode.common.grid;
 
+import com.adventofcode.common.AdventOfCodeException;
 import org.apache.commons.math3.util.Pair;
 
 import java.awt.*;
@@ -8,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import static java.util.Collections.emptyMap;
@@ -105,8 +107,62 @@ public class GridUtility {
         return null;
     }
 
-    public static <T> List<Map.Entry<Point, T>> getElementsOnRow(Map<Point, T> grid, Integer y) {
-        return grid.entrySet().stream().filter(p -> p.getKey().y == y).toList();
+    public static <T> Map<Point, T> getElementsOnRow(Map<Point, T> grid, Integer y) {
+        return grid.entrySet().stream().filter(p -> p.getKey().y == y).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+    }
+
+    public static <T> void addRow(Map<Point, T> grid, int y, int size, T gridElement) {
+        shiftRows(grid, y, 1);
+        IntStream.rangeClosed(0, size).forEach(x -> grid.put(new Point(x, y), gridElement));
+    }
+
+    /**
+     * For a grid with (0,0) in the bottom left this will shift rows up
+     */
+    public static <T> void shiftRows(Map<Point, T> grid, int y, int shiftMagnitude) {
+        Map<Point, T> pointsToMove = getAllElementsInDirectionRelativeToPoint(grid, new Point(0, y), Direction.U);
+        pointsToMove.forEach((key, value) -> grid.remove(key));
+        pointsToMove.forEach((key, value) -> grid.put(new Point(key.x, key.y + shiftMagnitude), value));
+    }
+
+    public static <T> Map<Point, T> getElementsInColumn(Map<Point, T> grid, Integer x) {
+        return grid.entrySet().stream().filter(p -> p.getKey().x == x).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+    }
+
+    public static <T> void addColumn(Map<Point, T> grid, int x, int size, T gridElement) {
+        shiftColumns(grid, x, 1);
+        IntStream.rangeClosed(0, size).forEach(y -> grid.put(new Point(x, y), gridElement));
+    }
+
+    /**
+     * For a grid with (0,0) in the bottom left this will shift columns to the right
+     */
+    public static <T> void shiftColumns(Map<Point, T> grid, int x, int shiftMagnitude) {
+        Map<Point, T> pointsToMove = getAllElementsInDirectionRelativeToPoint(grid, new Point(x, 0), Direction.R);
+        pointsToMove.forEach((key, value) -> grid.remove(key));
+        pointsToMove.forEach((key, value) -> grid.put(new Point(key.x + shiftMagnitude, key.y), value));
+    }
+
+    /**
+     * Returns all elements in a specified direction from a specific point, including the point itself. This is not bound to a row or column but will consider the full grid.
+     *
+     * @param grid
+     * @param point
+     * @param direction
+     * @return
+     */
+    public static <T> Map<Point, T> getAllElementsInDirectionRelativeToPoint(Map<Point, T> grid, Point point, Direction direction) {
+        return switch (direction) {
+            case U ->
+                    grid.entrySet().stream().filter(e -> e.getKey().y >= point.y).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+            case D ->
+                    grid.entrySet().stream().filter(e -> e.getKey().y <= point.y).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+            case L ->
+                    grid.entrySet().stream().filter(e -> e.getKey().x <= point.x).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+            case R ->
+                    grid.entrySet().stream().filter(e -> e.getKey().x >= point.x).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+            default -> throw new AdventOfCodeException("Invalid direction");
+        };
     }
 
     public static <T> Long countValues(Map<Point, T> grid, T value) {
@@ -133,12 +189,13 @@ public class GridUtility {
         return grid.entrySet().stream().filter(predicate).map(e -> e.getKey().y).reduce(Integer::max).orElse(defaultResult);
     }
 
+    // TODO make this return a map
     public static <T> List<Map.Entry<Point, T>> getElementsByValue(Map<Point, T> grid, T input) {
-        return getElementStreamByValue(grid,input).toList();
+        return getElementStreamByValue(grid, input).toList();
     }
 
-    public static <T> Map.Entry<Point, T>  getFirstElementByValue(Map<Point, T> grid, T input) {
-        return getElementStreamByValue(grid,input).findFirst().orElseThrow();
+    public static <T> Map.Entry<Point, T> getFirstElementByValue(Map<Point, T> grid, T input) {
+        return getElementStreamByValue(grid, input).findFirst().orElseThrow();
     }
 
     private static <T> Stream<Map.Entry<Point, T>> getElementStreamByValue(Map<Point, T> grid, T input) {
