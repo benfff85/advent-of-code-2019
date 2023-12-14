@@ -28,6 +28,7 @@ class AdventOfCodeTests {
     private final com.adventofcode.year2023.day10.Controller day10Controller;
     private final com.adventofcode.year2023.day11.Controller day11Controller;
     private final com.adventofcode.year2023.day12.Controller day12Controller;
+    private final com.adventofcode.year2023.day13.Controller day13Controller;
 
     @Test
     void testDay1() {
@@ -110,6 +111,13 @@ class AdventOfCodeTests {
         DailyAnswer answer = day12Controller.execute();
         assertEquals(8270, answer.getPart1());
         assertEquals(0, answer.getPart2());
+    }
+
+    @Test
+    void testDay13() {
+        DailyAnswer answer = day13Controller.execute();
+        assertEquals(43614, answer.getPart1());
+        assertEquals(36771, answer.getPart2());
     }
 
 }
