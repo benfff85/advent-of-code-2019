@@ -1,13 +1,11 @@
 package com.adventofcode.year2023.day11;
 
 
-import com.adventofcode.common.grid.PrintableGridElement;
+import com.adventofcode.common.grid.ConstructableGridElement;
 import lombok.Getter;
 
-import java.util.Arrays;
-
 @Getter
-public enum GridElement implements PrintableGridElement {
+public enum GridElement implements ConstructableGridElement<GridElement> {
 
     EMPTY("."), GALAXY("#");
 
@@ -15,10 +13,6 @@ public enum GridElement implements PrintableGridElement {
 
     GridElement(String string) {
         this.string = string;
-    }
-
-    public static GridElement fromString(String string) {
-        return Arrays.stream(GridElement.values()).filter(gridElement -> gridElement.getString().equals(string)).findFirst().orElseThrow();
     }
 
     @Override

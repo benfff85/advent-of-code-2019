@@ -10,8 +10,9 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.stereotype.Component;
 
 import java.awt.*;
-import java.util.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static com.adventofcode.year2023.day11.GridElement.GALAXY;
 
@@ -53,11 +54,11 @@ public class Controller extends SolutionController {
 
     public DailyAnswer execute() {
 
-        Map<Point, GridElement> grid = initMap();
+        Map<Point, GridElement> grid = GridUtility.constructGridWithSelectElements(puzzleInput, GridElement.class, List.of(GALAXY));
         answer.setPart1(process(grid, 1));
         log.info("Part 1: {}", answer.getPart1());
 
-        grid = initMap();
+        grid = GridUtility.constructGridWithSelectElements(puzzleInput, GridElement.class, List.of(GALAXY));
         answer.setPart2(process(grid, 999999));
         log.info("Part 2: {}", answer.getPart2());
 
@@ -65,20 +66,4 @@ public class Controller extends SolutionController {
 
     }
 
-    private Map<Point, GridElement> initMap() {
-        Map<Point, GridElement> map = new HashMap<>();
-
-        String[] row;
-        GridElement gridElement;
-        for (int y = puzzleInput.size() - 1; y >= 0; y--) {
-            row = puzzleInput.get(puzzleInput.size() - (y + 1)).split("");
-            for (int x = 0; x < puzzleInput.getFirst().length(); x++) {
-                gridElement = GridElement.fromString(row[x]);
-                if (gridElement.equals(GALAXY)) {
-                    map.put(new Point(x, y), gridElement);
-                }
-            }
-        }
-        return map;
-    }
 }
