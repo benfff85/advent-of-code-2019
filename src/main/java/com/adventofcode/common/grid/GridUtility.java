@@ -13,7 +13,9 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import static com.adventofcode.common.grid.PointUtil.getAdjacentPoint;
 import static java.util.Collections.emptyMap;
+import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 public class GridUtility {
@@ -90,7 +92,7 @@ public class GridUtility {
 
         while (nonNull(trackingElement)) {
             elementList.add(Map.entry(trackingPoint, trackingElement));
-            trackingPoint = PointUtil.getAdjacentPoint(trackingPoint, direction);
+            trackingPoint = getAdjacentPoint(trackingPoint, direction);
             trackingElement = grid.get(trackingPoint);
         }
 
@@ -101,7 +103,7 @@ public class GridUtility {
     // Returns null if key not present
     public static <T> Map.Entry<Point, T> getAdjacentElement(Map<Point, T> grid, Point point, Direction direction) {
         try {
-            return Map.entry(point, grid.get(PointUtil.getAdjacentPoint(point, direction)));
+            return Map.entry(point, grid.get(getAdjacentPoint(point, direction)));
         } catch (Exception e) {
             // Ignore
         }
@@ -205,8 +207,9 @@ public class GridUtility {
 
     /**
      * Constructs a square Grid, with (0,0) in the bottom, all elements must be specified in the elementClass but only the elements on the includeElements list will be included in the grid
-     * @param input input List of Strings, usually puzzle input
-     * @param elementClass the class of the enum containing the elements and string values, for example GridElement.class
+     *
+     * @param input           input List of Strings, usually puzzle input
+     * @param elementClass    the class of the enum containing the elements and string values, for example GridElement.class
      * @param includeElements list of elements from the input to include in the grid, for example List.of(GridElement.ROCK)
      * @return A grid with elements of the specified type
      */
@@ -216,8 +219,9 @@ public class GridUtility {
 
     /**
      * Constructs a square Grid, with (0,0) in the bottom, all elements must be specified in the elementClass but only the elements not on the excludedElements list will be included in the grid
-     * @param input input List of Strings, usually puzzle input
-     * @param elementClass the class of the enum containing the elements and string values, for example GridElement.class
+     *
+     * @param input           input List of Strings, usually puzzle input
+     * @param elementClass    the class of the enum containing the elements and string values, for example GridElement.class
      * @param excludeElements list of elements from the input to not include in the grid, for example List.of(GridElement.ROCK)
      * @return A grid with elements of the specified type
      */
@@ -227,7 +231,8 @@ public class GridUtility {
 
     /**
      * Constructs a square Grid, with (0,0) in the bottom left
-     * @param input input List of Strings, usually puzzle input
+     *
+     * @param input        input List of Strings, usually puzzle input
      * @param elementClass the class of the enum containing the elements and string values, for example GridElement.class
      * @return A grid with elements of the specified type
      */
@@ -237,9 +242,10 @@ public class GridUtility {
 
     /**
      * Constructs a square Grid, with (0,0) in the bottom left
-     * @param input input List of Strings, usually puzzle input
-     * @param elementClass the class of the enum containing the elements and string values, for example GridElement.class
-     * @param elementList list of elements from the input to include or exclude in the grid, for example List.of(GridElement.ROCK)
+     *
+     * @param input         input List of Strings, usually puzzle input
+     * @param elementClass  the class of the enum containing the elements and string values, for example GridElement.class
+     * @param elementList   list of elements from the input to include or exclude in the grid, for example List.of(GridElement.ROCK)
      * @param shouldInclude if true, only elements in the elementList will be included in the grid, if false, only elements not in the elementList will be included in the grid
      * @return A grid with elements of the specified type
      */
@@ -251,7 +257,7 @@ public class GridUtility {
             row = input.get(input.size() - (y + 1)).split("");
             for (int x = 0; x < input.getFirst().length(); x++) {
                 gridElement = ConstructableGridElement.createFromString(elementClass, row[x]);
-                if ((shouldInclude && elementList.contains(gridElement)) || (!shouldInclude && !elementList.contains(gridElement))){
+                if ((shouldInclude && elementList.contains(gridElement)) || (!shouldInclude && !elementList.contains(gridElement))) {
                     grid.put(new Point(x, y), gridElement);
                 }
             }
@@ -259,4 +265,36 @@ public class GridUtility {
         return grid;
     }
 
+    /**
+     * Slides an element in a specified direction until it encounters another element, or until it reaches the cutOff point
+     *
+     * @param grid      the grid to modify
+     * @param point     the point of the element to slide
+     * @param direction the direction to slide the element
+     * @param cutOff    the value to stop sliding at
+     */
+    public static <T> void slideElementUntilEncounteringElement(Map<Point, T> grid, Point point, Direction direction, Integer cutOff) {
+
+        Point targetPoint = point;
+        Point testPoint = getAdjacentPoint(targetPoint, direction);
+        while (isNull(getAdjacentElement(grid, targetPoint, direction))) {
+            if ((Direction.U.equals(direction) && testPoint.y > cutOff) ||
+                    (Direction.D.equals(direction) && testPoint.y < cutOff) ||
+                    (Direction.L.equals(direction) && testPoint.x < cutOff) ||
+                    (Direction.R.equals(direction) && testPoint.x > cutOff)) {
+                break;
+            }
+            targetPoint = testPoint;
+            testPoint = getAdjacentPoint(targetPoint, direction);
+        }
+
+        if (point.equals(targetPoint)) {
+            return;
+        }
+
+        T element = grid.get(point);
+        grid.remove(point);
+        grid.put(targetPoint, element);
+
+    }
 }
