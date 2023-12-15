@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
 import java.awt.*;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -17,13 +16,15 @@ import static java.util.Objects.nonNull;
 @Data
 public class Landscape {
 
-    private Map<Point, GridElement> grid = new HashMap<>();
+    private Map<Point, GridElement> grid;
 
     private SymmetryData initialSymmetryData;
     private SymmetryData secondarySymmetryData;
 
     public Landscape(List<String> input) {
-        initMap(input);
+
+        grid = GridUtility.constructGridWithSelectElements(input, GridElement.class, List.of(GridElement.ROCK));
+
         initialSymmetryData = calculateSymmetry(false);
 
         Set<Point> rockPoints = GridUtility.getElementsByValue(grid, GridElement.ROCK).keySet();
@@ -37,21 +38,6 @@ public class Landscape {
         }
 
     }
-
-    private void initMap(List<String> input) {
-        String[] row;
-        GridElement gridElement;
-        for (int y = input.size() - 1; y >= 0; y--) {
-            row = input.get(input.size() - (y + 1)).split("");
-            for (int x = 0; x < input.getFirst().length(); x++) {
-                gridElement = GridElement.fromString(row[x]);
-                if (gridElement.equals(GridElement.ROCK)) {
-                    grid.put(new Point(x, y), gridElement);
-                }
-            }
-        }
-    }
-
 
     private SymmetryData calculateSymmetry(boolean excludeInitialSymmetry) {
 

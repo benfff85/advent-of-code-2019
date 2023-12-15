@@ -5,6 +5,7 @@ import org.apache.commons.math3.util.Pair;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
@@ -199,6 +200,63 @@ public class GridUtility {
 
     private static <T> Stream<Map.Entry<Point, T>> getElementStreamByValue(Map<Point, T> grid, T input) {
         return grid.entrySet().stream().filter(e -> e.getValue().equals(input));
+    }
+
+
+    /**
+     * Constructs a square Grid, with (0,0) in the bottom, all elements must be specified in the elementClass but only the elements on the includeElements list will be included in the grid
+     * @param input input List of Strings, usually puzzle input
+     * @param elementClass the class of the enum containing the elements and string values, for example GridElement.class
+     * @param includeElements list of elements from the input to include in the grid, for example List.of(GridElement.ROCK)
+     * @return A grid with elements of the specified type
+     */
+    public static <T extends ConstructableGridElement<T>> Map<Point, T> constructGridWithSelectElements(List<String> input, Class<T> elementClass, List<T> includeElements) {
+        return constructGrid(input, elementClass, includeElements, true);
+    }
+
+    /**
+     * Constructs a square Grid, with (0,0) in the bottom, all elements must be specified in the elementClass but only the elements not on the excludedElements list will be included in the grid
+     * @param input input List of Strings, usually puzzle input
+     * @param elementClass the class of the enum containing the elements and string values, for example GridElement.class
+     * @param excludeElements list of elements from the input to not include in the grid, for example List.of(GridElement.ROCK)
+     * @return A grid with elements of the specified type
+     */
+    public static <T extends ConstructableGridElement<T>> Map<Point, T> constructGridWithoutSelectElements(List<String> input, Class<T> elementClass, List<T> excludeElements) {
+        return constructGrid(input, elementClass, excludeElements, false);
+    }
+
+    /**
+     * Constructs a square Grid, with (0,0) in the bottom left
+     * @param input input List of Strings, usually puzzle input
+     * @param elementClass the class of the enum containing the elements and string values, for example GridElement.class
+     * @return A grid with elements of the specified type
+     */
+    public static <T extends ConstructableGridElement<T>> Map<Point, T> constructGrid(List<String> input, Class<T> elementClass) {
+        return constructGrid(input, elementClass, List.of(elementClass.getEnumConstants()), true);
+    }
+
+    /**
+     * Constructs a square Grid, with (0,0) in the bottom left
+     * @param input input List of Strings, usually puzzle input
+     * @param elementClass the class of the enum containing the elements and string values, for example GridElement.class
+     * @param elementList list of elements from the input to include or exclude in the grid, for example List.of(GridElement.ROCK)
+     * @param shouldInclude if true, only elements in the elementList will be included in the grid, if false, only elements not in the elementList will be included in the grid
+     * @return A grid with elements of the specified type
+     */
+    private static <T extends ConstructableGridElement<T>> Map<Point, T> constructGrid(List<String> input, Class<T> elementClass, List<T> elementList, boolean shouldInclude) {
+        Map<Point, T> grid = new HashMap<>();
+        String[] row;
+        T gridElement;
+        for (int y = input.size() - 1; y >= 0; y--) {
+            row = input.get(input.size() - (y + 1)).split("");
+            for (int x = 0; x < input.getFirst().length(); x++) {
+                gridElement = ConstructableGridElement.createFromString(elementClass, row[x]);
+                if ((shouldInclude && elementList.contains(gridElement)) || (!shouldInclude && !elementList.contains(gridElement))){
+                    grid.put(new Point(x, y), gridElement);
+                }
+            }
+        }
+        return grid;
     }
 
 }
