@@ -103,7 +103,8 @@ public class GridUtility {
     // Returns null if key not present
     public static <T> Map.Entry<Point, T> getAdjacentElement(Map<Point, T> grid, Point point, Direction direction) {
         try {
-            return Map.entry(point, grid.get(getAdjacentPoint(point, direction)));
+            Point targetPoint = getAdjacentPoint(point, direction);
+            return Map.entry(targetPoint, grid.get(targetPoint));
         } catch (Exception e) {
             // Ignore
         }
