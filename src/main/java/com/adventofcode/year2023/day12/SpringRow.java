@@ -52,7 +52,12 @@ public class SpringRow {
         unknownThatMustBeBrokenCount = knownTotalBrokenCount - brokenCount;
 
         log.info("({}|{})", unknownCount, unknownThatMustBeBrokenCount);
+
         // TODO need to optimize for part 2
+        if(shouldUnfold) {
+            return;
+        }
+
         for (int[] combination : new Combinations(unknownCount, unknownThatMustBeBrokenCount)) {
             // Apply combination
             for (int j : combination) {

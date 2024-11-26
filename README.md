@@ -319,3 +319,15 @@ Easier than the last two weekend days. Created a Card object to parse the input 
 Part 2 spun the logic a little where winning numbers from one card would earn you additional copies of subsequent cards. I maintained a cardCount map that tracked how many of each card I had as each card was evaluated in sequence. Nothing too tricky, just one handup where I forgot to call `boxed()` on an `IntSteam` to convert it to a `Stream<Integer>` for the `collect` method to work when initializing my cardCountMap.
 
 > Map<Integer, Integer> cardCountMap = IntStream.rangeClosed(1, cards.size()).boxed().collect(Collectors.toMap(i -> i, i -> 1));
+
+## Day 5 
+
+
+
+## Day 6 
+
+The following from Apaches StringUtils
+```
+normalizeSpace(String string)
+deleteWhitespace(String string)
+```

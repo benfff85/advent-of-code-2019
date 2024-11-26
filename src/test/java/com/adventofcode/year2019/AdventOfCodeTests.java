@@ -4,6 +4,7 @@ package com.adventofcode.year2019;
 import com.adventofcode.common.DailyAnswer;
 import com.adventofcode.year2019.day8.Layer;
 import lombok.RequiredArgsConstructor;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -156,13 +157,13 @@ class AdventOfCodeTests {
         assertEquals(418, answer.getPart2());
     }
 
-    // Runtime currently 24hrs
-//    @Test
-//    void testDay16() {
-//        DailyAnswer answer = day16Controller.execute();
-//        assertEquals("[6, 8, 3, 1, 7, 9, 8, 8]", answer.getPart1().toString());
-//        assertEquals("[5, 3, 8, 5, 0, 8, 0, 0]", answer.getPart2().toString());
-//    }
+    @Test
+    @Disabled("Runtime currently 24hrs")
+    void testDay16() {
+        DailyAnswer answer = day16Controller.execute();
+        assertEquals("[6, 8, 3, 1, 7, 9, 8, 8]", answer.getPart1().toString());
+        assertEquals("[5, 3, 8, 5, 0, 8, 0, 0]", answer.getPart2().toString());
+    }
 
     @Test
     void testDay17() {

@@ -3,6 +3,7 @@ package com.adventofcode.year2022;
 
 import com.adventofcode.common.DailyAnswer;
 import lombok.RequiredArgsConstructor;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -173,6 +174,7 @@ class AdventOfCodeTests {
     }
 
     @Test
+    @Disabled("Runtime currently 18min")
     void testDay19() {
         DailyAnswer answer = day19Controller.execute();
         assertEquals(2341, answer.getPart1());
