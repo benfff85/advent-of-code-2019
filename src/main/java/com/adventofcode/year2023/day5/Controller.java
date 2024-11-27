@@ -23,7 +23,7 @@ public class Controller extends SolutionController {
 
     public DailyAnswer execute() {
 
-        List<Long> seeds = Arrays.stream(puzzleInput.get(0).split(" ")).skip(1).mapToLong(Long::parseLong).boxed().toList();
+        List<Long> seeds = Arrays.stream(puzzleInput.getFirst().split(" ")).skip(1).mapToLong(Long::parseLong).boxed().toList();
 
         List<RangedMap> maps = generateMapsFromInput();
 
@@ -37,7 +37,6 @@ public class Controller extends SolutionController {
 
         min = IntStream.range(0, seeds.size())
                 .filter(index -> index % 2 == 0)
-                .boxed()
                 .mapToLong(index -> LongStream.range(seeds.get(index), seeds.get(index) + seeds.get(index + 1))
                         .parallel()
                         .map(seedValue -> mapSeedToLocation(seedValue, maps))

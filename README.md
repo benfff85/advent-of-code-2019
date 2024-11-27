@@ -322,7 +322,15 @@ Part 2 spun the logic a little where winning numbers from one card would earn yo
 
 ## Day 5 
 
+Seed to location map, feel like I'm missing something as I'm unable to get part 2 in under 45 seconds or so. 
 
+Notable use of a TreeMap for quickly navigating ranges. 
+
+```
+private final NavigableMap<Long, Range> ranges = new TreeMap<>();
+...
+Map.Entry<Long, Range> entry = ranges.floorEntry(source);
+```
 
 ## Day 6 
 
