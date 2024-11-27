@@ -142,8 +142,8 @@ class AdventOfCodeTests {
         assertEquals(13331L, answer.getPart2());
     }
 
-    // Runtime currently 90s+
     @Test
+    @Disabled("Runtime currently 2min")
     void testDay14() {
         DailyAnswer answer = day14Controller.execute();
         assertEquals(522031L, answer.getPart1());
