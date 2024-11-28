@@ -2,16 +2,11 @@ package com.adventofcode.year2020;
 
 
 import com.adventofcode.common.DailyAnswer;
-import com.adventofcode.year2019.day8.Layer;
 import lombok.RequiredArgsConstructor;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.math.BigInteger;
-import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -23,6 +18,7 @@ class AdventOfCodeTests {
 
 
     private final com.adventofcode.year2020.day1.Controller day1Controller;
+    private final com.adventofcode.year2020.day2.Controller day2Controller;
 
     @Test
     void testDay1() {
@@ -31,5 +27,11 @@ class AdventOfCodeTests {
         assertEquals(111605670, answer.getPart2());
     }
 
+    @Test
+    void testDay2() {
+        DailyAnswer answer = day2Controller.execute();
+        assertEquals(586L, answer.getPart1());
+        assertEquals(352L, answer.getPart2());
+    }
 
 }
