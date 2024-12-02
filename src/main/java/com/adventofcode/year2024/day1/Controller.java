@@ -28,7 +28,6 @@ public class Controller extends SolutionController {
         answer.setPart1(IntStream.range(0, locationList1.size())
                 .map(i -> Math.abs(locationList1.get(i) - locationList2.get(i)))
                 .sum());
-
         log.info("Part 1: {}", answer.getPart1());
 
         Map<Integer, Integer> cardinalityMap = CollectionUtils.getCardinalityMap(locationList2);
