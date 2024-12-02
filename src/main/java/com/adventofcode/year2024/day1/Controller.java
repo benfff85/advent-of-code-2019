@@ -4,11 +4,13 @@ import com.adventofcode.common.DailyAnswer;
 import com.adventofcode.common.InputHelper;
 import com.adventofcode.common.SolutionController;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.cglib.core.CollectionUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.IntStream;
 
 @Slf4j
 @Component("controller-2024-1")
@@ -20,24 +22,32 @@ public class Controller extends SolutionController {
 
     public DailyAnswer execute() {
 
-        List<Integer> locationList1 = puzzleInput.stream().map(StringUtils::normalizeSpace).map(line -> line.split(" ")[0]).map(Integer::parseInt).sorted().toList();
-        List<Integer> locationList2 = puzzleInput.stream().map(StringUtils::normalizeSpace).map(line -> line.split(" ")[1]).map(Integer::parseInt).sorted().toList();
+        List<Integer> locationList1 = getLocationList(puzzleInput, 0);
+        List<Integer> locationList2 = getLocationList(puzzleInput, 1);
 
-        int sum = 0;
-        for(int i=0; i<locationList1.size(); i++) {
-            sum += Math.abs(locationList1.get(i) - locationList2.get(i));
-        }
-        answer.setPart1(sum);
+        answer.setPart1(IntStream.range(0, locationList1.size())
+                .map(i -> Math.abs(locationList1.get(i) - locationList2.get(i)))
+                .sum());
+
         log.info("Part 1: {}", answer.getPart1());
 
-        int simScore = 0;
-        for(Integer i : locationList1) {
-            simScore += (int) (i * locationList2.stream().filter(i::equals).count());
-        }
-        answer.setPart2(simScore);
+        Map<Integer, Integer> cardinalityMap = CollectionUtils.getCardinalityMap(locationList2);
+        answer.setPart2(locationList1.stream()
+                .mapToInt(i -> i * cardinalityMap.getOrDefault(i, 0))
+                .sum());
         log.info("Part 2: {}", answer.getPart2());
 
         return answer;
     }
+
+    private List<Integer> getLocationList(List<String> input, int index) {
+        return input.stream()
+                .map(StringUtils::normalizeSpace)
+                .map(line -> line.split(" ")[index])
+                .map(Integer::parseInt)
+                .sorted()
+                .toList();
+    }
+
 
 }
