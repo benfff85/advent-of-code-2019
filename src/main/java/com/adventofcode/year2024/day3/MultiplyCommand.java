@@ -7,12 +7,12 @@ public class MultiplyCommand {
 
     private final int x;
     private final int y;
-    private final long product;
+    private final int product;
 
     public MultiplyCommand(String input) {
         x = Integer.parseInt(input.split(",")[0].split("\\(")[1]);
         y = Integer.parseInt(input.split(",")[1].split("\\)")[0]);
-        product = (long) x * y;
+        product = x * y;
     }
 
 }
