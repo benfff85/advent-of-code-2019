@@ -81,19 +81,33 @@ public class GridUtility {
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a, b) -> b));
     }
 
-    // Returns all elements in a specified direction from the specific point, path terminates when point is not in grid or when element of point is null. Specific element will be first in the list.
-    // TODO fix size
+    /**
+     * Returns all elements in a specified direction from the specific point.
+     * Path terminates when point is not in grid or when element of point is null.
+     * Specific element will be first in the list.
+     */
     public static <T> List<Map.Entry<Point, T>> getAdjacentElements(Map<Point, T> grid, Point point, Direction direction) {
+        return getAdjacentElements(grid, point, direction, Integer.MAX_VALUE);
+    }
+
+    /**
+     * Returns all elements in a specified direction from the specific point.
+     * Path terminates when point is not in grid or when element of point is null or when maxElementCount is reached.
+     * Specific element will be first in the list.
+     */
+    public static <T> List<Map.Entry<Point, T>> getAdjacentElements(Map<Point, T> grid, Point point, Direction direction, Integer maxElementCount) {
 
         List<Map.Entry<Point, T>> elementList = new ArrayList<>();
 
         Point trackingPoint = point;
         T trackingElement = grid.get(point);
+        int count = 1;
 
-        while (nonNull(trackingElement)) {
+        while (nonNull(trackingElement) && count <= maxElementCount) {
             elementList.add(Map.entry(trackingPoint, trackingElement));
             trackingPoint = getAdjacentPoint(trackingPoint, direction);
             trackingElement = grid.get(trackingPoint);
+            count++;
         }
 
         return elementList;
