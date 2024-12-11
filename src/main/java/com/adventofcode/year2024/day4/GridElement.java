@@ -8,7 +8,7 @@ import lombok.Getter;
 @Getter
 public enum GridElement implements PrintableGridElement, ConstructableGridElement<GridElement> {
 
-    X("X"), M("M"), A("A"), S("S");
+    X("X"), M("M"), A("A"), S("S"), SPACE(" ");
 
     private final String string;
 

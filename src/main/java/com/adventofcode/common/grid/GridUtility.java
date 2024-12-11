@@ -114,7 +114,54 @@ public class GridUtility {
 
     }
 
-    // Returns null if key not present
+    /**
+     * Returns a map of matched input patterns with the map consisting of the anchor point and then having a value of the matched pattern map.
+     * Input patters are in the form of a grid anchored at 0,0 with other values being relative to the anchor.
+     */
+    public static <T> Map<Point, Map<Point, T>> getPatternMatches(Map<Point, T> grid, Map<Point, T> pattern) {
+
+        Map<Point, Map<Point, T>> matchedPatternMaps = new HashMap<>();
+        Map<Point, T> matchedPatternMap = new HashMap<>();
+
+        // For every point in the grid check if there is a matching pattern anchored here
+        for(Point point : grid.keySet()) {
+
+            boolean isMatch = true;
+            for (Map.Entry<Point, T> patternElement : pattern.entrySet()) {
+                Point gridPoint = new Point(point.x + patternElement.getKey().x, point.y + patternElement.getKey().y);
+                if(!patternElement.getValue().equals(grid.get(gridPoint))) {
+                    isMatch = false;
+                    break;
+                }
+                matchedPatternMap.put(gridPoint, grid.get(gridPoint));
+            }
+
+            if(isMatch) {
+                matchedPatternMaps.put(point, new HashMap<>(matchedPatternMap));
+            }
+
+            matchedPatternMap.clear();
+
+        }
+
+        return matchedPatternMaps;
+
+    }
+
+    /**
+     * Rotates a grid clockwise with the top right quadrant moving to the bottom right and so on.
+     * @param grid the grid to rotate
+     */
+    public static <T> void rotateGridClockwise(Map<Point, T> grid) {
+        Map<Point, T> pointsToMove = new HashMap<>(grid);
+        pointsToMove.forEach((key, value) -> grid.remove(key));
+        pointsToMove.forEach((key, value) -> grid.put(new Point(key.y, key.x * -1), value));
+    }
+
+    /**
+     * Get the map entry (point and element) directly adjacent to the given point in the specified direction.
+     * Returns null if key not present.
+     */
     public static <T> Map.Entry<Point, T> getAdjacentElement(Map<Point, T> grid, Point point, Direction direction) {
         try {
             Point targetPoint = getAdjacentPoint(point, direction);

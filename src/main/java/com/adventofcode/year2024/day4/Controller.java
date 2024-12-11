@@ -5,17 +5,15 @@ import com.adventofcode.common.InputHelper;
 import com.adventofcode.common.SolutionController;
 import com.adventofcode.common.grid.Direction;
 import com.adventofcode.common.grid.GridUtility;
-import com.adventofcode.common.grid.PointUtil;
-import com.adventofcode.common.grid.SurroundingType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.awt.*;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.IntStream;
 
 import static com.adventofcode.common.grid.GridUtility.constructGrid;
-import static com.adventofcode.common.grid.GridUtility.getSurroundingElements;
 
 @Slf4j
 @Component("controller-2024-4")
@@ -60,35 +58,19 @@ public class Controller extends SolutionController {
         answer.setPart1(count);
         log.info("Part 1: {}", answer.getPart1());
 
-        count=0;
-        for(Point point : grid.keySet()) {
-            Map<Point, GridElement> surround = getSurroundingElements(grid, point, SurroundingType.ALL);
-            if(GridElement.A.equals(grid.get(point)) && (
+        Map<Point, GridElement> pattern = GridUtility.constructGridWithoutSelectElements(List.of(
+                "M S",
+                " A ",
+                "M S"
+        ), GridElement.class, List.of(GridElement.SPACE));
 
-                    (GridElement.M.equals(surround.get(PointUtil.getAdjacentPoint(point, Direction.UL))) &&
-                    GridElement.M.equals(surround.get(PointUtil.getAdjacentPoint(point, Direction.DL))) &&
-                    GridElement.S.equals(surround.get(PointUtil.getAdjacentPoint(point, Direction.UR))) &&
-                    GridElement.S.equals(surround.get(PointUtil.getAdjacentPoint(point, Direction.DR)))) ||
-
-                    (GridElement.M.equals(surround.get(PointUtil.getAdjacentPoint(point, Direction.UL))) &&
-                    GridElement.S.equals(surround.get(PointUtil.getAdjacentPoint(point, Direction.DL))) &&
-                    GridElement.M.equals(surround.get(PointUtil.getAdjacentPoint(point, Direction.UR))) &&
-                    GridElement.S.equals(surround.get(PointUtil.getAdjacentPoint(point, Direction.DR)))) ||
-
-                    (GridElement.S.equals(surround.get(PointUtil.getAdjacentPoint(point, Direction.UL))) &&
-                    GridElement.M.equals(surround.get(PointUtil.getAdjacentPoint(point, Direction.DL))) &&
-                    GridElement.S.equals(surround.get(PointUtil.getAdjacentPoint(point, Direction.UR))) &&
-                    GridElement.M.equals(surround.get(PointUtil.getAdjacentPoint(point, Direction.DR)))) ||
-
-                    (GridElement.S.equals(surround.get(PointUtil.getAdjacentPoint(point, Direction.UL))) &&
-                    GridElement.S.equals(surround.get(PointUtil.getAdjacentPoint(point, Direction.DL))) &&
-                    GridElement.M.equals(surround.get(PointUtil.getAdjacentPoint(point, Direction.UR))) &&
-                    GridElement.M.equals(surround.get(PointUtil.getAdjacentPoint(point, Direction.DR))))
-            )){
-                count++;
-            }
-
-        }
+        count = IntStream.range(0, 4)
+                .map(i -> {
+                    int matches = GridUtility.getPatternMatches(grid, pattern).size();
+                    GridUtility.rotateGridClockwise(pattern);
+                    return matches;
+                })
+                .sum();
 
         answer.setPart2(count);
         log.info("Part 2: {}", answer.getPart2());
@@ -99,6 +81,5 @@ public class Controller extends SolutionController {
     private boolean isXmas(List<Map.Entry<Point, GridElement>> fragment) {
         return fragment.stream().map(Map.Entry::getValue).toList().equals(List.of(GridElement.X, GridElement.M, GridElement.A, GridElement.S));
     }
-
 
 }
