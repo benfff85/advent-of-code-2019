@@ -334,11 +334,13 @@ public class GridUtility {
      * @param point     the point of the element to slide
      * @param direction the direction to slide the element
      * @param cutOff    the value to stop sliding at
+     * @return
      */
-    public static <T> void slideElementUntilEncounteringElement(Map<Point, T> grid, Point point, Direction direction, Integer cutOff) {
+    public static <T> Map<Point, T> slideElementUntilEncounteringElement(Map<Point, T> grid, Point point, Direction direction, Integer cutOff) {
 
         Point targetPoint = point;
         Point testPoint = getAdjacentPoint(targetPoint, direction);
+        Map<Point, T> coveredSpaces = new HashMap<>();
         while (isNull(getAdjacentElement(grid, targetPoint, direction))) {
             if ((Direction.U.equals(direction) && testPoint.y > cutOff) ||
                     (Direction.D.equals(direction) && testPoint.y < cutOff) ||
@@ -347,16 +349,18 @@ public class GridUtility {
                 break;
             }
             targetPoint = testPoint;
+            coveredSpaces.put(targetPoint, grid.get(targetPoint));
             testPoint = getAdjacentPoint(targetPoint, direction);
         }
 
         if (point.equals(targetPoint)) {
-            return;
+            return coveredSpaces;
         }
 
         T element = grid.get(point);
         grid.remove(point);
         grid.put(targetPoint, element);
 
+        return coveredSpaces;
     }
 }
