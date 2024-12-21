@@ -1,5 +1,8 @@
 package com.adventofcode.common.grid;
 
+import lombok.Data;
+
+@Data
 public class SimplePrintableGridElement implements PrintableGridElement {
 
     private final String string;
