@@ -27,9 +27,9 @@ public class Controller extends SolutionController {
         Set<Region> regions = findRegions(grid);
 
         answer.setPart1(regions.stream().mapToInt(Region::getPrice).sum());
-        log.info("Part 1: {}", answer.getPart1()); // 1487052 too high
+        log.info("Part 1: {}", answer.getPart1());
 
-        answer.setPart2(0);
+        answer.setPart2(regions.stream().mapToInt(Region::getBulkPrice).sum());
         log.info("Part 2: {}", answer.getPart2());
 
         return answer;
