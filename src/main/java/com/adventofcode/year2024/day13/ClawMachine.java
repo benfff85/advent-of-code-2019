@@ -2,8 +2,8 @@ package com.adventofcode.year2024.day13;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.math3.util.Pair;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,34 +15,31 @@ public class ClawMachine {
     private Integer ayMagnitude;
     private Integer bxMagnitude;
     private Integer byMagnitude;
-    private Point prizeLocation;
+    private Long prizeLocationX;
+    private Long prizeLocationY;
     private List<ButtonPressRecord> buttonPressOptions = new ArrayList<>();
+    private List<ButtonPressRecord> buttonPressOptionsPart2 = new ArrayList<>();
+
 
     public ClawMachine(List<String> stringList) {
         axMagnitude = Integer.parseInt(stringList.getFirst().split(",")[0].split("\\+")[1]);
         ayMagnitude = Integer.parseInt(stringList.getFirst().split("\\+")[2]);
         bxMagnitude = Integer.parseInt(stringList.get(1).split(",")[0].split("\\+")[1]);
         byMagnitude = Integer.parseInt(stringList.get(1).split("\\+")[2]);
-        prizeLocation = new Point(Integer.parseInt(stringList.get(2).split(",")[0].split("=")[1]), Integer.parseInt(stringList.get(2).split("=")[2]));
-        calculateButtonPressOptions();
-    }
+        prizeLocationX = Long.parseLong(stringList.get(2).split(",")[0].split("=")[1]);
+        prizeLocationY = Long.parseLong(stringList.get(2).split("=")[2]);
 
-    public void calculateButtonPressOptions() {
-
-        for(int aCount = prizeLocation.x / axMagnitude; aCount >= 0; aCount--) {
-            for(int bCount = 0; (aCount * axMagnitude) + (bCount * bxMagnitude) <= prizeLocation.x; bCount++) {
-                if(((aCount * axMagnitude) + (bCount * bxMagnitude) == prizeLocation.x)
-                    && ((aCount * ayMagnitude) + (bCount * byMagnitude) == prizeLocation.y)) {
-                    buttonPressOptions.add(new ButtonPressRecord(aCount, bCount));
-                }
-
-            }
-
+        Pair<Long, Long> result1 = LinearEquationSolver.solveEquations(axMagnitude, bxMagnitude, ayMagnitude, byMagnitude, prizeLocationX, prizeLocationY);
+        if(result1 != null) {
+            buttonPressOptions.add(new ButtonPressRecord(result1.getFirst(), result1.getSecond()));
         }
 
-        log.info("{}", buttonPressOptions);
-
+        Pair<Long, Long> result2 = LinearEquationSolver.solveEquations(axMagnitude, bxMagnitude, ayMagnitude, byMagnitude, (double) prizeLocationX + 10000000000000L, (double) prizeLocationY + 10000000000000L);
+        if(result2 != null) {
+            buttonPressOptionsPart2.add(new ButtonPressRecord(result2.getFirst(), result2.getSecond()));
+        }
 
     }
+
 
 }

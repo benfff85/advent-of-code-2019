@@ -5,11 +5,11 @@ import lombok.Data;
 @Data
 public class ButtonPressRecord {
 
-    private Integer aPresses;
-    private Integer bPresses;
-    private Integer tokenCost;
+    private Long aPresses;
+    private Long bPresses;
+    private Long tokenCost;
 
-    public ButtonPressRecord(Integer aPresses, Integer bPresses) {
+    public ButtonPressRecord(Long aPresses, Long bPresses) {
         this.aPresses = aPresses;
         this.bPresses = bPresses;
         this.tokenCost = (aPresses * 3) + bPresses;

@@ -4,11 +4,9 @@ import com.adventofcode.common.DailyAnswer;
 import com.adventofcode.common.InputHelper;
 import com.adventofcode.common.SolutionController;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Slf4j
@@ -29,11 +27,14 @@ public class Controller extends SolutionController {
 
         answer.setPart1(arcade.stream()
                 .filter(clawMachine -> !clawMachine.getButtonPressOptions().isEmpty())
-                .mapToInt(clawMachine -> clawMachine.getButtonPressOptions().stream().mapToInt(ButtonPressRecord::getTokenCost).min().getAsInt())
+                .mapToLong(clawMachine -> clawMachine.getButtonPressOptions().stream().mapToLong(ButtonPressRecord::getTokenCost).min().getAsLong())
                 .sum());
         log.info("Part 1: {}", answer.getPart1());
 
-        answer.setPart2(0);
+        answer.setPart2(arcade.stream()
+                .filter(clawMachine -> !clawMachine.getButtonPressOptionsPart2().isEmpty())
+                .mapToLong(clawMachine -> clawMachine.getButtonPressOptionsPart2().stream().mapToLong(ButtonPressRecord::getTokenCost).min().getAsLong())
+                .sum());
         log.info("Part 2: {}", answer.getPart2());
 
         return answer;

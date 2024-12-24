@@ -119,8 +119,8 @@ class AdventOfCodeTests {
     @Test
     void testDay13() {
         DailyAnswer answer = day13Controller.execute();
-        assertEquals(36758, answer.getPart1());
-        assertEquals(0, answer.getPart2());
+        assertEquals(36758L, answer.getPart1());
+        assertEquals(76358113886726L, answer.getPart2());
     }
 
 }
